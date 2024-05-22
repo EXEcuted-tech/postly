@@ -8,6 +8,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'poppins': ['Poppins','sans-serif'],
+      },
       colors:{
         primary: colors.primary,
         secondary: colors.secondary
@@ -15,5 +18,6 @@ module.exports = {
     },
   },
   plugins: [],
+  darkMode: "class",
 }
 

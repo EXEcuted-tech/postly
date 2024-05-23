@@ -7,13 +7,16 @@ import user from '../../assets/sana.jpg'
 
 import { IoLocationOutline, IoCalendarOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from 'react-router-dom';
+import Posts from './Posts';
+import Likes from './Likes';
+import Dashboard from './Dashboard';
 
 const Profile = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(()=>{
-
+    console.log(location.pathname)
   },[])
 
   return (
@@ -75,7 +78,7 @@ const Profile = () => {
             <ul className='flex justify-center w-full mt-[1.5%] text-[1.1em] font-medium'>
               {ProfileLinks.map((link)=>(
               <li className={getLinkClass(link.link, location.pathname) === 'link active' ? 
-                'w-[33%] mx-[3%] text-center border-b-[5px] pb-[0.6%] border-primary'
+                'w-[33%] mx-[1.5%] text-center border-b-[5px] pb-[0.6%] border-primary'
                 :
                 'w-[33%] text-center text-[#9D9D9D] hover:cursor-pointer'
               }
@@ -90,7 +93,16 @@ const Profile = () => {
 
         {/* Content */}
         <div>
-          
+            {location.pathname === '/profile' 
+              ?
+              <Posts/>
+              :
+              location.pathname === '/profile/likes'
+              ?
+              <Likes/>
+              :
+              <Dashboard/>
+            }
         </div>
       </div>
 

@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PostCard from '../../components/card/PostCard'
-import user from '../../assets/user-icon.jpg'
+import myuser from '../../assets/sana.jpg'
+import Spinner from '../../components/loader/Spinner';
 
 const Home = () => {
+  const [loading,setLoading] = useState(false);
+  
   return (
     <div className='pt-[3%] animate-fade-in w-[80%]'>
       <div className='ml-[2%] bg-white rounded-[20px] w-[95%] px-[2%] pt-[2%] pb-[1%]'>
         <div className='flex'>
           <div className='w-[50px] h-[50px]'>
-            <img src={user} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
+            <img src={myuser} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
           </div>
           <textarea
             maxLength={1000}
@@ -22,7 +25,14 @@ const Home = () => {
         </div>
       </div>
       <div className='my-[2%] ml-[2%] w-[95%]'>
+        {loading
+        ?
+          <div className='flex justify-center'>
+            <Spinner/>
+          </div>
+        :
         <PostCard/>
+        }
       </div>
     </div>
   )

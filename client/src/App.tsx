@@ -10,6 +10,7 @@ import Notifications from "./pages/notification/Notifications";
 import Profile from "./pages/profile/Profile";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
 import OTPSend from "./pages/authentication/OTPSend";
+import Search from "./pages/search/Search";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route element={<SignedInLayout />} >
         <Route path="/home" element={<Home/>}/>
         <Route path="/notifications" element={<Notifications/>}/>
+        <Route path="/search" element={<Search/>}/>
         <Route path="/profile" element={<Profile/>}/>
         <Route path="/profile/likes" element={<Profile/>}/>
         <Route path="/profile/dashboard" element={<Profile/>}/>

@@ -10,6 +10,7 @@ import Notifications from './pages/notification/Notifications';
 import Profile from './pages/profile/Profile';
 import Search from "./pages/search/Search";
 import Login from "./pages/authentication/Login"
+import Signup from "./pages/authentication/Signup"
 
 function App() {
   return (

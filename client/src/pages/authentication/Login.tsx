@@ -18,16 +18,16 @@ const Login = () => {
             <p className='text-xl mt-[2%] text-[#8F8F8F] mb-[3%]'>You must create an account to use Postly.</p>
             <form className='inline text-black'>
               <div>
-                <input type='text' className='w-[85%] h-[2em] mb-[3%] text-4xl pl-[2%] rounded-xl border-primary border-2' placeholder='Username'></input>
+                <input type='text' className='w-[85%] h-[2em] mb-[3%] text-4xl pl-[2%] rounded-xl border-primary border-2 font-semibold' placeholder='Username'></input>
               </div>
               <div>
-                <input type='text' className='w-[85%] h-[2em] mb-[3%] text-4xl pl-[2%] rounded-xl border-primary border-2' placeholder='Email'></input>
+                <input type='text' className='w-[85%] h-[2em] mb-[3%] text-4xl pl-[2%] rounded-xl border-primary border-2 font-semibold' placeholder='Email'></input>
               </div>
               <div>
-                <input type='text' className='w-[85%] h-[2em] mb-[3%] text-4xl pl-[2%] rounded-xl border-primary border-2' placeholder='Password'></input>
+                <input type='text' className='w-[85%] h-[2em] mb-[3%] text-4xl pl-[2%] rounded-xl border-primary border-2 font-semibold' placeholder='Password'></input>
               </div>
               <div>
-                <input type='text' className='w-[85%] h-[2em] mb-[3%] text-4xl pl-[2%] rounded-xl border-primary border-2' placeholder='Retype Password'></input>
+                <input type='text' className='w-[85%] h-[2em] mb-[3%] text-4xl pl-[2%] rounded-xl border-primary border-2 font-semibold' placeholder='Retype Password'></input>
               </div>
               <div className='text-center ml-[-9%]'>
                 <button type='submit' className=' bg-primary text-3xl w-[20%] py-[1.5%] mt-[1%] font-bold rounded-lg'>Create</button>

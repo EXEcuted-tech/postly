@@ -34,7 +34,7 @@ const SignedOutLayout = () => {
             <img
               src={borderBottomRight}
               alt="borderbottom_right"
-              className="self-end w-auto h-[400px]"
+              className="self-end w-auto h-[300px]"
             />
           </div>
         </div>

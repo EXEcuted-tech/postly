@@ -4,10 +4,12 @@ import user from '../../assets/user-icon.jpg'
 
 const Home = () => {
   return (
-    <div className='w-[80%]'>
+    <div className='pt-[3%] animate-fade-in w-[80%]'>
       <div className='ml-[2%] bg-white rounded-[20px] w-[95%] px-[2%] pt-[2%] pb-[1%]'>
         <div className='flex'>
-          <img src={user} alt="Profile Picture" className='rounded-full w-[4%] h-[2%]'/>
+          <div className='w-[50px] h-[50px]'>
+            <img src={user} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
+          </div>
           <textarea
             maxLength={1000}
             placeholder="What's on your mind today?"
@@ -16,7 +18,7 @@ const Home = () => {
         </div>
         <hr className='border-1 my-[1%]'/>
         <div className='flex justify-end'>
-          <button className='bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em]'>Post</button>
+          <button className='bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out'>Post</button>
         </div>
       </div>
       <div className='my-[2%] ml-[2%] w-[95%]'>

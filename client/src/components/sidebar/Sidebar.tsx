@@ -11,15 +11,16 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
-    <div className='w-[20%]'>
+    <div className='w-[20%] pt-[3%] '>
       <div className='flex justify-center'>
         <ul>
           {SignedInLinks.map((link)=>(
             <li className={getLinkClass(link.link, location.pathname) === 'link active' ? 
-                'bg-[#E7E7E7] ml-[-6%] mr-[-50%] pl-[5%] py-[5%] rounded-[10px] flex items-center mb-[10%]'
+                'bg-[#E7E7E7] ml-[-6%] mr-[-50%] pl-[5%] py-[5%] rounded-[10px] flex items-center mb-[10%] hover:cursor-pointer'
                 :
-                'flex items-center mb-[15%]'
-              }>
+                'flex items-center mb-[15%] hover:animate-zoom-out hover:cursor-pointer'
+              }
+              onClick={()=> navigate(link.link)}>
               <div className='bg-primary rounded-full p-[3%]'>
                 {link.name === 'Home'
                   ?
@@ -57,7 +58,7 @@ const Sidebar = () => {
       </div>
       <hr className='border-[2px] ml-[30%]'/>
       <div className='flex justify-center mt-[8%] ml-[30%]'>
-        <button className='bg-primary rounded-[50px] font-semibold text-[1.3em] px-[23%] py-[3%]'>Create A Post</button>
+        <button className='bg-primary rounded-[50px] font-semibold text-[1.3em] px-[23%] py-[3%] hover:bg-black hover:text-primary hover:animate-zoom-out'>Create A Post</button>
       </div>
     </div>
   )

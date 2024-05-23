@@ -30,7 +30,7 @@ const SignedOutLayout = () => {
         </div>
         <div className=" w-full h-full md:h-screen flex-row">
           <div className="flex h-[80%]">{outlet}</div>
-          <div className="flex h-[20%] align-bottom justify-end">
+          <div className="relative z-0 flex h-[20%] align-bottom justify-end">
             <img
               src={borderBottomRight}
               alt="borderbottom_right"

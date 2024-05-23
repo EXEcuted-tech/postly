@@ -14,12 +14,12 @@ import OTPSend from "./pages/authentication/OTPSend";
 function App() {
   return (
     <Routes>
-      <Route element={<SignedInLayout />}>
-        <Route path="/home" element={<Home />} />
-        <Route path="/notifications" element={<Notifications />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/likes" element={<Profile />} />
-        <Route path="/dashboard" element={<Profile />} />
+      <Route element={<SignedInLayout />} >
+        <Route path="/home" element={<Home/>}/>
+        <Route path="/notifications" element={<Notifications/>}/>
+        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/profile/likes" element={<Profile/>}/>
+        <Route path="/profile/dashboard" element={<Profile/>}/>
       </Route>
       <Route element={<SignedOutLayout />}>
         <Route path="/" element={<Landing />} />

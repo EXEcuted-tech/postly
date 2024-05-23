@@ -8,7 +8,7 @@ const SignedInLayout = () => {
   return (
     <div className='font-poppins'>  
         <Header/>
-        <div className='bg-[#F3F6F8] flex pt-[3%] h-[90vh]'>
+        <div className='bg-[#F3F6F8] flex h-[90vh]'>
             <Sidebar/>
             {outlet}
         </div>

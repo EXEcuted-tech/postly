@@ -11,6 +11,8 @@ import Profile from './pages/profile/Profile';
 import Search from "./pages/search/Search";
 import Login from "./pages/authentication/Login"
 import Signup from "./pages/authentication/Signup"
+import ForgotPassword from "./pages/authentication/ForgotPassword";
+import OTPSend from "./pages/authentication/OTPSend";
 
 function App() {
   return (
@@ -23,9 +25,11 @@ function App() {
         <Route path="/profile/likes" element={<Profile/>}/>
         <Route path="/profile/dashboard" element={<Profile/>}/>
       </Route>
-      <Route element={<SignedOutLayout />} >
-        <Route path="/" element={<Landing/>} />
-      </Route>  
+      <Route element={<SignedOutLayout />}>
+        <Route path="/" element={<Landing />} />
+        <Route path="/forgotpass" element={<ForgotPassword />} />
+        <Route path="/verify" element={<OTPSend />} />
+      </Route>
     </Routes>
   );
 }

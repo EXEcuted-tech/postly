@@ -21,10 +21,10 @@ const Header = () => {
         </div>
         <div className='flex items-center'>
             <div>
-              <FaMoon className='text-[2.8em] bg-black text-primary rounded-full px-[10%] py-[10%]
+              <FaMoon className='text-[2.8em] bg-black text-primary rounded-full px-[15%] py-[15%]
               hover:cursor-pointer hover:bg-gray-900 animate-pop1'/>
             </div>
-            <div className='ml-[10%]'>
+            <div className='ml-[15%]'>
               <div className='w-[50px] h-[50px]'>
                 <img src={user} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
               </div>

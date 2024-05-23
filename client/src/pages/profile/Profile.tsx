@@ -1,17 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaArrowLeft } from "react-icons/fa6";
+import { getLinkClass } from '../../helpers/functions';
+import { ProfileLinks } from '../../common/links';
 import cover from '../../assets/cover.jpg'
 import user from '../../assets/sana.jpg'
 
 import { IoLocationOutline, IoCalendarOutline } from "react-icons/io5";
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(()=>{
+
+  },[])
+
   return (
     <div className='animate-fade-in w-[80%]'>
-
       <div className='mx-[2%] h-full'>
-        <div className='bg-white h-[62vh] rounded-b-[30px] drop-shadow-md'>
 
+        <div className='bg-white h-[62vh] rounded-b-[30px] drop-shadow-md'>
           <div className='flex items-center ml-[1.5%] py-[0.5%]'>
             <FaArrowLeft className='text-[3em] hover:cursor-pointer'/>
             <div className='ml-[1%]'>
@@ -62,20 +71,26 @@ const Profile = () => {
           </div>
 
           {/* Tabs */}
-          <div className=''>
-            <ul className='flex justify-center w-full mt-[1.5%] text-[1.1em] font-semibold'>
-              <li className='w-[33.3%]'>
-                <p className='hover:cursor-pointer'>Posts</p>
+          <div>
+            <ul className='flex justify-center w-full mt-[1.5%] text-[1.1em] font-medium'>
+              {ProfileLinks.map((link)=>(
+              <li className={getLinkClass(link.link, location.pathname) === 'link active' ? 
+                'w-[33%] mx-[3%] text-center border-b-[5px] pb-[0.6%] border-primary'
+                :
+                'w-[33%] text-center text-[#9D9D9D] hover:cursor-pointer'
+              }
+              onClick={()=> navigate(`/${link.link}`)}>
+                <p className='hover:cursor-pointer'>{link.name}</p>
               </li>
-              <li className='w-[33.3%]'>
-                Likes
-              </li>
-              <li>
-                Dashboard
-              </li>
+              ))}
             </ul>
           </div>
 
+        </div>
+
+        {/* Content */}
+        <div>
+          
         </div>
       </div>
 

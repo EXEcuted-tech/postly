@@ -8,6 +8,7 @@ import Landing from './pages/landing/Landing';
 import Home from './pages/home/Home';
 import Notifications from './pages/notification/Notifications';
 import Profile from './pages/profile/Profile';
+import Login from './pages/authentication/Login'
 
 function App() {
   return (
@@ -19,8 +20,9 @@ function App() {
         <Route path="/likes" element={<Profile/>}/>
         <Route path="/dashboard" element={<Profile/>}/>
       </Route>
-      <Route element={<SignedOutLayout />} >
+      <Route element={<Login />} >
         <Route path="/" element={<Landing/>} />
+        {/* <Route path="/login" element={<Login/>}/> */}
       </Route>  
     </Routes>
   );

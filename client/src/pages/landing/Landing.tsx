@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
 
 const Landing = () => {
   return (
-    <div>Landing</div>
+    <div className="animate-fade-in">
+    Landing in the moon
+    </div>
   )
-}
+};
 
-export default Landing
+export default Landing;

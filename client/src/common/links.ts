@@ -13,14 +13,29 @@ export const SignedInLinks = [
     },
     {
         name: "Likes",
-        link: "likes",
+        link: "profile/likes",
     },
     {
         name: "Dashboard",
-        link: "dashboard",
+        link: "profile/dashboard",
     },
     {
         name: "Log Out",
         link: "",
+    },
+]
+
+export const ProfileLinks = [
+    {
+        name: "Posts",
+        link: "profile",
+    },
+    {
+        name: "Likes",
+        link: "profile/likes",
+    },
+    {
+        name: "Dashboard",
+        link: "profile/dashboard",
     },
 ]

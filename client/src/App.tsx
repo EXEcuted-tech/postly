@@ -8,6 +8,8 @@ import Landing from './pages/landing/Landing';
 import Home from './pages/home/Home';
 import Notifications from './pages/notification/Notifications';
 import Profile from './pages/profile/Profile';
+import Search from "./pages/search/Search";
+import Login from "./pages/authentication/Login"
 
 function App() {
   return (
@@ -20,7 +22,7 @@ function App() {
         <Route path="/profile/likes" element={<Profile/>}/>
         <Route path="/profile/dashboard" element={<Profile/>}/>
       </Route>
-      <Route element={<SignedOutLayout />} >
+      <Route element={<Login />} >
         <Route path="/" element={<Landing/>} />
       </Route>  
     </Routes>

@@ -22,7 +22,7 @@ function App() {
         <Route path="/profile/likes" element={<Profile/>}/>
         <Route path="/profile/dashboard" element={<Profile/>}/>
       </Route>
-      <Route element={<Login />} >
+      <Route element={<SignedOutLayout />} >
         <Route path="/" element={<Landing/>} />
       </Route>  
     </Routes>

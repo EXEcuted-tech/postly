@@ -8,13 +8,18 @@ import user from "../../assets/sana.jpg";
 import { IoLocationOutline, IoCalendarOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import EditProfile from "../../components/modal/EditProfile";
+import Posts from "./Posts";
+import Likes from "./Likes";
+import Dashboard from "./Dashboard";
 
 const Profile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(location.pathname);
+  }, []);
 
   return (
     <div className="animate-fade-in w-[80%]">
@@ -95,7 +100,7 @@ const Profile = () => {
                 <li
                   className={
                     getLinkClass(link.link, location.pathname) === "link active"
-                      ? "w-[33%] mx-[3%] text-center border-b-[5px] pb-[0.6%] border-primary"
+                      ? "w-[33%] mx-[1.5%] text-center border-b-[5px] pb-[0.6%] border-primary"
                       : "w-[33%] text-center text-[#9D9D9D] hover:cursor-pointer"
                   }
                   onClick={() => navigate(`/${link.link}`)}
@@ -107,7 +112,15 @@ const Profile = () => {
           </div>
         </div>
         {/* Content */}
-
+        <div>
+          {location.pathname === "/profile" ? (
+            <Posts />
+          ) : location.pathname === "/profile/likes" ? (
+            <Likes />
+          ) : (
+            <Dashboard />
+          )}
+        </div>
         {/* Edit Popup */}
         <EditProfile isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} />
       </div>

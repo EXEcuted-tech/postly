@@ -1,7 +1,11 @@
 import React from "react";
 
 const Landing = () => {
-  return <div>Landing in the moon</div>;
+  return (
+    <div className="animate-fade-in">
+    Landing in the moon
+    </div>
+  )
 };
 
 export default Landing;

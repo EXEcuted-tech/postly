@@ -8,7 +8,7 @@ const SignedOutLayout = () => {
   const outlet = useOutlet();
   return (
     <div>
-      <div className="w-screen h-screen grid grid-rows-2 md:grid-cols-2 ">
+      <div className=" animate-fade-in font-poppins w-screen h-screen grid grid-rows-2 md:grid-cols-2 ">
         <div className=" w-full h-full md:h-screen flex-row ">
           <div className="flex h-[30%]">
             <img

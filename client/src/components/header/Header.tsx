@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from '../../assets/logo-transparent.png'
-import user from '../../assets/user-icon.jpg'
+import user from '../../assets/sana.jpg'
 import {FaSearch,FaMoon} from "react-icons/fa";
 
 
@@ -20,8 +20,15 @@ const Header = () => {
                 ></input>
         </div>
         <div className='flex items-center'>
-            <FaMoon className='text-[2.8em] ml-[35%] mr-[5%] bg-black text-primary rounded-full px-[2%] py-[2%]'/>
-            <img src={user} alt="Profile Picture" className='rounded-full w-[13%]'/>
+            <div>
+              <FaMoon className='text-[2.8em] bg-black text-primary rounded-full px-[10%] py-[10%]
+              hover:cursor-pointer hover:bg-gray-900 animate-pop1'/>
+            </div>
+            <div className='ml-[10%]'>
+              <div className='w-[50px] h-[50px]'>
+                <img src={user} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
+              </div>
+            </div>
         </div>
     </div>
   )

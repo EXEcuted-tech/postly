@@ -12,6 +12,8 @@ import ForgotPassword from "./pages/authentication/ForgotPassword";
 import OTPSend from "./pages/authentication/OTPSend";
 import ChangePassword from "./pages/authentication/ChangePassword";
 import Search from "./pages/search/Search";
+import Login from "./pages/authentication/Login";
+import Signup from "./pages/authentication/Signup";
 
 function App() {
   return (

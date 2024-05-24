@@ -47,7 +47,7 @@ const ForgotPassword = () => {
             </p>
           </button>
         </div>
-        <div className="flex-col w-[30%] h-full bg-[#fecc31] m-5 rounded-lg hover:bg-gray-900 hover:bg-[#f0b500]">
+        <div className="flex-col w-[30%] h-full bg-[#fecc31] m-5 rounded-lg hover:bg-[#f0b500]">
           <button type="submit" className="relative z-[100] w-full h-full p-1">
             <p className="font-poppins font-semibold text-[24px] hover:cursor-pointer">
               Reset Password

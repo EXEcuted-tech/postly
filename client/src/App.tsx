@@ -17,6 +17,8 @@ import Signup from "./pages/authentication/Signup";
 import PassChange from "./components/modal/PassChange";
 import AddPost from "./components/modal/AddPost";
 import EmailSent from "./components/modal/EmailSent";
+import Discard from "./components/modal/Discard";
+import Delete from "./components/modal/Delete";
 
 function App() {
   return (
@@ -28,7 +30,7 @@ function App() {
         <Route path="/profile/likes" element={<Profile />} />
         <Route path="/profile/dashboard" element={<Profile />} />
       </Route>
-      <Route element={<SignedOutLayout />}>
+      <Route element={<Discard />}>
         <Route path="/" element={<Landing />} />
         <Route path="/forgotpass" element={<ForgotPassword />} />
         <Route path="/changepass" element={<ChangePassword />} />

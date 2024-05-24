@@ -24,8 +24,6 @@ const AddPost = () => {
           </div>
         </div>
       </div>
-
-
     </div>
   )
 }

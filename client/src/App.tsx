@@ -15,6 +15,7 @@ import Search from "./pages/search/Search";
 import Login from "./pages/authentication/Login";
 import Signup from "./pages/authentication/Signup";
 import PassChange from "./components/modal/PassChange";
+import AddPost from "./components/modal/AddPost";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
         <Route path="/profile/likes" element={<Profile />} />
         <Route path="/profile/dashboard" element={<Profile />} />
       </Route>
-      <Route element={<SignedOutLayout />}>
+      <Route element={<AddPost />}>
         <Route path="/" element={<Landing />} />
         <Route path="/forgotpass" element={<ForgotPassword />} />
         <Route path="/changepass" element={<ChangePassword />} />

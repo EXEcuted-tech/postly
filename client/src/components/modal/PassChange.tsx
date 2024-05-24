@@ -25,8 +25,6 @@ const PassChange = () => {
           </div>
         </div>
       </div>
-
-
     </div>
   )
 }

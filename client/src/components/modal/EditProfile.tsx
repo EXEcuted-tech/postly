@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import cover from "../../assets/cover.jpg";
 import user from "../../assets/sana.jpg";
 import { IoMdClose } from "react-icons/io";
@@ -10,11 +10,17 @@ interface ProfileProps {
 }
 
 const EditProfile: React.FC<ProfileProps> = ({ isOpen, onClose }) => {
+  const [date, setDate] = useState<string>("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDate(e.target.value);
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg p-2 w-[30%] h-[70%] flex-row">
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50 animate-fade-in animate-fade-out">
+      <div className="bg-white rounded-lg shadow-lg p-2 w-[30%] h-[67%] flex-row">
         <div className="flex mb-1">
           <div className="flex w-[8vh] justify-center items-center">
             <IoMdClose
@@ -66,7 +72,7 @@ const EditProfile: React.FC<ProfileProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
         <div className="flex-row mt-20 justify-center items-center w-full">
-          <div className="flex-row h-full w-[95%] mt-3  border-yellow-400 text-[1.4em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins justify-center items-center">
+          <div className="flex-row h-full w-[100%] mt-3  border-yellow-400 text-[1.4em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins justify-center items-center">
             <div className="flex ">
               <p className="text-[0.8em] text-[#5E5C5C]">Name</p>
             </div>
@@ -77,7 +83,7 @@ const EditProfile: React.FC<ProfileProps> = ({ isOpen, onClose }) => {
               value="kitteu?"
             ></input>
           </div>
-          <div className="flex flex-col h-[12vh] w-[95%] mt-3 border-yellow-400 text-[1.4em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins">
+          <div className="flex flex-col h-[12vh] w-[100%] mt-3 border-yellow-400 text-[1.4em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins">
             <div className="flex mb-1">
               <p className="text-[0.8em] text-[#5E5C5C]">Bio</p>
             </div>
@@ -86,6 +92,30 @@ const EditProfile: React.FC<ProfileProps> = ({ isOpen, onClose }) => {
               className="flex-1 text-[0.8em] z-[50] ring-transparent w-full focus:outline-none focus:ring-0 resize-none"
               value="I'm so cute bahala na si Tyrone"
             ></textarea>
+          </div>
+          <div className="flex-row h-full w-[100%] mt-3  border-yellow-400 text-[1.4em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins justify-center items-center">
+            <div className="flex ">
+              <p className="text-[0.8em] text-[#5E5C5C]">Location</p>
+            </div>
+            <input
+              type="text"
+              name="name"
+              className="relative z-[50] ring-transparent w-[95%] focus:outline-none focus:ring-0"
+              value="f"
+            ></input>
+          </div>
+          <div className="flex-row h-full w-[100%] mt-3  border-yellow-400 text-[1.4em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins justify-center items-center">
+            <div className="flex ">
+              <p className="text-[0.8em] text-[#5E5C5C]">Birthdate</p>
+            </div>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              value={date}
+              onChange={handleChange}
+              className="relative z-[50] ring-transparent w-[95%] focus:outline-none focus:ring-0"
+            ></input>
           </div>
         </div>
       </div>

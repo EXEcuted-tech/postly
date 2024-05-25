@@ -4,8 +4,12 @@ const app = express()
 const cors = require('cors');
 
 //Routes
-const taskRoutes = require('./routes/taskRoutes')
-const catRoutes = require('./routes/categoryRoutes')
+const authRoutes = require('./routes/authRoutes')
+const userRoutes = require('./routes/userRoutes')
+const followRoutes = require('./routes/followRoutes')
+const notifRoutes = require('./routes/notifRoutes')
+const postRoutes = require('./routes/postRoutes')
+const reactRoutes = require('./routes/reactRoutes')
 
 app.use(cors({
     origin: [process.env.CORS_ORIGIN],
@@ -32,7 +36,11 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use('/category',catRoutes);
-app.use('/task',taskRoutes);  
+app.use('/',authRoutes);
+app.use('/user',userRoutes);
+app.use('/follow',followRoutes);
+app.use('/notif',notifRoutes);
+app.use('/post',postRoutes);
+app.use('/react',reactRoutes);
 
 module.exports = app;

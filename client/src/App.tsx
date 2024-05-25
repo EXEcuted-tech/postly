@@ -11,6 +11,7 @@ import Profile from "./pages/profile/Profile";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
 import OTPSend from "./pages/authentication/OTPSend";
 import ChangePassword from "./pages/authentication/ChangePassword";
+<<<<<<< HEAD
 import Search from "./pages/search/Search";
 import Login from "./pages/authentication/Login";
 import Signup from "./pages/authentication/Signup";
@@ -20,6 +21,8 @@ import EmailSent from "./components/modal/EmailSent";
 import Discard from "./components/modal/Discard";
 import Delete from "./components/modal/Delete";
 import LogOut from "./components/modal/LogOut";
+=======
+>>>>>>> 559393b00e818877ecb45b152fed51f894b06912
 
 function App() {
   return (

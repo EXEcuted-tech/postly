@@ -5,10 +5,10 @@ import user1 from '../../assets/user-icon.jpg'
 const AddPost = () => {
   return (
     <div className='w-full h-full bg-gray-900'>
-      <div className='absolute w-[83%] h-[55%] top-[22%] left-[9%] rounded-[50px] shadow-2xl'>
+      <div className='absolute w-[83%] h-[55%] top-[22%] left-[9%] rounded-[50px] shadow-2xl dark:bg-black'>
         <div className='text-white'>
           <div className='flex justify-end mt-[3%] mb-[2%]'>
-            <IoCloseOutline className='cursor-pointer text-black text-[3em] mr-[3%]'/>
+            <IoCloseOutline className='cursor-pointer text-black text-[3em] mr-[3%] dark:text-white'/>
           </div>
           <div className='flex ml-[5%]'>
             <img src={user1} className='w-[7%] h-[7%] rounded-full'/>

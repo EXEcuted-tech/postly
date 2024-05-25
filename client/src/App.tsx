@@ -11,18 +11,16 @@ import Profile from "./pages/profile/Profile";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
 import OTPSend from "./pages/authentication/OTPSend";
 import ChangePassword from "./pages/authentication/ChangePassword";
-<<<<<<< HEAD
 import Search from "./pages/search/Search";
-import Login from "./pages/authentication/Login";
-import Signup from "./pages/authentication/Signup";
+import Signup from "./components/modal/Signup";
+import Login from "./components/modal/Login";
 import PassChange from "./components/modal/PassChange";
 import AddPost from "./components/modal/AddPost";
 import EmailSent from "./components/modal/EmailSent";
 import Discard from "./components/modal/Discard";
 import Delete from "./components/modal/Delete";
 import LogOut from "./components/modal/LogOut";
-=======
->>>>>>> 559393b00e818877ecb45b152fed51f894b06912
+import Header from "./components/header/Header";
 
 function App() {
   return (
@@ -34,8 +32,8 @@ function App() {
         <Route path="/profile/likes" element={<Profile />} />
         <Route path="/profile/dashboard" element={<Profile />} />
       </Route>
-      <Route element={<SignedOutLayout />}>
-        <Route path="/" element={<Landing />} />
+      <Route element={<LogOut />}>
+        <Route path="/" element={<Header />} />
         <Route path="/forgotpass" element={<ForgotPassword />} />
         <Route path="/changepass" element={<ChangePassword />} />
         <Route path="/verify" element={<OTPSend />} />

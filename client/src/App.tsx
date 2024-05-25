@@ -31,7 +31,7 @@ function App() {
         <Route path="/profile/likes" element={<Profile />} />
         <Route path="/profile/dashboard" element={<Profile />} />
       </Route>
-      <Route element={<LogOut />}>
+      <Route element={<SignedOutLayout />}>
         <Route path="/" element={<Landing />} />
         <Route path="/forgotpass" element={<ForgotPassword />} />
         <Route path="/changepass" element={<ChangePassword />} />

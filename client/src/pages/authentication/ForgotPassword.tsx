@@ -8,7 +8,7 @@ const ForgotPassword = () => {
   return (
     <div className="animate-fade-in font-poppins flex-row  h-full w-full pr-[20%]">
       <div className="flex justify-center items-center pt-[20%] mt-[8%]">
-        <img src={lockIcon} alt="Lock Icon" className="w-[20%]"/>
+        <img src={lockIcon} alt="Lock Icon" className="w-[20%]" />
       </div>
       <div className="flex justify-center items-center">
         <p className="text-[4.2em] font-poppins font-semibold">
@@ -31,7 +31,7 @@ const ForgotPassword = () => {
           <input
             type="text"
             name="email"
-            className="relative z-[50] border-yellow-400 h-full w-full text-[1.4em] placeholder-[#8F8F8F] rounded-xl border-none ring-2 ring-[#fdcf43] pl-10 py-2 focus:ring-[#FECC31] focus:ring-2 "
+            className="relative z-[50] border-yellow-400 h-full w-full text-[1.4em] placeholder-[#8F8F8F] rounded-xl border-none ring-2 ring-[#fdcf43] pl-10 py-2 focus:ring-[#FECC31] focus:ring-2 font-poppins"
             placeholder="Email Address"
             autoComplete="off"
             value={email}

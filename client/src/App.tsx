@@ -19,6 +19,7 @@ import AddPost from "./components/modal/AddPost";
 import EmailSent from "./components/modal/EmailSent";
 import Discard from "./components/modal/Discard";
 import Delete from "./components/modal/Delete";
+import LogOut from "./components/modal/LogOut";
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
         <Route path="/profile/likes" element={<Profile />} />
         <Route path="/profile/dashboard" element={<Profile />} />
       </Route>
-      <Route element={<Discard />}>
+      <Route element={<LogOut />}>
         <Route path="/" element={<Landing />} />
         <Route path="/forgotpass" element={<ForgotPassword />} />
         <Route path="/changepass" element={<ChangePassword />} />

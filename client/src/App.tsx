@@ -16,7 +16,6 @@ import Signup from "./components/modal/Signup";
 import Login from "./components/modal/Login";
 import PassChange from "./components/modal/PassChange";
 import AddPost from "./components/modal/AddPost";
-import EmailSent from "./components/modal/EmailSent";
 import Discard from "./components/modal/Discard";
 import Delete from "./components/modal/Delete";
 import LogOut from "./components/modal/LogOut";
@@ -32,8 +31,8 @@ function App() {
         <Route path="/profile/likes" element={<Profile />} />
         <Route path="/profile/dashboard" element={<Profile />} />
       </Route>
-      <Route element={<LogOut />}>
-        <Route path="/" element={<Header />} />
+      <Route element={<SignedOutLayout/>}>
+        <Route path="/" element={<Landing />} />
         <Route path="/forgotpass" element={<ForgotPassword />} />
         <Route path="/changepass" element={<ChangePassword />} />
         <Route path="/verify" element={<OTPSend />} />

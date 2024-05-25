@@ -6,10 +6,32 @@ import { MdLogout } from "react-icons/md";
 import { SignedInLinks } from "../../common/links";
 import { getLinkClass } from "../../helpers/functions";
 import { useLocation, useNavigate } from "react-router-dom";
+import api from '../../hooks/api';
+import config from '../../common/config';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const logout = () =>{
+    try{
+      const refreshToken = localStorage.getItem('refreshToken');
+
+      api.post(`${config.API}/logout`, { token: refreshToken })
+      .then((res)=>{
+        //console.log("Response? ",res);
+        if(res.data.success=== true){
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+  
+          window.location.href = '/';
+        }
+      })
+    }catch (error) {
+    console.error('Error logging out:', error);
+    }
+  }
+
   return (
     <div className="w-[20%] pt-[3%] ">
       <div className="flex justify-center">
@@ -21,7 +43,9 @@ const Sidebar = () => {
                   ? "bg-[#E7E7E7] ml-[-6%] mr-[-50%] pl-[5%] py-[5%] rounded-[10px] flex items-center mb-[10%] hover:cursor-pointer"
                   : "flex items-center mb-[15%] hover:animate-zoom-out hover:cursor-pointer"
               }
-              onClick={() => navigate(link.link)}
+              onClick={() => 
+                link.link!== 'logout' ? navigate(link.link) : logout()
+              }
             >
               <div className="bg-primary rounded-full p-[3%] dark:bg-black dark:text-primary">
                 {link.name === "Home" ? (

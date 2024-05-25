@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import logoLight from "../../assets/logo-transparent.png";
-import logoDark from "../../assets/logo-yellow 1.png";
+import logoDark from "../../assets/logo-yellow.png";
 import { IoIosSunny } from "react-icons/io";
-import logo from '../../assets/logo-transparent.png'
 import user from '../../assets/sana.jpg'
-import { MdDarkMode } from "react-icons/md";
-import { FaMoon, FaRegMoon, FaSearch } from "react-icons/fa";
-import { MdLightMode } from "react-icons/md";
+import defaultuser from '../../assets/user-icon.jpg'
+import { FaMoon, FaSearch } from "react-icons/fa";
 import useColorMode from "../../hooks/useColorMode"
 
 const Header = () => {
+
+  const payload = localStorage.getItem('payload');
+  const payloadObj = payload && JSON.parse(payload);
+  
   const [darkMode, setDarkMode] = useColorMode();
 
   const color = localStorage.getItem("color-theme");
@@ -57,11 +59,16 @@ const Header = () => {
         </div>
         <div className="ml-[15%]">
           <div className="w-[50px] h-[50px]">
-            <img
+                  {payloadObj?.dp !== null 
+                  ?
+                <img
               src={user}
               alt="Profile Picture"
               className="rounded-full object-cover w-full h-full"
             />
+                  :
+                    <img src={defaultuser} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
+                  }
           </div>
         </div>
       </div>

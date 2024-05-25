@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import logo from '../../assets/logo-transparent.png'
 import user from '../../assets/sana.jpg'
+import defaultuser from '../../assets/user-icon.jpg'
 import {FaSearch,FaMoon} from "react-icons/fa";
 
 
 const Header = () => {
+
+  const payload = localStorage.getItem('payload');
+  const payloadObj = payload && JSON.parse(payload);
+  
   return (
     <div className='font-poppins flex items-center bg-primary h-[10vh] w-full'>
         <div className='flex items-center w-[25%]'>
@@ -26,7 +31,12 @@ const Header = () => {
             </div>
             <div className='ml-[15%]'>
               <div className='w-[50px] h-[50px]'>
-                <img src={user} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
+                  {payloadObj?.dp !== null 
+                  ?
+                    <img src={user} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
+                  :
+                    <img src={defaultuser} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
+                  }
               </div>
             </div>
         </div>

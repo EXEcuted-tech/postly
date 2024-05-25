@@ -38,9 +38,9 @@ app.use(cors({
 app.use(express.json());
 app.use('/',authRoutes);
 app.use('/user',userRoutes);
-app.use('/follow',followRoutes);
-app.use('/notif',notifRoutes);
-app.use('/post',postRoutes);
-app.use('/react',reactRoutes);
+// app.use('/follow',followRoutes);
+// app.use('/notif',notifRoutes);
+// app.use('/post',postRoutes);
+// app.use('/react',reactRoutes);
 
 module.exports = app;

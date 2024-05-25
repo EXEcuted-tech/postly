@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
-import { getLinkClass } from "../../helpers/functions";
+import { getLinkClass, getMonthName } from "../../helpers/functions";
 import { ProfileLinks } from "../../common/links";
-import cover from "../../assets/cover.jpg";
+import cover from "../../assets/default-cover.png";
 import user from "../../assets/sana.jpg";
+import defaultuser from '../../assets/user-icon.jpg'
 
 import { IoLocationOutline, IoCalendarOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,14 +12,35 @@ import EditProfile from "../../components/modal/EditProfile";
 import Posts from "./Posts";
 import Likes from "./Likes";
 import Dashboard from "./Dashboard";
+import config from "../../common/config";
+import api from "../../hooks/api";
+import { UserProps } from "../../common/interface";
 
 const Profile = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const payload = localStorage.getItem('payload');
+  const payloadObj = payload && JSON.parse(payload);
+
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [accDeets,setAccDeets] = useState<UserProps>();
+  const [joinDate,setJoinDate] = useState('');
 
   useEffect(() => {
-    console.log(location.pathname);
+    //Still utilized the get for the expiration of the accessToken
+    api.get(`${config.API}/user/retrieve?col=account_id&val=${payloadObj.userID}`)
+    .then((res)=>{
+      if(res.data.success===true){
+        setAccDeets(res.data.user);
+        const dateObject = accDeets && new Date(accDeets.created_at);
+        if(dateObject){
+          const monthName = getMonthName(dateObject.getMonth());
+          const year = dateObject.getFullYear();
+          const formattedDate = `${monthName} ${year}`;
+          setJoinDate(formattedDate);
+        }
+      }
+    })
   }, []);
 
   return (
@@ -28,28 +50,46 @@ const Profile = () => {
           <div className="flex items-center ml-[1.5%] py-[0.5%]">
             <FaArrowLeft className="text-[3em] hover:cursor-pointer" />
             <div className="ml-[1%]">
-              <h1 className="font-medium text-[1.3em]">kitteu?</h1>
-              <p className="text-[1em] text-[#A5A5A5]">@TYK_Ea</p>
+              <h1 className="font-medium text-[1.3em]">{payloadObj.name}</h1>
+              <p className="text-[1em] text-[#A5A5A5]">{payloadObj.userHandle}</p>
             </div>
           </div>
           <div className="bg-primary h-[25vh] w-full">
             {/* Maka-preview sila sa pictures */}
+            {accDeets?.cover_id !== null
+            ?
             <img
               src={cover}
               alt="Cover Photo"
               className="object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
             />
+            :
+            <img
+              src={cover}
+              alt="Cover Photo"
+              className="object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
+            />
+            }
           </div>
 
           <div className="flex">
             <div>
               <div className="absolute top-[38%] ml-[3%] w-[150px] h-[150px] outline outline-[5px] rounded-full text-white">
                 {/* Maka-preview sila sa pictures */}
+                {payloadObj?.dp !== null 
+                ?
                 <img
                   src={user}
                   alt="Profile Picture"
                   className="rounded-full object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
                 />
+                :
+                <img
+                  src={defaultuser}
+                  alt="Profile Picture"
+                  className="rounded-full object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
+                />
+                }
               </div>
             </div>
             <div className="flex-grow flex justify-end">
@@ -62,19 +102,19 @@ const Profile = () => {
             </div>
           </div>
           <div className="mt-[2%] ml-[3%]">
-            <h1 className="font-medium text-[1.3em]">kitteu?</h1>
-            <p className="text-[1em] text-[#A5A5A5]">@TYK_Ea</p>
+            <h1 className="font-medium text-[1.3em]">{payloadObj.name}</h1>
+            <p className="text-[1em] text-[#A5A5A5]">{payloadObj.userHandle}</p>
             <p className="text-[1em] text-[#414040] mt-[0.5%]">
-              I'm so cute bahala na si Tyrone
+              {accDeets?.bio}
             </p>
             <div className="flex items-center my-[0.5%] text-[#5E5C5C]">
               <div className="flex items-center mr-[1.5%]">
                 <IoLocationOutline className="text-[1.2em]" />
-                <p>‎ f</p>
+                <p>‎ {accDeets?.location}</p>
               </div>
               <div className="flex items-center">
                 <IoCalendarOutline className="text-[1.2em]" />
-                <p>‎ Joined May 2011</p>
+                <p>‎ Joined {joinDate}</p>
               </div>
             </div>
             <div className="flex text-[#5E5C5C]">

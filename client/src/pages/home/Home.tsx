@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PostCard from '../../components/card/PostCard'
 import myuser from '../../assets/sana.jpg'
 import Spinner from '../../components/loader/Spinner';
+import { decodeBase64Url } from '../../helpers/functions';
 
 const Home = () => {
   const [loading,setLoading] = useState(false);
-  
+
   return (
     <div className='pt-[3%] animate-fade-in w-[80%]'>
       <div className='ml-[2%] bg-white rounded-[20px] w-[95%] px-[2%] pt-[2%] pb-[1%]'>

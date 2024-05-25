@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import cover from "../../assets/cover.jpg";
 import user from "../../assets/sana.jpg";
 import { IoMdClose } from "react-icons/io";
+import { IoCloseOutline } from "react-icons/io5";
 import { TbCameraPlus } from "react-icons/tb";
 
 interface ProfileProps {
@@ -20,24 +21,24 @@ const EditProfile: React.FC<ProfileProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50 animate-fade-in animate-fade-out">
-      <div className="bg-white rounded-lg shadow-lg p-2 w-[30%] h-[67%] flex-row">
-        <div className="flex mb-1">
+      <div className="bg-white rounded-[20px] ml-[6%] shadow-lg py-[0.5%] w-[30%] h-[67%] flex-row">
+        <div className="flex mb-1 items-center px-[3%]">
           <div className="flex w-[8vh] justify-center items-center">
-            <IoMdClose
-              className="text-2xl mb hover:cursor-pointer"
+            <IoCloseOutline
+              className="text-black text-[2.5em] mb hover:cursor-pointer hover:text-[#C2C2C2]"
               onClick={onClose}
             />
           </div>
-          <div className="flex w-[72vh] pl-5">
+          <div className="flex w-[72vh] pl-[1%]">
             <h2 className="text-[1.4em] mb">Edit Profile</h2>
           </div>
-          <div className="flex justify-center items-center w-[20vh] px-2 mr-3">
-            <button className="text-[1.2em] w-full bg-black text-white rounded-2xl">
+          <div className="flex justify-end items-center w-[20vh] mr-1">
+            <button className="text-[1.2em] w-full bg-black text-white rounded-2xl hover:bg-gray-900">
               Save
             </button>
           </div>
         </div>
-        <div className="relative h-[13vh] flex items-center justify-center">
+        <div className="relative h-[13vh] flex items-center justify-center px-0">
           <img
             src={cover}
             alt="Cover Photo"
@@ -45,11 +46,11 @@ const EditProfile: React.FC<ProfileProps> = ({ isOpen, onClose }) => {
           />
           <div className="relative flex space-x-6">
             <div className="flex justify-center items-center bg-black h-10 w-10 rounded-3xl bg-opacity-50">
-              <TbCameraPlus className="text-2xl text-white hover:cursor-pointer" />
+              <TbCameraPlus className="text-2xl text-white hover:cursor-pointer hover:brightness-90" />
             </div>
             <div className="flex justify-center items-center  bg-black h-10 w-10 rounded-3xl bg-opacity-50">
               <IoMdClose
-                className="text-2xl mb hover:cursor-pointer text-white"
+                className="text-2xl mb hover:cursor-pointer text-white hover:brightness-90"
                 onClick={onClose}
               />
             </div>
@@ -65,37 +66,37 @@ const EditProfile: React.FC<ProfileProps> = ({ isOpen, onClose }) => {
             <div className="absolute inset-0 flex items-center justify-center">
               <span className="text-white z-10">
                 <div className="flex justify-center items-center bg-black h-10 w-10 rounded-3xl bg-opacity-50">
-                  <TbCameraPlus className="text-2xl text-white hover:cursor-pointer" />
+                  <TbCameraPlus className="text-2xl text-white hover:cursor-pointer hover:brightness-90" />
                 </div>
               </span>
             </div>
           </div>
         </div>
-        <div className="flex-row mt-20 justify-center items-center w-full">
-          <div className="flex-row h-full w-[100%] mt-3  border-yellow-400 text-[1.4em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins justify-center items-center">
+        <div className="px-[3%] flex-row mt-20 justify-center items-center w-full">
+          <div className="flex-row h-full w-[100%] mt-3 border-yellow-400 placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins justify-center items-center">
             <div className="flex ">
-              <p className="text-[0.8em] text-[#5E5C5C]">Name</p>
+              <p className="text-[1em] text-[#5E5C5C]">Name</p>
             </div>
             <input
               type="text"
               name="name"
-              className="relative z-[50] ring-transparent w-[95%] focus:outline-none focus:ring-0"
+              className="relative z-[50] ring-transparent w-[95%] text-[1em] focus:outline-none focus:ring-0"
               value="kitteu?"
             ></input>
           </div>
-          <div className="flex flex-col h-[12vh] w-[100%] mt-3 border-yellow-400 text-[1.4em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins">
+          <div className="flex flex-col h-[12vh] w-[100%] my-[3%] border-yellow-400 text-[1em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins">
             <div className="flex mb-1">
-              <p className="text-[0.8em] text-[#5E5C5C]">Bio</p>
+              <p className="text-[#5E5C5C]">Bio</p>
             </div>
             <textarea
               name="bio"
-              className="flex-1 text-[0.8em] z-[50] ring-transparent w-full focus:outline-none focus:ring-0 resize-none"
+              className="flex-1 z-[50] ring-transparent w-full focus:outline-none focus:ring-0 resize-none"
               value="I'm so cute bahala na si Tyrone"
             ></textarea>
           </div>
-          <div className="flex-row h-full w-[100%] mt-3  border-yellow-400 text-[1.4em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins justify-center items-center">
+          <div className="flex-row h-full w-[100%] my-[3%] border-yellow-400 text-[1em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins justify-center items-center">
             <div className="flex ">
-              <p className="text-[0.8em] text-[#5E5C5C]">Location</p>
+              <p className="text-[#5E5C5C]">Location</p>
             </div>
             <input
               type="text"
@@ -104,9 +105,9 @@ const EditProfile: React.FC<ProfileProps> = ({ isOpen, onClose }) => {
               value="f"
             ></input>
           </div>
-          <div className="flex-row h-full w-[100%] mt-3  border-yellow-400 text-[1.4em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins justify-center items-center">
+          <div className="flex-row h-full w-[100%] mt-3  border-yellow-400 text-[1em] placeholder-[#8F8F8F] rounded-lg ring-[#9d9d9d] ring-1 border-none pl-5 py-2 font-poppins justify-center items-center">
             <div className="flex ">
-              <p className="text-[0.8em] text-[#5E5C5C]">Birthdate</p>
+              <p className="text-[#5E5C5C]">Birthdate</p>
             </div>
             <input
               type="date"

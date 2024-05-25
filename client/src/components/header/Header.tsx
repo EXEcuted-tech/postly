@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import logoLight from "../../assets/logo-transparent.png";
 import logoDark from "../../assets/logo-yellow 1.png";
-import user from "../../assets/sana.jpg";
-import { FaSearch, FaMoon } from "react-icons/fa";
 import { IoIosSunny } from "react-icons/io";
-import useColorMode from "../../hooks/useColorMode";
+import logo from '../../assets/logo-transparent.png'
+import user from '../../assets/sana.jpg'
+import { MdDarkMode } from "react-icons/md";
+import { FaMoon, FaRegMoon, FaSearch } from "react-icons/fa";
+import { MdLightMode } from "react-icons/md";
+import useColorMode from "../../hooks/useColorMode"
 
 const Header = () => {
   const [darkMode, setDarkMode] = useColorMode();

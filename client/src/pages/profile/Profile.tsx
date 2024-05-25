@@ -26,12 +26,14 @@ const Profile = () => {
   const [accDeets,setAccDeets] = useState<UserProps>();
   const [joinDate,setJoinDate] = useState('');
 
+
   useEffect(() => {
-    //Still utilized the get for the expiration of the accessToken
+    //Still utilized the API.get for the expiration of the accessToken
     api.get(`${config.API}/user/retrieve?col=account_id&val=${payloadObj.userID}`)
     .then((res)=>{
       if(res.data.success===true){
-        setAccDeets(res.data.user);
+        //console.log(res.data);
+        setAccDeets(res.data.user[0]);
         const dateObject = accDeets && new Date(accDeets.created_at);
         if(dateObject){
           const monthName = getMonthName(dateObject.getMonth());
@@ -41,7 +43,7 @@ const Profile = () => {
         }
       }
     })
-  }, []);
+  }, [payloadObj]);
 
   return (
     <div className="animate-fade-in w-[80%]">
@@ -101,17 +103,19 @@ const Profile = () => {
               </button>
             </div>
           </div>
-          <div className="mt-[2%] ml-[3%]">
+          <div className={accDeets?.bio !== null ? `mt-[2%] ml-[3%]` : `mt-[2%] ml-[3%] mb-[3.6%]`}>
             <h1 className="font-medium text-[1.3em]">{payloadObj.name}</h1>
             <p className="text-[1em] text-[#A5A5A5]">{payloadObj.userHandle}</p>
             <p className="text-[1em] text-[#414040] mt-[0.5%]">
               {accDeets?.bio}
             </p>
             <div className="flex items-center my-[0.5%] text-[#5E5C5C]">
+              {accDeets?.location &&
               <div className="flex items-center mr-[1.5%]">
                 <IoLocationOutline className="text-[1.2em]" />
                 <p>‎ {accDeets?.location}</p>
               </div>
+              }
               <div className="flex items-center">
                 <IoCalendarOutline className="text-[1.2em]" />
                 <p>‎ Joined {joinDate}</p>

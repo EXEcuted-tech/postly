@@ -8,7 +8,7 @@ const SignedOutLayout = () => {
   const outlet = useOutlet();
   return (
     <div>
-      <div className="animate-slide-in-bounce font-poppins w-screen h-screen grid grid-rows-2 md:grid-cols-2 ">
+      <div className=" animate-fade-in font-poppins w-screen h-screen grid grid-rows-2 md:grid-cols-2 dark:bg-black">
         <div className=" w-full h-full md:h-screen flex-row ">
           <div className="relative z-0 flex h-[30%]">
             <img
@@ -22,7 +22,7 @@ const SignedOutLayout = () => {
               <img src={appLogo} alt="Logo" className="w-auto h-[250px]" />
             </div>
             <div className="flex justify-center items-center h-auto">
-              <p className="text-black font-poppins font-semibold text-[80px]">
+              <p className="text-black font-poppins font-semibold text-[80px] dark:text-white">
                 Postly
               </p>
             </div>

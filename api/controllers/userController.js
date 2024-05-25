@@ -1,4 +1,55 @@
 const db = require('./a_db'); 
+const saltRounds = 10;
+const bcrypt = require('bcrypt');
+
+const updateUser = async (req,res)=>{
+    try {
+        const {userID} = req.query
+        const userUpdate = req.body
+
+        const cols = Object.keys(userUpdate)
+        const values = Object.values(userUpdate);
+
+        if (userUpdate.password) {
+          const hashedpassword = await bcrypt.hash(userUpdate.password, saltRounds);
+          const passwdIndex = cols.indexOf("password");
+    
+          if (passwdIndex !== -1) {
+            values[passwdIndex] = hashedpassword;
+          }
+        }
+
+      const setClause = cols.map((col) => `${col} = ?`).join(', ')
+
+      const sql = `UPDATE account SET ${setClause} WHERE account_id = ?`
+
+        db.query(sql,[...values,userID],(err,results) =>{
+            if(err){
+                console.error('Error Getting data:', err)
+                res.status(500).json({
+                    status: 500,
+                    success: false,
+                    message: "Account udpate unsuccessful",
+                    error: err.message
+                })
+            } else{
+                res.status(200).json({
+                    status: 200,
+                    success: true,
+                    message: "Successfully updated account",
+                    record: results
+                })
+            }
+        })        
+    } catch (error) {
+        res.status(500).json({
+            status: 500,
+            success: false,
+            message: "Database Error",
+            error: error.message
+        });
+    }
+}
 
 const retrieveByParams = (req,res)=>{
     const {col, val} = req.query; 
@@ -20,5 +71,6 @@ const retrieveByParams = (req,res)=>{
 }   
 
 module.exports = {
+    updateUser,
     retrieveByParams
 }

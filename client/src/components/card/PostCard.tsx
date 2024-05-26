@@ -4,8 +4,10 @@ import { FaRegHeart } from "react-icons/fa";
 import { PostProps, UserProps } from '../../common/interface';
 import config from '../../common/config';
 import api from '../../hooks/api';
+import { useNavigate } from 'react-router-dom';
 
 const PostCard = (props:PostProps) => {
+  const navigate = useNavigate();
   //Likes kay to be added pa sa PostProps 
   const {post_id,account_id,content,created_at,updated_at} = props;
   const payload = localStorage.getItem('payload');
@@ -80,6 +82,19 @@ const PostCard = (props:PostProps) => {
     })
 }
 
+    const viewProfile = () =>{
+        localStorage.setItem('view_id',JSON.stringify(account_id));
+        if(account_id!==payloadObj?.userID){
+            setTimeout(()=>{
+                navigate('/profile/user')
+            },50)
+        }else{
+            setTimeout(()=>{
+                navigate('/profile')
+            },50)
+        }
+    }
+
   return (
     <div className='bg-white rounded-[20px] px-[2%] py-[2%] mb-[2%]'>
         <div className='flex items-center'>
@@ -87,7 +102,8 @@ const PostCard = (props:PostProps) => {
                 <img src={dpURL!==null ? dpURL :user} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
             </div>
             <div className='w-[89%] ml-[1%]'>
-                <h1 className='font-semibold text-[1.3em]'>{accDeets?.name}</h1>
+                <h1 className='font-semibold text-[1.3em] hover:cursor-pointer'
+                onClick={viewProfile}>{accDeets?.name}</h1>
                 <p className='text-[1em] text-[#9D9D9D]'>{duration}</p>
             </div>
             <div className='flex items-center'>

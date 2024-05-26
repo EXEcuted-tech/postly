@@ -18,8 +18,7 @@ import { UserProps } from "../../common/interface";
 const ProfileOther = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const payload = localStorage.getItem('payload');
-  const payloadObj = payload && JSON.parse(payload);
+  const userID = Number(localStorage.getItem('view_id'));
 
   const [accDeets,setAccDeets] = useState<UserProps>();
   const [joinDate,setJoinDate] = useState('');
@@ -28,7 +27,7 @@ const ProfileOther = () => {
 
   useEffect(() => {
     //Ilisan Ni
-    api.get(`${config.API}/user/retrieve?col=account_id&val=${payloadObj?.userID}`)
+    api.get(`${config.API}/user/retrieve?col=account_id&val=${userID}`)
     .then((res)=>{
       if(res.data.success===true){
         setAccDeets(res.data.user[0]);
@@ -135,6 +134,13 @@ const ProfileOther = () => {
                 }
               </div>
             </div>
+            <div className="flex-grow flex justify-end">
+              <button
+                className="font-medium text-[1.2em] outline outline-[1px] rounded-[20px] px-[1%] py-[0.1%] bg-white dark:bg-black mr-[2%] mt-[1%] dark:text-primary hover:bg-black dark:hover:bg-primary hover:text-primary dark:hover:text-black"
+              >
+                Follow
+              </button>
+            </div>
           </div>
           <div className={accDeets?.bio !== null ? `mt-[2%] ml-[3%]` : `mt-[2%] ml-[3%] mb-[3.6%]`}>
             <h1 className="font-medium text-[1.3em] dark:text-white">
@@ -179,30 +185,16 @@ const ProfileOther = () => {
           {/* Tabs */}
           <div>
             <ul className="flex justify-center w-full mt-[1.5%] text-[1.1em] font-medium">
-              {ProfileLinks.map((link) => (
                 <li
-                  className={
-                    getLinkClass(link.link, location.pathname) === "link active"
-                      ? "w-[33%] mx-[1.5%] text-center border-b-[5px] pb-[0.6%] border-primary dark:text-primary"
-                      : "w-[33%] text-center text-[#9D9D9D] hover:cursor-pointer dark:text-white"
-                  }
-                  onClick={() => navigate(`/${link.link}`)}
-                >
-                  <p className="hover:cursor-pointer">{link.name}</p>
+                  className="w-full mx-[1.5%] text-center border-b-[5px] pb-[0.6%] border-primary dark:text-primary">
+                  <p className="hover:cursor-pointer">Posts</p>
                 </li>
-              ))}
             </ul>
           </div>
         </div>
         {/* Content */}
         <div>
-          {location.pathname === "/profile" ? (
             <Posts />
-          ) : location.pathname === "/profile/likes" ? (
-            <Likes />
-          ) : (
-            <Dashboard />
-          )}
         </div>
       </div>
     </div>

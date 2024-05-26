@@ -5,6 +5,7 @@ import BounceLoader from "react-spinners/ClipLoader";
 import config from '../../common/config';
 import api from '../../hooks/api';
 import { useNavigate } from 'react-router-dom';
+import { decodeBase64Url } from '../../helpers/functions';
 
 const Login = ({setLogin} : { setLogin: (value: boolean) => void }) => {
   const navigate = useNavigate();
@@ -29,6 +30,14 @@ const Login = ({setLogin} : { setLogin: (value: boolean) => void }) => {
           const { accessToken, refreshToken } = res.data;
           localStorage.setItem('accessToken', accessToken);
           localStorage.setItem('refreshToken', refreshToken);
+
+          var decodedPayload: string;
+          if(typeof accessToken === 'string'){
+            const [_, payload] = accessToken.split('.');
+            decodedPayload = decodeBase64Url(payload);
+            localStorage.setItem('payload',decodedPayload);
+          }
+
           navigate('/home');
 
           setTimeout(()=>{

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logoLight from "../../assets/logo-transparent.png";
 import logoDark from "../../assets/logo-yellow.png";
 import { IoIosSunny } from "react-icons/io";
@@ -12,6 +12,7 @@ import config from "../../common/config";
 const Header = () => {
   const payload = localStorage.getItem('payload');
   const payloadObj = payload && JSON.parse(payload);
+  const dp_id = payloadObj?.dp;
   const color = localStorage.getItem("color-theme");
 
   const [darkMode, setDarkMode] = useColorMode();
@@ -21,26 +22,11 @@ const Header = () => {
   //   return initialPayload ? JSON.parse(initialPayload) : null;
   // });
 
-  // useEffect(() => {
-  //   updatePayload();
-
-  //   window.addEventListener('storage', updatePayload);
-
-  //   return () => {
-  //     window.removeEventListener('storage', updatePayload);
-  //   };
-  // }, []);
-
-  // const updatePayload = () => {
-  //   const payload = localStorage.getItem('payload');
-  //   setPayloadObj(payload ? JSON.parse(payload) : null);
-  // };
-  
   useEffect(() => {
-    if (payloadObj) {
+    if(payloadObj){
       getProfilePicture();
     }
-  }, []);
+  }, [dp_id]);
 
   useEffect(() => {}, [color]);
 
@@ -48,8 +34,8 @@ const Header = () => {
     setDarkMode(darkMode === "light" ? "dark" : "light");
   };
 
-  const getProfilePicture = () =>{
-    api.get(`${config.API}/file/retrieve?col=file_id&val=${payloadObj?.dp}`)
+  const getProfilePicture = async () =>{
+    await api.get(`${config.API}/file/retrieve?col=file_id&val=${payloadObj?.dp}`)
     .then(async (res)=>{
       if(res.data.success == true && res.data.filedata){
         const response = await api.get(`${config.API}/file/fetch?pathfile=${encodeURIComponent(res.data.filedata.path)}`, {

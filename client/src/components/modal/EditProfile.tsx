@@ -15,7 +15,6 @@ const EditProfile: React.FC<ProfileProps> = ({ isOpen, dpURL, coverURL, onClose,
 
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [coverUrl, setCoverUrl] = useState<string | null>(null);
-  //const [defCoverUrl, setDefCoverUrl] = useState<string | null>(null);
   const [remove,setRemove] = useState(false);
   const fileInputRef1 = useRef<HTMLInputElement>(null);
 
@@ -116,6 +115,7 @@ const EditProfile: React.FC<ProfileProps> = ({ isOpen, dpURL, coverURL, onClose,
     try {
       await coverUpload();
       await dpUpload();
+      await updateToken();
       await updateToken();
       
       navigate('/profile'); //To Refresh token ni haa 

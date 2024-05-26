@@ -7,20 +7,27 @@ import { TbCameraPlus } from "react-icons/tb";
 import { ProfileProps, UserProps } from "../../common/interface";
 import config from "../../common/config";
 import api from "../../hooks/api";
+import { useNavigate } from "react-router-dom";
+import { decodeBase64Url } from "../../helpers/functions";
 
 const EditProfile: React.FC<ProfileProps> = ({
   isOpen,
+  dpURL,
+  coverURL,
   onClose,
   ...accDeets
 }) => {
+  const navigate = useNavigate();
+
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [coverUrl, setCoverUrl] = useState<string | null>(null);
-  const [defCoverUrl, setDefCoverUrl] = useState<string | null>(null);
+  const [remove, setRemove] = useState(false);
   const fileInputRef1 = useRef<HTMLInputElement>(null);
 
   const [dpFile, setDpFile] = useState<File | null>(null);
   const [dpUrl, setDpUrl] = useState<string | null>(null);
-  const [defDpUrl, setDefDpUrl] = useState<string | null>(null);
+  const [change1, setChange1] = useState(false);
+  const [change2, setChange2] = useState(false);
   const fileInputRef2 = useRef<HTMLInputElement>(null);
 
   //ikaw lang niya add sa katong other variables ug ila useState ty
@@ -28,13 +35,6 @@ const EditProfile: React.FC<ProfileProps> = ({
   const [accBio, setAccBio] = useState(accDeets?.bio);
   const [accLocation, setAccLocation] = useState(accDeets?.location);
   const [accBirthDate, setAccBirthDate] = useState(accDeets?.birthdate);
-
-  useEffect(() => {
-    if (accDeets) {
-      getProfilePicture();
-      getCoverPicture();
-    }
-  }, [accDeets]);
 
   const handleSaveChanges = () => {
     const updateDeets = {
@@ -59,54 +59,13 @@ const EditProfile: React.FC<ProfileProps> = ({
       });
   };
 
-  const getProfilePicture = () => {
-    api
-      .get(`${config.API}/file/retrieve?col=file_id&val=${accDeets?.dp_id}`)
-      .then(async (res) => {
-        if (res.data.success == true && res.data.filedata) {
-          const response = await api.get(
-            `${config.API}/file/fetch?pathfile=${encodeURIComponent(
-              res.data.filedata.path
-            )}`,
-            {
-              responseType: "arraybuffer",
-            }
-          );
+  const refresh = localStorage.getItem("refreshToken");
 
-          const url = URL.createObjectURL(new Blob([response.data]));
-          setDefDpUrl(url);
-        }
-      })
-      .catch((err) => {
-        console.log("Account Err? ", err);
-      });
-  };
-
-  const getCoverPicture = () => {
-    api
-      .get(`${config.API}/file/retrieve?col=file_id&val=${accDeets?.cover_id}`)
-      .then(async (res) => {
-        if (res.data.success == true && res.data.filedata) {
-          const response = await api.get(
-            `${config.API}/file/fetch?pathfile=${encodeURIComponent(
-              res.data.filedata.path
-            )}`,
-            {
-              responseType: "arraybuffer",
-            }
-          );
-
-          const url = URL.createObjectURL(new Blob([response.data]));
-          console.log("URL: ", url);
-          setDefCoverUrl(url);
-        }
-      })
-      .catch((err) => {
-        console.log("File Err? ", err);
-      });
-  };
+  const [date, setDate] = useState<string>("");
+  //ikaw lang niya add sa katong other variables ug ila useState ty
 
   const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setChange1(true);
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
       setCoverFile(selectedFile);
@@ -115,6 +74,7 @@ const EditProfile: React.FC<ProfileProps> = ({
   };
 
   const handleDPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setChange2(true);
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
       setDpFile(selectedFile);
@@ -136,31 +96,29 @@ const EditProfile: React.FC<ProfileProps> = ({
     }
   };
 
-  const coverUpload = () => {
+  const coverUpload = async () => {
     const formData = new FormData();
-    if (coverFile) {
+    if (coverFile && remove !== true) {
       formData.append("file", coverFile);
-      api.post(`${config.API}/file/upload`, formData).then((res) => {
-        console.log("File upload Response: ", res);
+      await api.post(`${config.API}/file/upload`, formData).then((res) => {
         if (res.data.success === true) {
           updateFile(res.data.data.insertId, 1);
         }
       });
-    } else if (coverUrl === null) {
+    } else if ((coverUrl === null && change1 === true) || dpURL === null) {
+      updateFile(0, 1);
     }
   };
 
-  const dpUpload = () => {
+  const dpUpload = async () => {
     const formData = new FormData();
     if (dpFile) {
       formData.append("file", dpFile);
-      api.post(`${config.API}/file/upload`, formData).then((res) => {
-        //console.log("File upload Response: ", res);
+      await api.post(`${config.API}/file/upload`, formData).then((res) => {
         if (res.data.success === true) {
           updateFile(res.data.data.insertId, 2);
         }
       });
-    } else if (dpUrl === null) {
     }
   };
 
@@ -170,25 +128,64 @@ const EditProfile: React.FC<ProfileProps> = ({
 
     if (type === 1) {
       userUpdate = {
-        cover_id: fileID,
+        cover_id: fileID !== 0 ? fileID : null,
       };
     } else {
       userUpdate = {
-        dp_id: fileID,
+        dp_id: fileID !== 0 ? fileID : null,
       };
     }
+
     api
       .post(`${config.API}/user/edit?userID=${userID}`, userUpdate)
       .then((res) => {
-        console.log("Response: ", res);
+        //console.log("Response: ",res);
       });
   };
 
-  const onSubmit = () => {
-    coverUpload();
-    dpUpload();
-    handleSaveChanges();
+  const onSubmit = async () => {
+    try {
+      await coverUpload();
+      await dpUpload();
+      await updateToken();
+      await updateToken();
+      await handleSaveChanges;
+
+      navigate("/profile"); //To Refresh token ni haa
+
+      setTimeout(() => {
+        navigate("/home");
+        setTimeout(() => {
+          navigate("/profile");
+        }, 50);
+      }, 50);
+    } catch (error) {
+      console.error("Error during submission: ", error);
+    }
+
     onClose();
+  };
+
+  const updateToken = async () => {
+    const response = api.post(`${config.API}/token`, { token: refresh });
+    console.log("Response: ", response);
+    const newAccessToken = (await response).data.accessToken;
+    console.log("New Access Token: ", newAccessToken);
+
+    var decodedPayload: string;
+
+    if (typeof newAccessToken === "string") {
+      const [_, payload] = newAccessToken.split(".");
+      decodedPayload = decodeBase64Url(payload);
+
+      localStorage.setItem("payload", decodedPayload);
+    }
+    console.log("payload: ", localStorage.getItem("payload"));
+    localStorage.setItem("accessToken", newAccessToken);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDate(e.target.value);
   };
 
   if (!isOpen) return null;
@@ -200,7 +197,16 @@ const EditProfile: React.FC<ProfileProps> = ({
           <div className="flex w-[8vh] justify-center items-center">
             <IoCloseOutline
               className="text-black text-[2.5em] mb hover:cursor-pointer hover:text-[#C2C2C2]"
-              onClick={onClose}
+              onClick={() => {
+                setCoverFile(null);
+                setDpFile(null);
+                setCoverUrl(null);
+                setDpUrl(null);
+                setRemove(false);
+                setChange1(false);
+                setChange2(false);
+                onClose();
+              }}
             />
           </div>
           <div className="flex w-[72vh] pl-[1%]">
@@ -209,17 +215,20 @@ const EditProfile: React.FC<ProfileProps> = ({
           <div className="flex justify-end items-center w-[20vh] mr-1">
             <button
               className="text-[1.2em] w-full bg-black text-white rounded-2xl hover:bg-gray-900"
-              onClick={onSubmit}
+              onClick={() => {
+                onSubmit();
+              }}
             >
               Save
             </button>
           </div>
         </div>
         <div className="relative h-[13vh] flex items-center justify-center px-0">
-          {/* Ayohonon pa nakoo */}
-          {accDeets?.cover_id !== null && coverUrl === null ? (
+          {accDeets?.cover_id !== null &&
+          remove === false &&
+          change1 === false ? (
             <img
-              src={defCoverUrl ?? cover}
+              src={coverURL ?? cover}
               alt="Cover Photo"
               className="absolute top-0 left-0 w-full h-full object-cover brightness-75"
             />
@@ -250,6 +259,8 @@ const EditProfile: React.FC<ProfileProps> = ({
                 className="text-2xl mb hover:cursor-pointer text-white hover:brightness-90"
                 onClick={() => {
                   setCoverUrl(null);
+                  setRemove(true);
+                  setChange1(true);
                 }}
               />
             </div>
@@ -257,9 +268,9 @@ const EditProfile: React.FC<ProfileProps> = ({
         </div>
         <div className="flex">
           <div className="absolute top-[30%] ml-[2%] w-[100px] h-[100px] outline outline-[5px] rounded-full text-white">
-            {accDeets?.dp_id !== null ? (
+            {accDeets?.dp_id !== null && change2 === false ? (
               <img
-                src={defDpUrl ?? user}
+                src={dpURL !== null ? dpURL : user}
                 alt="Profile Picture"
                 className="rounded-full object-cover w-full h-full brightness-75 hover:cursor-pointer"
               />

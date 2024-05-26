@@ -16,6 +16,8 @@ export interface UserProps {
 
 export interface ProfileProps{
     isOpen: boolean;
+    dpURL: string;
+    coverURL: string;
     onClose: () => void;
     account_id?: number;
     account_handle?: string;
@@ -30,4 +32,12 @@ export interface ProfileProps{
     refresh_token?: string;
     created_at?: string;
     updated_at?: string;
+}
+
+export interface PostProps{
+    post_id:number;
+    account_id:number;
+    content:string;
+    created_at:string;
+    updated_at:string;
 }

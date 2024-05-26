@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const {authenticateToken}= require('../middleware/jwtAuth')
 const { uploadFile, fetchFile, retrieveByParams } = require('../controllers/fileController');
 
 const upload = require('./multer')
 
-router.post('/upload', upload.single('file'), uploadFile);
-router.get('/retrieve', retrieveByParams);
-router.get('/fetch', fetchFile);
+router.post('/upload', authenticateToken, upload.single('file'), uploadFile);
+router.get('/retrieve',authenticateToken, retrieveByParams);
+router.get('/fetch', authenticateToken,fetchFile);
 
 module.exports = router;

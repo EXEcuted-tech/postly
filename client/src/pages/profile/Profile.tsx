@@ -14,7 +14,7 @@ import Likes from "./Likes";
 import Dashboard from "./Dashboard";
 import config from "../../common/config";
 import api from "../../hooks/api";
-import { UserProps, PostsProps } from "../../common/interface";
+import { UserProps } from "../../common/interface";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -24,7 +24,6 @@ const Profile = () => {
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [accDeets, setAccDeets] = useState<UserProps>();
-  const [accPosts, setAccPosts] = useState<PostsProps>();
   const [joinDate, setJoinDate] = useState("");
   const [dpURL, setDpURL] = useState("");
   const [coverURL, setCoverURL] = useState("");
@@ -110,7 +109,7 @@ const Profile = () => {
           );
 
           const url = URL.createObjectURL(new Blob([response.data]));
-          console.log("URL: ", url);
+          //console.log("URL: ", url);
           setCoverURL(url);
         }
       })
@@ -124,13 +123,16 @@ const Profile = () => {
       <div className="mx-[2%] h-full">
         <div className="bg-white dark:bg-black h-[62vh] rounded-b-[30px] drop-shadow-md dark:border-t dark:border-gray-300">
           <div className="flex items-center ml-[1.5%] py-[0.5%]">
-            <FaArrowLeft className="text-[3em] hover:cursor-pointer dark:text-white" />
+            <FaArrowLeft
+              className="text-[3em] hover:cursor-pointer dark:text-white"
+              onClick={() => navigate("/home")}
+            />
             <div className="ml-[1%]">
               <h1 className="font-medium text-[1.3em] dark:text-white">
-                {payloadObj.name}
+                {accDeets?.name}
               </h1>
               <p className="text-[1em] text-[#A5A5A5]">
-                {payloadObj.userHandle}
+                {accDeets?.account_handle}
               </p>
             </div>
           </div>
@@ -248,7 +250,7 @@ const Profile = () => {
         {/* Content */}
         <div>
           {location.pathname === "/profile" ? (
-            <Posts posts={accPosts} />
+            <Posts />
           ) : location.pathname === "/profile/likes" ? (
             <Likes />
           ) : (
@@ -258,7 +260,11 @@ const Profile = () => {
         {/* Edit Popup */}
         <EditProfile
           isOpen={isEditOpen}
-          onClose={() => setIsEditOpen(false)}
+          dpURL={dpURL}
+          coverURL={coverURL}
+          onClose={() => {
+            setIsEditOpen(false);
+          }}
           {...accDeets}
         />
       </div>

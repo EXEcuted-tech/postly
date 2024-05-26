@@ -28,10 +28,9 @@ const Profile = () => {
   const [dpURL,setDpURL] = useState('');
   const [coverURL,setCoverURL] = useState('');
 
-
   useEffect(() => {
     //Still utilized the API.get for the expiration of the accessToken
-    api.get(`${config.API}/user/retrieve?col=account_id&val=${payloadObj.userID}`)
+    api.get(`${config.API}/user/retrieve?col=account_id&val=${payloadObj?.userID}`)
     .then((res)=>{
       if(res.data.success===true){
         setAccDeets(res.data.user[0]);
@@ -78,7 +77,7 @@ const Profile = () => {
         });
   
         const url = URL.createObjectURL(new Blob([response.data]));
-        console.log("URL: ", url);
+        //console.log("URL: ", url);
         setCoverURL(url);
       }
     }).catch((err)=>{
@@ -91,12 +90,13 @@ const Profile = () => {
       <div className="mx-[2%] h-full">
         <div className="bg-white dark:bg-black h-[62vh] rounded-b-[30px] drop-shadow-md dark:border-t dark:border-gray-300">
           <div className="flex items-center ml-[1.5%] py-[0.5%]">
-            <FaArrowLeft className="text-[3em] hover:cursor-pointer dark:text-white" />
+            <FaArrowLeft className="text-[3em] hover:cursor-pointer dark:text-white"
+             onClick={()=>navigate('/home')} />
             <div className="ml-[1%]">
               <h1 className="font-medium text-[1.3em] dark:text-white">
-                {payloadObj.name}
+                {accDeets?.name}
               </h1>
-              <p className="text-[1em] text-[#A5A5A5]">{payloadObj.userHandle}</p>
+              <p className="text-[1em] text-[#A5A5A5]">{accDeets?.account_handle}</p>
             </div>
           </div>
           <div className="bg-primary h-[25vh] w-full">
@@ -148,9 +148,9 @@ const Profile = () => {
           </div>
           <div className={accDeets?.bio !== null ? `mt-[2%] ml-[3%]` : `mt-[2%] ml-[3%] mb-[3.6%]`}>
             <h1 className="font-medium text-[1.3em] dark:text-white">
-              {payloadObj.name}
+              {accDeets?.name}
             </h1>
-            <p className="text-[1em] text-[#A5A5A5] dark:text-white">{payloadObj.userHandle}</p>
+            <p className="text-[1em] text-[#A5A5A5] dark:text-white">{accDeets?.account_handle}</p>
             <p className="text-[1em] text-[#414040] mt-[0.5%] dark:text-white">
               {accDeets?.bio}
             </p>
@@ -215,7 +215,12 @@ const Profile = () => {
           )}
         </div>
         {/* Edit Popup */}
-        <EditProfile isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} {...accDeets}/>
+        <EditProfile isOpen={isEditOpen} 
+        dpURL={dpURL}
+        coverURL={coverURL}
+        onClose={() =>{
+          setIsEditOpen(false)}} 
+          {...accDeets}/>
       </div>
     </div>
   );

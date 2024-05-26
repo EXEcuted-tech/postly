@@ -6,21 +6,64 @@ import user from '../../assets/sana.jpg'
 import defaultuser from '../../assets/user-icon.jpg'
 import { FaMoon, FaSearch } from "react-icons/fa";
 import useColorMode from "../../hooks/useColorMode"
+import api from "../../hooks/api";
+import config from "../../common/config";
 
 const Header = () => {
-
   const payload = localStorage.getItem('payload');
   const payloadObj = payload && JSON.parse(payload);
-  
-  const [darkMode, setDarkMode] = useColorMode();
-
   const color = localStorage.getItem("color-theme");
+
+  const [darkMode, setDarkMode] = useColorMode();
+  const [dpURL,setDpURL] = useState<string | null>(null);
+  // const [payloadObj, setPayloadObj] = useState(() => {
+  //   const initialPayload = localStorage.getItem('payload');
+  //   return initialPayload ? JSON.parse(initialPayload) : null;
+  // });
+
+  // useEffect(() => {
+  //   updatePayload();
+
+  //   window.addEventListener('storage', updatePayload);
+
+  //   return () => {
+  //     window.removeEventListener('storage', updatePayload);
+  //   };
+  // }, []);
+
+  // const updatePayload = () => {
+  //   const payload = localStorage.getItem('payload');
+  //   setPayloadObj(payload ? JSON.parse(payload) : null);
+  // };
+  
+  useEffect(() => {
+    if (payloadObj) {
+      getProfilePicture();
+    }
+  }, []);
 
   useEffect(() => {}, [color]);
 
   const toggleDarkMode = () => {
     setDarkMode(darkMode === "light" ? "dark" : "light");
   };
+
+  const getProfilePicture = () =>{
+    api.get(`${config.API}/file/retrieve?col=file_id&val=${payloadObj?.dp}`)
+    .then(async (res)=>{
+      if(res.data.success == true && res.data.filedata){
+        const response = await api.get(`${config.API}/file/fetch?pathfile=${encodeURIComponent(res.data.filedata.path)}`, {
+          responseType: 'arraybuffer',
+        });
+  
+        const url = URL.createObjectURL(new Blob([response.data]));
+        setDpURL(url);
+      }
+    }).catch((err)=>{
+      console.log("File Err? ", err);
+    })
+}
+
 
   return (
     <div className="font-poppins flex items-center bg-primary h-[10vh] w-full dark:bg-black">
@@ -62,7 +105,7 @@ const Header = () => {
                   {payloadObj?.dp !== null 
                   ?
                 <img
-              src={user}
+              src={dpURL ?? defaultuser}
               alt="Profile Picture"
               className="rounded-full object-cover w-full h-full"
             />

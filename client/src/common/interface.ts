@@ -16,6 +16,8 @@ export interface UserProps {
 
 export interface ProfileProps{
     isOpen: boolean;
+    dpURL: string;
+    coverURL: string;
     onClose: () => void;
     account_id?: number;
     account_handle?: string;

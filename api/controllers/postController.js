@@ -27,6 +27,24 @@ const createPost = (req,res) =>{
     }
 }
 
+const retrieveAll = (req,res) => {
+    const postRecs = 'SELECT * FROM post ORDER BY created_at DESC'
+
+    db.query(postRecs, (err, rows) => {
+      if (err) {
+        console.error('Error retrieving all records:', err);
+        return res.status(500).json({ status: 500, success:false,error: 'Error retrieving all records' });
+      }else{
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          post: rows,
+        });
+      }
+    });
+}
+
 module.exports = {
-    createPost
+    createPost,
+    retrieveAll
 }

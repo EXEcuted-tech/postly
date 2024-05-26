@@ -5,25 +5,29 @@ import Spinner from '../../components/loader/Spinner';
 import BounceLoader from "react-spinners/ClipLoader";
 import config from '../../common/config';
 import api from '../../hooks/api';
+import { PostProps } from '../../common/interface';
 
 const Home = () => {
-  const access = localStorage.getItem('accessToken');
   const payload = localStorage.getItem('payload');
   const payloadObj = payload && JSON.parse(payload);
   const dp_id = payloadObj?.dp;
 
+  const [posts, setData] = useState<PostProps[]> ([]);
   const [dpURL,setDpURL] = useState<string | null>(null);
   const [loading,setLoading] = useState(false);
   const [postLoading,setPostLoading] = useState(false);
   const [content,setContent] = useState('');
+  const [retrieved,setRetrieved] = useState(false);
 
   useEffect(() => {
-    console.log("HOME: ",access);
-    console.log("Home Payload: ",payload);
     if(payloadObj){
       getProfilePicture();
     }
   }, [dp_id]);
+
+  useEffect(()=>{
+    getAllPosts();
+  },[retrieved])
 
   const getProfilePicture = () =>{
     api.get(`${config.API}/file/retrieve?col=file_id&val=${payloadObj?.dp}`)
@@ -35,11 +39,12 @@ const Home = () => {
   
         const url = URL.createObjectURL(new Blob([response.data]));
         setDpURL(url);
+        setRetrieved(true);
       }
     }).catch((err)=>{
       console.log("File Err? ", err);
     })
-}
+  }
 
   const submitPost = () =>{
     setLoading(true);
@@ -50,15 +55,32 @@ const Home = () => {
       }).then((res)=>{
         console.log("RESPONSE POST: ",res);
         if(res.data.success === true){
+          setContent('');
           setTimeout(()=>{
             setLoading(false);
           },500)
-          window.location.reload();
+          getAllPosts();
         }
       })
     }catch{
 
     }
+  }
+
+  const getAllPosts = () =>{
+    setPostLoading(true);
+    api.get(`${config.API}/post/retrieve_all`)
+    .then((res)=>{
+      if(res.data.success===true){
+        setData(res.data.post);
+        setTimeout(()=>{
+          setPostLoading(false);
+        },1000)
+      }
+    })
+    .catch(err=>{
+
+    })
   }
 
   return (
@@ -91,7 +113,11 @@ const Home = () => {
             <Spinner/>
           </div>
         :
-        <PostCard/>
+          <>
+            {posts.map((post,index)=>(
+                <PostCard {...post} key={index} />
+            ))}
+          </>
         }
       </div>
     </div>

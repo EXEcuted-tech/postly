@@ -15,10 +15,7 @@ const Likes = () => {
             :
             <div>
                 <div className='my-[2%]'>
-                    <PostCard/>
-                </div>
-                <div className='my-[2%]'>
-                    <PostCard/>
+                    {/* <PostCard/> */}
                 </div>
             </div>
         }

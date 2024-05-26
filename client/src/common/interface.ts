@@ -33,3 +33,11 @@ export interface ProfileProps{
     created_at?: string;
     updated_at?: string;
 }
+
+export interface PostProps{
+    post_id:number;
+    account_id:number;
+    content:string;
+    created_at:string;
+    updated_at:string;
+}

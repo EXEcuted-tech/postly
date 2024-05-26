@@ -7,21 +7,21 @@ import { decodeBase64Url } from '../../helpers/functions';
 const SignedInLayout = () => {
   const outlet = useOutlet();
   
-  var decodedPayload: string;
-  const access = localStorage.getItem('accessToken');
-  const refresh = localStorage.getItem('refreshToken');
+  // var decodedPayload: string;
+  // const access = localStorage.getItem('accessToken');
+  // const refresh = localStorage.getItem('refreshToken');
+
   //To get payload
-  if(typeof access === 'string'){
-    const [_, payload] = access.split('.');
-    decodedPayload = decodeBase64Url(payload);
-  }
+  // if(typeof access === 'string'){
+  //   const [_, payload] = access.split('.');
+  //   decodedPayload = decodeBase64Url(payload);
+  // }
 
   useEffect(()=>{
     //const payloadObj = JSON.parse(decodedPayload);
-
-    console.log("Access token: ",access);
-    console.log("Refresh token: ",refresh);
-    localStorage.setItem('payload', decodedPayload);
+    // console.log("Access token: ",access);
+    // console.log("Refresh token: ",refresh);
+    //localStorage.setItem('payload', decodedPayload);
   },[])
   
   return (

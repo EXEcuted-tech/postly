@@ -3,7 +3,6 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { getLinkClass, getMonthName } from "../../helpers/functions";
 import { ProfileLinks } from "../../common/links";
 import cover from "../../assets/default-cover.png";
-import user from "../../assets/sana.jpg";
 import defaultuser from '../../assets/user-icon.jpg'
 
 import { IoLocationOutline, IoCalendarOutline } from "react-icons/io5";
@@ -16,21 +15,19 @@ import config from "../../common/config";
 import api from "../../hooks/api";
 import { UserProps } from "../../common/interface";
 
-const Profile = () => {
+const ProfileOther = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const payload = localStorage.getItem('payload');
-  const payloadObj = payload && JSON.parse(payload);
+  const userID = Number(localStorage.getItem('view_id'));
 
-  const [isEditOpen, setIsEditOpen] = useState(false);
   const [accDeets,setAccDeets] = useState<UserProps>();
   const [joinDate,setJoinDate] = useState('');
   const [dpURL,setDpURL] = useState('');
   const [coverURL,setCoverURL] = useState('');
 
   useEffect(() => {
-    //Still utilized the API.get for the expiration of the accessToken
-    api.get(`${config.API}/user/retrieve?col=account_id&val=${payloadObj?.userID}`)
+    //Ilisan Ni
+    api.get(`${config.API}/user/retrieve?col=account_id&val=${userID}`)
     .then((res)=>{
       if(res.data.success===true){
         setAccDeets(res.data.user[0]);
@@ -140,9 +137,8 @@ const Profile = () => {
             <div className="flex-grow flex justify-end">
               <button
                 className="font-medium text-[1.2em] outline outline-[1px] rounded-[20px] px-[1%] py-[0.1%] bg-white dark:bg-black mr-[2%] mt-[1%] dark:text-primary hover:bg-black dark:hover:bg-primary hover:text-primary dark:hover:text-black"
-                onClick={() => setIsEditOpen(true)}
               >
-                Edit Profile
+                Follow
               </button>
             </div>
           </div>
@@ -189,41 +185,20 @@ const Profile = () => {
           {/* Tabs */}
           <div>
             <ul className="flex justify-center w-full mt-[1.5%] text-[1.1em] font-medium">
-              {ProfileLinks.map((link) => (
                 <li
-                  className={
-                    getLinkClass(link.link, location.pathname) === "link active"
-                      ? "w-[33%] mx-[1.5%] text-center border-b-[5px] pb-[0.6%] border-primary dark:text-primary"
-                      : "w-[33%] text-center text-[#9D9D9D] hover:cursor-pointer dark:text-white"
-                  }
-                  onClick={() => navigate(`/${link.link}`)}
-                >
-                  <p className="hover:cursor-pointer">{link.name}</p>
+                  className="w-full mx-[1.5%] text-center border-b-[5px] pb-[0.6%] border-primary dark:text-primary">
+                  <p className="hover:cursor-pointer">Posts</p>
                 </li>
-              ))}
             </ul>
           </div>
         </div>
         {/* Content */}
         <div>
-          {location.pathname === "/profile" ? (
             <Posts />
-          ) : location.pathname === "/profile/likes" ? (
-            <Likes />
-          ) : (
-            <Dashboard />
-          )}
         </div>
-        {/* Edit Popup */}
-        <EditProfile isOpen={isEditOpen} 
-        dpURL={dpURL}
-        coverURL={coverURL}
-        onClose={() =>{
-          setIsEditOpen(false)}} 
-          {...accDeets}/>
       </div>
     </div>
   );
 };
 
-export default Profile;
+export default ProfileOther;

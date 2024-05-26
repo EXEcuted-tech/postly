@@ -107,16 +107,17 @@ const refreshExistingToken = (req,res) =>{
             return res.status(500).json({status: 500, success: false, error: "Internal Server Error"});
         }
 
+        //console.log("Result: ",);
         if (result.length > 0) {
             // Refresh token exists
             jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error,user)=>{
                 if (error) return res.sendStatus(403)
                 const new_user = {
-                    userID: user.userID,
-                    userHandle: user.userHandle,
-                    name: user.name,
-                    email: user.email,
-                    dp: user.dp,
+                    userID: result[0].account_id,
+                    userHandle: result[0].account_handle,
+                    name: result[0].name,
+                    email: result[0].email_address,
+                    dp: result[0].dp_id,
                 }
                 const accessToken = generateAccessToken(new_user);
                 res.json({accessToken:accessToken});

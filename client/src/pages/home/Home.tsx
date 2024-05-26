@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PostCard from '../../components/card/PostCard'
-import myuser from '../../assets/sana.jpg'
+import user from '../../assets/user-icon.jpg'
 import Spinner from '../../components/loader/Spinner';
 import { decodeBase64Url } from '../../helpers/functions';
 import config from '../../common/config';
@@ -37,7 +37,7 @@ const Home = () => {
       <div className='ml-[2%] bg-white rounded-[20px] w-[95%] px-[2%] pt-[2%] pb-[1%]'>
         <div className='flex'>
           <div className='w-[50px] h-[50px]'>
-            <img src={dpURL!=null ? dpURL : myuser} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
+            <img src={dpURL!=null ? dpURL : user} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
           </div>
           <textarea
             maxLength={1000}

@@ -13,7 +13,6 @@ interface DeleteProps {
 
 const Delete: React.FC<DeleteProps> = ({ isOpen, onClose, postId }) => {
   const navigate = useNavigate();
-  const userID = Number(localStorage.getItem("view_id"));
   const handleDelete = () => {
     api
       .delete(`${config.API}/post/delete?col=post_id&val=${postId}`)
@@ -49,7 +48,7 @@ const Delete: React.FC<DeleteProps> = ({ isOpen, onClose, postId }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50 animate-fade-in animate-fade-out">
-      <div className="absolute w-[50%] h-[55%] top-[22%] left-[25%] rounded-[50px] shadow-2xl dark:bg-black">
+      <div className="absolute w-[50%] h-[55%] top-[22%] left-[25%] rounded-[50px] shadow-2xl bg-white dark:bg-black">
         <div className="text-white">
           <div className="flex justify-end mt-[3%] mb-[2%]">
             <FaTriangleExclamation className="cursor-pointer text-[#CB0000] text-[9em] mr-[35%] mt-[3%]" />

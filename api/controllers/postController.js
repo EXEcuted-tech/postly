@@ -63,6 +63,41 @@ const retrieveByParams = (req, res) => {
     })
 }
 
+const updatePost = async (req,res)=>{
+  try {
+      const {postID} = req.query
+      const {val} = req.body
+
+    const sql = `UPDATE post SET content = ? WHERE account_id = ?`
+
+      db.query(sql,[val, postID],(err,results) =>{
+          if(err){
+              console.error('Error Getting data:', err)
+              res.status(500).json({
+                  status: 500,
+                  success: false,
+                  message: "Post udpate unsuccessful",
+                  error: err.message
+              })
+          } else{
+              res.status(200).json({
+                  status: 200,
+                  success: true,
+                  message: "Successfully updated post",
+                  record: results
+              })
+          }
+      })        
+  } catch (error) {
+      res.status(500).json({
+          status: 500,
+          success: false,
+          message: "Database Error",
+          error: error.message
+      });
+  }
+}
+
 const deletePost = (req, res) => {
   const { col, val } = req.query;
 
@@ -93,5 +128,6 @@ module.exports = {
     createPost,
     retrieveAll,
     retrieveByParams,
-    deletePost
+    deletePost,
+    updatePost
 }

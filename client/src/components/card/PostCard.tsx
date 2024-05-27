@@ -7,6 +7,7 @@ import api from "../../hooks/api";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import Delete from "../modal/Delete";
+import EditPost from "../modal/EditPost";
 
 const PostCard = (props: PostProps) => {
   const navigate = useNavigate();
@@ -109,56 +110,64 @@ const PostCard = (props: PostProps) => {
     }
   };
 
-  const editPost = () => {
-    // Function to edit the post
-  };
-
-  const deletePost = () => {
-    // Function to delete the post
-  };
-
   return (
     <div className="bg-white rounded-[20px] px-[2%] py-[2%] mb-[2%]">
-      <div className="flex items-center">
-        <div className="w-[50px] h-[50px]">
-          <img
-            src={dpURL !== null ? dpURL : user}
-            alt="Profile Picture"
-            className="rounded-full object-cover w-full h-full"
-          />
-        </div>
-        <div className="w-[89%] ml-[1%]">
-          <h1
-            className="font-semibold text-[1.3em] hover:cursor-pointer"
-            onClick={viewProfile}
-          >
-            {accDeets?.name}
-          </h1>
-          <p className="text-[1em] text-[#9D9D9D]">{duration}</p>
-        </div>
-        <div className="flex items-center">
-          {is_owner && (
-            <div className="flex mr-[15%] ml-[-25%]">
-              <FaEdit
-                className="text-[1.5em] cursor-pointer mr-[10px]"
-                onClick={() => setIsEditOpen(true)}
-              />
-              <FaTrashAlt
-                className="text-[1.5em] cursor-pointer"
-                onClick={() => setIsDeleteOpen(true)}
+      {!isEditOpen ? (
+        <>
+          <div className="flex items-center">
+            <div className="w-[50px] h-[50px]">
+              <img
+                src={dpURL !== null ? dpURL : user}
+                alt="Profile Picture"
+                className="rounded-full object-cover w-full h-full"
               />
             </div>
-          )}
-          <div className=" mr-[15%]">
-            <FaRegHeart className="text-[2em]" />
+            <div className="w-[89%] ml-[1%]">
+              <h1
+                className="font-semibold text-[1.3em] hover:cursor-pointer"
+                onClick={viewProfile}
+              >
+                {accDeets?.name}
+              </h1>
+              <p className="text-[1em] text-[#9D9D9D]">{duration}</p>
+            </div>
+            <div className="flex items-center">
+              {is_owner && (
+                <div className="flex mr-[15%] ml-[-25%]">
+                  <FaEdit
+                    className="text-[1.5em] cursor-pointer mr-[10px]"
+                    onClick={() => {
+                      setIsEditOpen(true);
+                    }}
+                  />
+                  <FaTrashAlt
+                    className="text-[1.5em] cursor-pointer"
+                    onClick={() => setIsDeleteOpen(true)}
+                  />
+                </div>
+              )}
+              <div className="mr-[15%]">
+                <FaRegHeart className="text-[2em]" />
+              </div>
+              <div>
+                <p className="text-[1.1em]">1.2k</p>
+              </div>
+            </div>
           </div>
-          <div className="">
-            <p className="text-[1.1em]">1.2k</p>
+          <div className="ml-[0.5%] mr-[1%] mt-[1%] text-justify">
+            {content}
           </div>
-        </div>
-      </div>
-      {/* Content */}
-      <div className="ml-[0.5%] mr-[1%] mt-[1%] text-justify">{content}</div>
+        </>
+      ) : (
+        <EditPost
+          postContent={content}
+          onClose={() => {
+            setIsEditOpen(false);
+          }}
+          postId={post_id}
+        />
+      )}
+
       {/* Delete Popup */}
       <Delete
         isOpen={isDeleteOpen}

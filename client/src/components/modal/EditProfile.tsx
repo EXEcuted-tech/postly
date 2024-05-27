@@ -9,6 +9,9 @@ import config from "../../common/config";
 import api from "../../hooks/api";
 import { useNavigate } from "react-router-dom";
 import { decodeBase64Url } from "../../helpers/functions";
+import UserNotification from "../alerts/Notification";
+import { AiFillExclamationCircle } from "react-icons/ai";
+import { addDays, format } from 'date-fns';
 
 const EditProfile: React.FC<ProfileProps> = ({
   isOpen,
@@ -30,12 +33,25 @@ const EditProfile: React.FC<ProfileProps> = ({
   const [change2, setChange2] = useState(false);
   const fileInputRef2 = useRef<HTMLInputElement>(null);
 
-  //ikaw lang niya add sa katong other variables ug ila useState ty
   const [accName, setAccName] = useState(accDeets?.name);
   const [accBio, setAccBio] = useState(accDeets?.bio);
   const [accLocation, setAccLocation] = useState(accDeets?.location);
   const [accBirthDate, setAccBirthDate] = useState(accDeets?.birthdate);
+  const [error,setError]=useState("");
 
+  useEffect(()=>{
+    setAccName(accDeets?.name);
+    setAccBio(accDeets?.bio);
+    setAccLocation(accDeets?.location)
+
+    const originalDate = accDeets?.birthdate ? new Date(accDeets.birthdate) : null;
+    const dateString = originalDate ? format(originalDate, 'yyyy-MM-dd') : null;
+    const truncatedDate = dateString ? dateString.substring(0, 10) : "";
+    setAccBirthDate(truncatedDate);
+  },[isOpen])
+
+  const refresh = localStorage.getItem("refreshToken");
+  
   const handleSaveChanges = () => {
     const updateDeets = {
       name: accName,
@@ -49,20 +65,27 @@ const EditProfile: React.FC<ProfileProps> = ({
     api
       .post(`${config.API}/user/edit?userID=${userID}`, updateDeets)
       .then((res) => {
-        console.log("User details update Response: ", res);
-        if (res.data.success) {
-          console.log("Profile updated successfully");
+        //console.log("User details update Response: ", res);
+        if (res.data.success===true) {
+          navigateBack();
+        }else{
+          setError(res.data.error);
+          errorTimer();
+          return;
         }
       })
       .catch((err) => {
-        console.error("Error Updating user details: ", err);
+        setError(err.response.data.error); 
+        errorTimer(); 
+        return;  
       });
   };
 
-  const refresh = localStorage.getItem("refreshToken");
-
-  const [date, setDate] = useState<string>("");
-  //ikaw lang niya add sa katong other variables ug ila useState ty
+  const errorTimer =  ()=>{ 
+    setTimeout(() => {
+      setError("");
+    }, 5000);
+  }
 
   const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChange1(true);
@@ -149,26 +172,29 @@ const EditProfile: React.FC<ProfileProps> = ({
       await updateToken();
       await handleSaveChanges();
 
-      navigate("/profile"); //To Refresh token ni haa
 
-      setTimeout(() => {
-        navigate("/home");
-        setTimeout(() => {
-          navigate("/profile");
-        }, 50);
-      }, 50);
     } catch (error) {
       console.error("Error during submission: ", error);
     }
-
-    onClose();
   };
+
+  const navigateBack = () =>{
+    navigate("/profile"); //To Refresh token ni haa
+
+    setTimeout(() => {
+      navigate("/home");
+      setTimeout(() => {
+        navigate("/profile");
+      }, 50);
+    }, 50);
+    onClose();
+  }
 
   const updateToken = async () => {
     const response = api.post(`${config.API}/token`, { token: refresh });
-    console.log("Response: ", response);
+    //console.log("Response: ", response);
     const newAccessToken = (await response).data.accessToken;
-    console.log("New Access Token: ", newAccessToken);
+    //console.log("New Access Token: ", newAccessToken);
 
     var decodedPayload: string;
 
@@ -178,18 +204,23 @@ const EditProfile: React.FC<ProfileProps> = ({
 
       localStorage.setItem("payload", decodedPayload);
     }
-    console.log("payload: ", localStorage.getItem("payload"));
+    //console.log("payload: ", localStorage.getItem("payload"));
     localStorage.setItem("accessToken", newAccessToken);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(e.target.value);
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50 animate-fade-in animate-fade-out">
+    {error !=='' && 
+        <UserNotification
+          icon={<AiFillExclamationCircle/>}
+          logocolor='#ff0000'
+          title="Error!"
+          message={error}
+          animate='animate-shake'
+        />
+    }
       <div className="bg-white rounded-[20px] ml-[6%] shadow-lg py-[0.5%] w-[30%] h-[67%] flex-row dark:bg-black dark:outline dark:outline-1 dark:outline-white">
         <div className="flex mb-1 items-center px-[3%]">
           <div className="flex w-[8vh] justify-center items-center">
@@ -363,4 +394,4 @@ const EditProfile: React.FC<ProfileProps> = ({
   );
 };
 
-export default EditProfile;
+export default EditProfile

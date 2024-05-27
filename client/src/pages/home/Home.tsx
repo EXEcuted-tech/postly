@@ -7,6 +7,8 @@ import config from '../../common/config';
 import api from '../../hooks/api';
 import { PostProps } from '../../common/interface';
 import mail from '../../assets/mail.png'
+import UserNotification from "../../components/alerts/Notification";
+import { AiFillExclamationCircle } from "react-icons/ai";
 
 const Home = () => {
   const payload = localStorage.getItem("payload");
@@ -19,6 +21,7 @@ const Home = () => {
   const [postLoading, setPostLoading] = useState(false);
   const [content, setContent] = useState("");
   const [retrieved, setRetrieved] = useState(false);
+  const [error,setError]=useState("");
 
   useEffect(() => {
     if (payloadObj) {
@@ -63,17 +66,31 @@ const Home = () => {
           content: content,
         })
         .then((res) => {
-          console.log("RESPONSE POST: ", res);
+          //console.log("RESPONSE POST: ", res);
           if (res.data.success === true) {
             setContent("");
             setTimeout(() => {
               setLoading(false);
             }, 500);
             getAllPosts();
+          }else{
+            setTimeout(()=>{setLoading(false)},800);
+            setError(res.data.error);
+            errorTimer();
           }
-        });
+        }).catch((err)=>{
+          setError(err.response.data.error);
+          setLoading(false);   
+          errorTimer(); 
+        })
     } catch {}
   };
+
+  const errorTimer =  ()=>{ 
+    setTimeout(() => {
+      setError("");
+    }, 5000);
+  }
 
   const getAllPosts = () => {
     setPostLoading(true);
@@ -92,6 +109,15 @@ const Home = () => {
 
   return (
     <div className="pt-[3%] animate-fade-in w-[80%]">
+    {error !=='' && 
+        <UserNotification
+          icon={<AiFillExclamationCircle/>}
+          logocolor='#ff0000'
+          title="Error!"
+          message={error}
+          animate='animate-shake'
+        />
+      }
       <div className="ml-[2%] bg-white rounded-[20px] w-[95%] px-[2%] pt-[2%] pb-[1%] dark:bg-black">
         <div className="flex">
           <div className="w-[50px] h-[50px]">

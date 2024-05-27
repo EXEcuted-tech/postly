@@ -50,7 +50,7 @@ const login = (req,res) =>{
                     res.status(401).json({
                         status: 401,
                         success: false,
-                        error: "Invalid credentials",
+                        error: "Invalid Credentials!",
                     });
                 }
               })
@@ -130,32 +130,33 @@ const refreshExistingToken = (req,res) =>{
 }
 
 const signup = (req,res) =>{
-
     const { account_handle, email_address, password } = req.body;
-    const sql = "INSERT INTO account (account_handle, email_address, password) VALUES (?, ?, ?)";
+
     db.query('SELECT email_address from account WHERE email_address = ?', [email_address], async (error, results) =>{
         if(error){
-            console.log(error);
+            //console.log(error);
         }
 
         if(results.length > 0){
             res.status(404).json({
                 status: 404,
                 success: false,
-                message: "Email Address is an existing one",
-                });
+                message: "Email address already exists!",
+            });
+            return;
         }
+
         let hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        const values = [account_handle, email_address, hashedPassword];
+        const sql = "INSERT INTO account (account_handle, name, email_address, password) VALUES (?, ?, ?, ?)";
+        const values = [account_handle, account_handle, email_address, hashedPassword];
 
         if(account_handle && email_address && hashedPassword){
             db.query(sql, values, (error, results) =>{
                 if(error){
                     console.log(error);
-    
                 } else{
-                    console.log(results);
+                    //console.log(results);
                     res.status(201).json({
                     status: 201,
                     success: true,

@@ -7,7 +7,6 @@ import defaultuser from "../../assets/user-icon.jpg";
 
 import { IoLocationOutline, IoCalendarOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
-import EditProfile from "../../components/modal/EditProfile";
 import PostsOther from "./PostsOther";
 import Likes from "./Likes";
 import Dashboard from "./Dashboard";

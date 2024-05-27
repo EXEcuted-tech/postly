@@ -3,7 +3,7 @@ const db = require('./a_db');
 const getAllNotifications = async (req, res) => {
     const {userID} = req.query
 
-    const getNotifs = 'SELECT * FROM notification WHERE account_id = ? ORDER BY created_at DESC'
+    const getNotifs = 'SELECT * FROM notification WHERE account_id = ?'
 
     db.query(getNotifs, [userID], (err, rows) => {
         if (err) {

@@ -6,30 +6,32 @@ import api from "../../hooks/api";
 import config from "../../common/config";
 
 const Notifications = () => {
-  const [loading, setLoading] = useState(false);
   const [notifs, setNotifs] = useState<NotifProps[]>([]);
   const payload = localStorage.getItem("payload");
   const payloadObj = payload && JSON.parse(payload);
   const [notifLoading, setNotifLoading] = useState(false);
+  const [retrieved, setRetrieved] = useState(false);
 
   useEffect(() => {
     fetchNotifs();
-  });
+  }, [retrieved]);
 
   const fetchNotifs = () => {
     setNotifLoading(true);
-
     api
-      .get(`${config.API}/notif?userID=${payloadObj?.userID}`)
+      .get(`${config.API}/notif/all?userID=${payloadObj?.userID}`)
       .then((res) => {
-        if (res.data.success === true) {
+        console.log(res.data.notif);
+        if (res.data.success === true && res.data.notif) {
           setNotifs(res.data.notif);
           setTimeout(() => {
             setNotifLoading(false);
           }, 1000);
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log("Error Retrieving Notifications: ", err);
+      });
   };
 
   return (
@@ -41,15 +43,25 @@ const Notifications = () => {
           </h1>
         </div>
         <hr />
-        {loading ? (
+        {notifLoading ? (
           <div className="flex justify-center mt-[2%]">
             <Spinner />
           </div>
         ) : (
           <>
-            {notifs.map((notif, index) => {
-              <NotificationCard {...notif} key={index} />;
-            })}
+            {notifs.length > 0 ? (
+              <>
+                {notifs.map((notif, index) => (
+                  <NotificationCard {...notif} key={index} />
+                ))}
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-[50vh]">
+                <h1 className="mt-4 text-[#2e2e2e] text-[1.2em] font-light">
+                  No posts as of now...
+                </h1>
+              </div>
+            )}
           </>
         )}
       </div>

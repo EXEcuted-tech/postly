@@ -17,7 +17,7 @@ const updateUser = async (req,res)=>{
           if (passwdIndex !== -1) {
             values[passwdIndex] = hashedpassword;
           }
-        }
+        } 
 
       const setClause = cols.map((col) => `${col} = ?`).join(', ')
 

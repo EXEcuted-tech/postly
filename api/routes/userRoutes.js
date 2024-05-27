@@ -6,5 +6,5 @@ const {retrieveByParams, updateUser} = require('../controllers/userController')
 
 router.post('/edit',authenticateToken,updateUser)
 router.get('/retrieve',authenticateToken,retrieveByParams)
-
+ 
 module.exports = router;

@@ -27,6 +27,7 @@ const PostCard = (props: PostProps) => {
   useEffect(() => {
     retrieveAcc();
     calculateTime();
+    calculateNewTime();
   }, []);
 
   const retrieveAcc = () => {
@@ -38,6 +39,39 @@ const PostCard = (props: PostProps) => {
           getProfilePicture(res.data.user[0].dp_id);
         }
       });
+  };
+  const calculateNewTime = () => {
+    const postDate = new Date(updated_at);
+    const now = new Date();
+    const diff = now.getTime() - postDate.getTime();
+
+    const minutes = Math.floor(diff / (1000 * 60));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const weeks = Math.floor(diff / (1000 * 60 * 60 * 24 * 7));
+
+    if (diff < 1000 * 60) {
+      setDuration("Just Now");
+    } else if (minutes === 1) {
+      setDuration("1 minute ago");
+    } else if (minutes < 60) {
+      setDuration(`${minutes} minutes ago`);
+    } else if (hours === 1) {
+      setDuration("1 hour ago");
+    } else if (hours < 24) {
+      setDuration(`${hours} hours ago`);
+    } else if (days === 1) {
+      setDuration("1 day ago");
+    } else if (days < 7) {
+      setDuration(`${days} days ago`);
+    } else if (weeks === 1) {
+      setDuration("a week ago");
+    } else {
+      const month = postDate.getMonth() + 1;
+      const day = postDate.getDate();
+      const year = postDate.getFullYear();
+      setDuration(`${month}/${day}/${year}`);
+    }
   };
 
   const calculateTime = () => {
@@ -165,6 +199,7 @@ const PostCard = (props: PostProps) => {
             setIsEditOpen(false);
           }}
           postId={post_id}
+          imageUrl={dpURL !== null ? dpURL : user}
         />
       )}
 

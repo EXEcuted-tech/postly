@@ -65,10 +65,8 @@ const retrieveByParams = (req, res) => {
 
 const updatePost = async (req,res)=>{
   try {
-      const {postID} = req.query
-      const {val} = req.body
-
-    const sql = `UPDATE post SET content = ? WHERE account_id = ?`
+      const {postID, val} = req.query
+    const sql = `UPDATE post SET content = ?, updated_at = CURRENT_TIMESTAMP WHERE post_id = ?`
 
       db.query(sql,[val, postID],(err,results) =>{
           if(err){

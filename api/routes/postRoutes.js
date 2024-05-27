@@ -9,7 +9,7 @@ router.post('/create',authenticateToken,createPostValidator,createPost);
 router.get('/retrieve_all',authenticateToken,retrieveAll);
 router.get('/retrieve', authenticateToken, retrieveByParams);
 router.delete('/delete', authenticateToken, deletePost)
-router.put('/edit',authenticateToken, updatePost)
+router.post('/edit',authenticateToken, updatePost)
 
 module.exports = router;
 

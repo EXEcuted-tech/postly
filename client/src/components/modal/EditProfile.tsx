@@ -138,9 +138,7 @@ const EditProfile: React.FC<ProfileProps> = ({
 
     api
       .post(`${config.API}/user/edit?userID=${userID}`, userUpdate)
-      .then((res) => {
-        //console.log("Response: ",res);
-      });
+      .then((res) => {});
   };
 
   const onSubmit = async () => {

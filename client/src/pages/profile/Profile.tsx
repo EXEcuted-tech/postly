@@ -16,7 +16,7 @@ import config from "../../common/config";
 import api from "../../hooks/api";
 import { UserProps } from "../../common/interface";
 
-const Profile: React.FC = () => {
+const Profile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const payload = localStorage.getItem("payload");
@@ -30,32 +30,16 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     //Still utilized the API.get for the expiration of the accessToken
-    getUserPayload();
-    // getAccountPosts();
-  }, [accDeets]);
-
-  const getUserPayload = () => {
     api
       .get(
-        `${config.API}/user/retrieve?col=account_id&val=${payloadObj.userID}`
+        `${config.API}/user/retrieve?col=account_id&val=${payloadObj?.userID}`
       )
       .then((res) => {
         if (res.data.success === true) {
           setAccDeets(res.data.user[0]);
         }
       });
-  };
-
-  // const getAccountPosts = () => {
-  //   api
-  //     .get(`${config.API}/post/all?col=account_id&val=${payloadObj.userID}`)
-  //     .then((res) => {
-  //       console.log(res.data.posts);
-  //       if (res.data.success === true && res.data.posts) {
-  //         setAccPosts(res.data.posts);
-  //       }
-  //     });
-  // };
+  }, []);
 
   useEffect(() => {
     if (accDeets) {
@@ -75,7 +59,7 @@ const Profile: React.FC = () => {
     api
       .get(`${config.API}/file/retrieve?col=file_id&val=${accDeets?.dp_id}`)
       .then(async (res) => {
-        if (res.data.success === true && res.data.filedata) {
+        if (res.data.success == true && res.data.filedata) {
           const response = await api.get(
             `${config.API}/file/fetch?pathfile=${encodeURIComponent(
               res.data.filedata.path
@@ -98,7 +82,7 @@ const Profile: React.FC = () => {
     api
       .get(`${config.API}/file/retrieve?col=file_id&val=${accDeets?.cover_id}`)
       .then(async (res) => {
-        if (res.data.success === true && res.data.filedata) {
+        if (res.data.success == true && res.data.filedata) {
           const response = await api.get(
             `${config.API}/file/fetch?pathfile=${encodeURIComponent(
               res.data.filedata.path
@@ -192,7 +176,7 @@ const Profile: React.FC = () => {
               {accDeets?.name}
             </h1>
             <p className="text-[1em] text-[#A5A5A5] dark:text-white">
-              {payloadObj.userHandle}
+              {accDeets?.account_handle}
             </p>
             <p className="text-[1em] text-[#414040] mt-[0.5%] dark:text-white">
               {accDeets?.bio}

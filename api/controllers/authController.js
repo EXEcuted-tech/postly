@@ -128,8 +128,64 @@ const refreshExistingToken = (req,res) =>{
     });
 }
 
+const signup = async (req,res) =>{
+    try {
+        const { name, email_address, password } = req.body;
+
+        const sql = "INSERT INTO account (name, email_address, password) VALUES (?, ?, ?)";
+        const hashedpassword = await bcrypt.hash(password, saltRounds)
+        const values = [name, email_address, password];
+
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                res.status(404).json({
+                    success: false,
+                    message: "Account add fail",
+                });
+            } else {
+                res.status(200).json({
+                    success: true,
+                    message: "Account created successfully",
+                    data: result,
+                });
+            }
+
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Database Error",
+            error: error.message
+        });
+    }
+    
+    
+    // console.log(req.body);
+
+    // const { username, email, password} = req.body;
+
+    // db.query('SELECT email_address FROM account WHERE email_address = ?', [email], async (error, results) => {
+    //     if(error){
+    //         console.log(error);
+    //     }
+    //     if(results.length > 0){
+    //         return res.render('/signup', {
+    //             message: 'That email is already in use'
+    //         })
+    //     } else if(password !== retypePassword){
+    //         return res.render('/signup', {
+    //             message: 'The password do not match'
+    //         })
+    //     };
+
+    //     let hashedPassword = await bcrypt.hash(password, 8);
+    //     console.log(hashedPassword)
+    // })
+}
+
 module.exports = {
     login,
     logout,
-    refreshExistingToken
+    refreshExistingToken,
+    signup,
 }

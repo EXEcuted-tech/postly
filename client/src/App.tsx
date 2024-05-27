@@ -13,6 +13,8 @@ import OTPSend from "./pages/authentication/OTPSend";
 import ChangePassword from "./pages/authentication/ChangePassword";
 import Search from "./pages/search/Search";
 import ProfileOther from "./pages/profile/ProfileOther";
+import Follow from "./pages/profile/Follow";
+import FollowOther from "./pages/profile/FollowOther";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/profile/user" element={<ProfileOther />} />
+        <Route path="/follow" element={<Follow />} />
+        <Route path="/follow/user" element={<FollowOther/>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/likes" element={<Profile />} />
         <Route path="/profile/dashboard" element={<Profile />} />

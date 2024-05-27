@@ -3,9 +3,10 @@ import PostCard from "../../components/card/PostCard";
 import user from "../../assets/user-icon.jpg";
 import Spinner from "../../components/loader/Spinner";
 import BounceLoader from "react-spinners/ClipLoader";
-import config from "../../common/config";
-import api from "../../hooks/api";
-import { PostProps } from "../../common/interface";
+import config from '../../common/config';
+import api from '../../hooks/api';
+import { PostProps } from '../../common/interface';
+import mail from '../../assets/mail.png'
 
 const Home = () => {
   const payload = localStorage.getItem("payload");
@@ -122,17 +123,27 @@ const Home = () => {
         </div>
       </div>
       <div className="my-[2%] ml-[2%] w-[95%]">
-        {postLoading ? (
-          <div className="flex justify-center">
-            <Spinner />
+      {postLoading
+        ?
+          <div className='flex justify-center'>
+            <Spinner/>
           </div>
-        ) : (
+        :
           <>
-            {posts.map((post, index) => (
-              <PostCard {...post} key={index} />
+          {posts.length > 0 ?
+            <>
+            {posts.map((post,index)=>(
+                <PostCard {...post} key={index} />
             ))}
+            </>
+            :
+              <div className="flex flex-col items-center justify-center h-[50vh]">
+                  <img src={mail} alt="Email" className="w-[15%]" />
+                  <h1 className="mt-4 text-[#2e2e2e] text-[1.2em] font-light">No posts as of now...</h1>
+              </div>
+          }
           </>
-        )}
+        }
       </div>
     </div>
   );

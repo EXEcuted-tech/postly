@@ -31,7 +31,7 @@ const Profile = () => {
   useEffect(() => {
     //Still utilized the API.get for the expiration of the accessToken
     getUserPayload();
-    getAccountPosts();
+    // getAccountPosts();
   }, [accDeets]);
 
   const getUserPayload = () => {
@@ -46,16 +46,16 @@ const Profile = () => {
       });
   };
 
-  const getAccountPosts = () => {
-    api
-      .get(`${config.API}/post/all?col=account_id&val=${payloadObj.userID}`)
-      .then((res) => {
-        console.log(res.data.posts);
-        if (res.data.success === true && res.data.posts) {
-          setAccPosts(res.data.posts);
-        }
-      });
-  };
+  // const getAccountPosts = () => {
+  //   api
+  //     .get(`${config.API}/post/all?col=account_id&val=${payloadObj.userID}`)
+  //     .then((res) => {
+  //       console.log(res.data.posts);
+  //       if (res.data.success === true && res.data.posts) {
+  //         setAccPosts(res.data.posts);
+  //       }
+  //     });
+  // };
 
   useEffect(() => {
     if (accDeets) {

@@ -149,7 +149,7 @@ const EditProfile: React.FC<ProfileProps> = ({
       await dpUpload();
       await updateToken();
       await updateToken();
-      await handleSaveChanges;
+      await handleSaveChanges();
 
       navigate("/profile"); //To Refresh token ni haa
 

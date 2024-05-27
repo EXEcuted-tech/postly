@@ -6,6 +6,7 @@ import BounceLoader from "react-spinners/ClipLoader";
 import config from '../../common/config';
 import api from '../../hooks/api';
 import { PostProps } from '../../common/interface';
+import mail from '../../assets/mail.png'
 
 const Home = () => {
   const payload = localStorage.getItem('payload');
@@ -27,6 +28,7 @@ const Home = () => {
 
   useEffect(()=>{
     getAllPosts();
+    console.log("POSTS: ",posts);
   },[retrieved])
 
   const getProfilePicture = () =>{
@@ -114,9 +116,18 @@ const Home = () => {
           </div>
         :
           <>
+          {posts.length > 0 ?
+            <>
             {posts.map((post,index)=>(
                 <PostCard {...post} key={index} />
             ))}
+            </>
+            :
+            <div className='text-center'>
+              <img src={mail} alt="Email" className='w-[10%]'/>
+              <h1>No posts as of now...</h1>
+            </div>
+          }
           </>
         }
       </div>

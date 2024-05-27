@@ -28,6 +28,9 @@ const Profile = () => {
   const [dpURL,setDpURL] = useState('');
   const [coverURL,setCoverURL] = useState('');
 
+  const [numFollower,setNumFollower]=useState(0);
+  const [numFollowing,setNumFollowing]=useState(0)
+
   useEffect(() => {
     //Still utilized the API.get for the expiration of the accessToken
     api.get(`${config.API}/user/retrieve?col=account_id&val=${payloadObj?.userID}`)
@@ -42,6 +45,8 @@ const Profile = () => {
     if(accDeets){
       getProfilePicture();
       getCoverPicture();
+      getFollowers();
+      getFollowing();
       const dateObject = accDeets && new Date(accDeets.created_at);
       if(dateObject){
         const monthName = getMonthName(dateObject.getMonth());
@@ -85,18 +90,46 @@ const Profile = () => {
     })
   }
 
+  const getFollowers = () =>{
+    api.get(`${config.API}/follow/retrieve/count?col=account_id&val=${payloadObj?.userID}`)
+    .then((res)=>{
+      if(res.data.success === true){
+        setNumFollower(res.data.count);
+      }
+    })
+  }
+
+  const getFollowing = () =>{
+    api.get(`${config.API}/follow/retrieve/count?col=follower_id&val=${payloadObj?.userID}`)
+    .then((res)=>{
+      if(res.data.success === true){
+        setNumFollowing(res.data.count);
+      }
+    })
+  }
+
+  const navigateFollowing = () =>{
+    localStorage.setItem('following','true')
+    navigate('/follow')
+  }
+
+  const navigateFollowers = () =>{
+    localStorage.setItem('following','false')
+    navigate('/follow')
+  }
+
   return (
     <div className="animate-fade-in w-[80%]">
       <div className="mx-[2%] h-full">
         <div className="bg-white dark:bg-black h-[62vh] rounded-b-[30px] drop-shadow-md dark:border-t dark:border-gray-300">
           <div className="flex items-center ml-[1.5%] py-[0.5%]">
             <FaArrowLeft className="text-[3em] hover:cursor-pointer dark:text-white"
-             onClick={()=>navigate('/home')} />
+             onClick={()=>navigate(-1)} />
             <div className="ml-[1%]">
               <h1 className="font-medium text-[1.3em] dark:text-white">
                 {accDeets?.name}
               </h1>
-              <p className="text-[1em] text-[#A5A5A5]">{accDeets?.account_handle}</p>
+              <p className="text-[1em] text-[#A5A5A5]">@{accDeets?.account_handle}</p>
             </div>
           </div>
           <div className="bg-primary h-[25vh] w-full">
@@ -150,7 +183,7 @@ const Profile = () => {
             <h1 className="font-medium text-[1.3em] dark:text-white">
               {accDeets?.name}
             </h1>
-            <p className="text-[1em] text-[#A5A5A5] dark:text-white">{accDeets?.account_handle}</p>
+            <p className="text-[1em] text-[#A5A5A5] dark:text-white">@{accDeets?.account_handle}</p>
             <p className="text-[1em] text-[#414040] mt-[0.5%] dark:text-white">
               {accDeets?.bio}
             </p>
@@ -167,20 +200,22 @@ const Profile = () => {
               </div>
             </div>
             <div className="flex text-[#5E5C5C] dark:text-white">
-              <div className="flex items-center mr-[1.5%]">
-                <p>
+              <div className="flex items-center mr-[1.5%] hover:cursor-pointer"
+                onClick={navigateFollowing}>
+                <p className="hover:underline hover:underline-offset-8 ">
                   <span className="font-semibold text-black dark:text-white">
-                    529
+                  {numFollowing}
                   </span>
                   ‎ Following
                 </p>
               </div>
-              <div className="flex items-center">
-                <p>
+              <div className="flex items-center hover:cursor-pointer"
+              onClick={navigateFollowers}>
+                <p className="hover:underline hover:underline-offset-8 ">
                   <span className="font-semibold text-black dark:text-white">
-                    529
+                  {numFollower}
                   </span>
-                  ‎ Followers
+                  ‎ {numFollower === 1 ? 'Follower' : 'Followers'}
                 </p>
               </div>
             </div>

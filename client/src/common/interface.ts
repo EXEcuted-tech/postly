@@ -41,3 +41,14 @@ export interface PostProps{
     created_at:string;
     updated_at:string;
 }
+
+export interface FollowProps{
+    follow_id:number;
+    account_id:number;
+    follower_id:number;
+    created_at:string;
+    updated_at:string;
+    deleted_at:string;
+    type: string;
+    isFollowing: boolean;
+}

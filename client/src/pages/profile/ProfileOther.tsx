@@ -17,13 +17,19 @@ import { UserProps } from "../../common/interface";
 
 const ProfileOther = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const userID = Number(localStorage.getItem('view_id'));
+  const payload = localStorage.getItem('payload');
+  const payloadObj = payload && JSON.parse(payload);
 
   const [accDeets,setAccDeets] = useState<UserProps>();
   const [joinDate,setJoinDate] = useState('');
   const [dpURL,setDpURL] = useState('');
   const [coverURL,setCoverURL] = useState('');
+  //const [previous,setPrevious] = useState(0);
+  const [followed,setFollowed] = useState(false);
+
+  const [numFollower,setNumFollower]=useState(0);
+  const [numFollowing,setNumFollowing]=useState(0)
 
   useEffect(() => {
     //Ilisan Ni
@@ -39,6 +45,9 @@ const ProfileOther = () => {
     if(accDeets){
       getProfilePicture();
       getCoverPicture();
+      hasFollowed();
+      getFollowers();
+      getFollowing();
       const dateObject = accDeets && new Date(accDeets.created_at);
       if(dateObject){
         const monthName = getMonthName(dateObject.getMonth());
@@ -47,7 +56,7 @@ const ProfileOther = () => {
         setJoinDate(formattedDate);
       }
     }
-  },[accDeets])
+  },[accDeets,followed]);
 
   const getProfilePicture = () =>{
       api.get(`${config.API}/file/retrieve?col=file_id&val=${accDeets?.dp_id}`)
@@ -82,18 +91,100 @@ const ProfileOther = () => {
     })
   }
 
+  const getFollowers = () =>{
+    api.get(`${config.API}/follow/retrieve/count?col=account_id&val=${userID}`)
+    .then((res)=>{
+      if(res.data.success === true){
+        setNumFollower(res.data.count);
+      }
+    })
+  }
+
+  const getFollowing = () =>{
+    api.get(`${config.API}/follow/retrieve/count?col=follower_id&val=${userID}`)
+    .then((res)=>{
+      if(res.data.success === true){
+        setNumFollowing(res.data.count);
+      }
+    })
+  }
+
+  const followUser = async () =>{
+    const previous = await hasFollowed();
+
+    if(previous===0){
+      api.post(`${config.API}/follow/create`,{
+        account_id: userID,
+        follower_id: payloadObj?.userID 
+      }).then((res)=>{
+        if(res.data.success===true){
+          setFollowed(true);
+        }
+      })
+    }else{
+      api.post(`${config.API}/follow/refollow?follow_id=${previous}`)
+      .then((res)=>{
+        if(res.data.success===true){
+          setFollowed(true);
+        }  
+      })
+    }
+  }
+
+  const unfollowUser = async () =>{
+    const previous_id = await hasFollowed();
+    //console.log("Went in here",previous_id);
+    if(previous_id!==0){
+      api.post(`${config.API}/follow/delete?follow_id=${previous_id}`)
+      .then((res)=>{
+        if(res.data.success===true){
+          setFollowed(false);
+        }
+      })
+    }
+  }
+
+  const hasFollowed = async () =>{
+    var retVal = 0;
+    await api.get(`${config.API}/follow/retrieve_follow?col1=account_id&val1=${userID}&col2=follower_id&val2=${payloadObj?.userID}`)
+    .then((res)=>{
+      if(res.data.success === true && res.data.records.length > 0){
+        if(res.data.records[0].deleted_at!==null){
+          retVal = res.data.records[0].follow_id!==null ? res.data.records[0].follow_id : 0
+        }else{
+          //console.log("retrieve");
+          setFollowed(true);
+          retVal = res.data.records[0].follow_id!==null ? res.data.records[0].follow_id : 0
+        }
+      }
+    })
+    return retVal;
+  }
+
+  const navigateFollowing = () =>{
+    localStorage.setItem('following','true')
+    localStorage.setItem('user_id',JSON.stringify(accDeets?.account_id))
+    navigate('/follow/user')
+  }
+
+  const navigateFollowers = () =>{
+    localStorage.setItem('following','false')
+    localStorage.setItem('user_id',JSON.stringify(accDeets?.account_id))
+    navigate('/follow/user')
+  }
+
   return (
     <div className="animate-fade-in w-[80%]">
       <div className="mx-[2%] h-full">
         <div className="bg-white dark:bg-black h-[62vh] rounded-b-[30px] drop-shadow-md dark:border-t dark:border-gray-300">
           <div className="flex items-center ml-[1.5%] py-[0.5%]">
             <FaArrowLeft className="text-[3em] hover:cursor-pointer dark:text-white"
-             onClick={()=>navigate('/home')} />
+             onClick={()=>navigate(-1)} />
             <div className="ml-[1%]">
               <h1 className="font-medium text-[1.3em] dark:text-white">
                 {accDeets?.name}
               </h1>
-              <p className="text-[1em] text-[#A5A5A5]">{accDeets?.account_handle}</p>
+              <p className="text-[1em] text-[#A5A5A5]">@{accDeets?.account_handle}</p>
             </div>
           </div>
           <div className="bg-primary h-[25vh] w-full">
@@ -135,18 +226,27 @@ const ProfileOther = () => {
               </div>
             </div>
             <div className="flex-grow flex justify-end">
+              {followed 
+              ?
               <button
-                className="font-medium text-[1.2em] outline outline-[1px] rounded-[20px] px-[1%] py-[0.1%] bg-white dark:bg-black mr-[2%] mt-[1%] dark:text-primary hover:bg-black dark:hover:bg-primary hover:text-primary dark:hover:text-black"
-              >
-                Follow
-              </button>
+                className="font-medium text-[1.2em] rounded-[20px] px-[1%] py-[0.1%] bg-black text-primary dark:bg-black mr-[2%] mt-[1%] dark:text-primary hover:bg-primary dark:hover:bg-primary hover:text-black hover:outline hover:outline-1 dark:hover:text-black"
+              onClick={unfollowUser}>
+                Following
+              </button>              
+              :
+              <button
+              className="font-medium text-[1.2em] rounded-[20px] px-[1%] py-[0.1%] bg-primary dark:bg-black mr-[2%] mt-[1%] dark:text-primary hover:bg-black dark:hover:bg-primary hover:text-primary dark:hover:text-black"
+            onClick={followUser}>
+              Follow
+            </button>
+              }
             </div>
           </div>
           <div className={accDeets?.bio !== null ? `mt-[2%] ml-[3%]` : `mt-[2%] ml-[3%] mb-[3.6%]`}>
             <h1 className="font-medium text-[1.3em] dark:text-white">
               {accDeets?.name}
             </h1>
-            <p className="text-[1em] text-[#A5A5A5] dark:text-white">{accDeets?.account_handle}</p>
+            <p className="text-[1em] text-[#A5A5A5] dark:text-white">@{accDeets?.account_handle}</p>
             <p className="text-[1em] text-[#414040] mt-[0.5%] dark:text-white">
               {accDeets?.bio}
             </p>
@@ -163,20 +263,22 @@ const ProfileOther = () => {
               </div>
             </div>
             <div className="flex text-[#5E5C5C] dark:text-white">
-              <div className="flex items-center mr-[1.5%]">
-                <p>
+            <div className="flex items-center mr-[1.5%] hover:cursor-pointer"
+                onClick={navigateFollowing}>
+                <p className="hover:underline hover:underline-offset-8 ">
                   <span className="font-semibold text-black dark:text-white">
-                    529
+                  {numFollowing}
                   </span>
                   ‎ Following
                 </p>
               </div>
-              <div className="flex items-center">
-                <p>
+              <div className="flex items-center hover:cursor-pointer"
+              onClick={navigateFollowers}>
+                <p className="hover:underline hover:underline-offset-8 ">
                   <span className="font-semibold text-black dark:text-white">
-                    529
+                  {numFollower}
                   </span>
-                  ‎ Followers
+                  ‎ {numFollower === 1 ? 'Follower' : 'Followers'}
                 </p>
               </div>
             </div>

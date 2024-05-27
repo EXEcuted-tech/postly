@@ -6,6 +6,7 @@ const cors = require('cors');
 //Routes
 const authRoutes = require('./routes/authRoutes')
 const userRoutes = require('./routes/userRoutes')
+const fileRoutes = require('./routes/fileRoutes')
 const followRoutes = require('./routes/followRoutes')
 const notifRoutes = require('./routes/notifRoutes')
 const postRoutes = require('./routes/postRoutes')
@@ -38,9 +39,10 @@ app.use(cors({
 app.use(express.json());
 app.use('/',authRoutes);
 app.use('/user',userRoutes);
-app.use('/follow',followRoutes);
-app.use('/notif',notifRoutes);
+app.use('/file',fileRoutes)
+// app.use('/follow',followRoutes);
+// app.use('/notif',notifRoutes);
 app.use('/post',postRoutes);
-app.use('/react',reactRoutes);
+// app.use('/react',reactRoutes);
 
 module.exports = app;

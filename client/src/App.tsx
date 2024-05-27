@@ -11,6 +11,8 @@ import Profile from "./pages/profile/Profile";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
 import OTPSend from "./pages/authentication/OTPSend";
 import ChangePassword from "./pages/authentication/ChangePassword";
+import Search from "./pages/search/Search";
+import ProfileOther from "./pages/profile/ProfileOther";
 
 function App() {
   return (
@@ -18,11 +20,12 @@ function App() {
       <Route element={<SignedInLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/notifications" element={<Notifications />} />
+        <Route path="/profile/user" element={<ProfileOther />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/likes" element={<Profile />} />
         <Route path="/profile/dashboard" element={<Profile />} />
       </Route>
-      <Route element={<SignedOutLayout />}>
+      <Route element={<SignedOutLayout/>}>
         <Route path="/" element={<Landing />} />
         <Route path="/forgotpass" element={<ForgotPassword />} />
         <Route path="/changepass" element={<ChangePassword />} />

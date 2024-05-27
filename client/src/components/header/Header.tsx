@@ -1,21 +1,55 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logoLight from "../../assets/logo-transparent.png";
-import logoDark from "../../assets/logo-yellow 1.png";
-import user from "../../assets/sana.jpg";
-import { FaSearch, FaMoon } from "react-icons/fa";
+import logoDark from "../../assets/logo-yellow.png";
 import { IoIosSunny } from "react-icons/io";
-import useColorMode from "../../hooks/useColorMode";
+import user from '../../assets/sana.jpg'
+import defaultuser from '../../assets/user-icon.jpg'
+import { FaMoon, FaSearch } from "react-icons/fa";
+import useColorMode from "../../hooks/useColorMode"
+import api from "../../hooks/api";
+import config from "../../common/config";
 
 const Header = () => {
-  const [darkMode, setDarkMode] = useColorMode();
-
+  const payload = localStorage.getItem('payload');
+  const payloadObj = payload && JSON.parse(payload);
+  const dp_id = payloadObj?.dp;
   const color = localStorage.getItem("color-theme");
+
+  const [darkMode, setDarkMode] = useColorMode();
+  const [dpURL,setDpURL] = useState<string | null>(null);
+  // const [payloadObj, setPayloadObj] = useState(() => {
+  //   const initialPayload = localStorage.getItem('payload');
+  //   return initialPayload ? JSON.parse(initialPayload) : null;
+  // });
+
+  useEffect(() => {
+    if(payloadObj){
+      getProfilePicture();
+    }
+  }, [dp_id]);
 
   useEffect(() => {}, [color]);
 
   const toggleDarkMode = () => {
     setDarkMode(darkMode === "light" ? "dark" : "light");
   };
+
+  const getProfilePicture = async () =>{
+    await api.get(`${config.API}/file/retrieve?col=file_id&val=${payloadObj?.dp}`)
+    .then(async (res)=>{
+      if(res.data.success == true && res.data.filedata){
+        const response = await api.get(`${config.API}/file/fetch?pathfile=${encodeURIComponent(res.data.filedata.path)}`, {
+          responseType: 'arraybuffer',
+        });
+  
+        const url = URL.createObjectURL(new Blob([response.data]));
+        setDpURL(url);
+      }
+    }).catch((err)=>{
+      console.log("File Err? ", err);
+    })
+}
+
 
   return (
     <div className="font-poppins flex items-center bg-primary h-[10vh] w-full dark:bg-black">
@@ -54,11 +88,16 @@ const Header = () => {
         </div>
         <div className="ml-[15%]">
           <div className="w-[50px] h-[50px]">
-            <img
-              src={user}
+                  {payloadObj?.dp !== null 
+                  ?
+                <img
+              src={dpURL ?? defaultuser}
               alt="Profile Picture"
               className="rounded-full object-cover w-full h-full"
             />
+                  :
+                    <img src={defaultuser} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
+                  }
           </div>
         </div>
       </div>

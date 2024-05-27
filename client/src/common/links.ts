@@ -21,7 +21,7 @@ export const SignedInLinks = [
     },
     {
         name: "Log Out",
-        link: "",
+        link: "logout",
     },
 ]
 

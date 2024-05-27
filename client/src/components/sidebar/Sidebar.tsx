@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdHome } from "react-icons/io";
 import { FaBell, FaUser, FaHeart } from "react-icons/fa";
 import { AiFillDashboard } from "react-icons/ai";
@@ -8,10 +8,12 @@ import { getLinkClass } from "../../helpers/functions";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from '../../hooks/api';
 import config from '../../common/config';
+import AddPost from "../modal/AddPost";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [addPost,setAddPost]=useState(false);
 
   const logout = () =>{
     try{
@@ -34,6 +36,7 @@ const Sidebar = () => {
 
   return (
     <div className="w-[20%] pt-[3%] ">
+      {addPost && <AddPost setAddPost={setAddPost}/>}
       <div className="flex justify-center">
         <ul>
           {SignedInLinks.map((link) => (
@@ -77,7 +80,8 @@ const Sidebar = () => {
       </div>
       <hr className="border-[2px] ml-[30%]" />
       <div className="flex justify-center mt-[8%] ml-[30%]">
-        <button className="bg-primary rounded-[50px] font-semibold text-[1.3em] px-[23%] py-[3%] hover:bg-black hover:text-primary hover:animate-zoom-out dark:bg-black dark:text-primary">
+        <button className="bg-primary rounded-[50px] font-semibold text-[1.3em] px-[23%] py-[3%] hover:bg-black hover:text-primary hover:animate-zoom-out dark:bg-black dark:text-primary"
+        onClick={()=>{setAddPost(true)}}>
           Create A Post
         </button>
       </div>

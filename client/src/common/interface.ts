@@ -52,3 +52,7 @@ export interface FollowProps{
     type: string;
     isFollowing: boolean;
 }
+
+export interface AddPostProps {
+    setAddPost: React.Dispatch<React.SetStateAction<boolean>>;
+}

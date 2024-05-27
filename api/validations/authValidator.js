@@ -24,5 +24,31 @@ const loginValidator = (req, res, next) => {
     next();
 }
 
-module.exports = {loginValidator}
+const signupValidator = (req, res, next) => {
+    let error = "";
+
+    if (!req.body.account_handle) {
+        error = 'Username is required'
+    }
+
+    if (!req.body.email_address) {
+        error = 'Email is required'
+    }
+
+    if (!req.body.password) {
+        error = 'Password is required'
+    }
+
+    if (error !== '') {
+        return res.json({
+            status: 404,
+            success: false,
+            error: error,
+        });
+    }
+    next();
+}
+
+module.exports = {loginValidator, signupValidator}
+
    

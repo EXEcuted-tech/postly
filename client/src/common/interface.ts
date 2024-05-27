@@ -40,6 +40,7 @@ export interface PostProps{
     content:string;
     created_at:string;
     updated_at:string;
+    is_owner: boolean
 }
 
 export interface FollowProps{

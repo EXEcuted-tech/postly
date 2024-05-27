@@ -66,3 +66,9 @@ export interface EditProps {
     postDuration: string;
     imageUrl: string | null;
   }
+
+export interface MonthlyFollowerCount {
+   month: string;
+   count: number;
+}
+  

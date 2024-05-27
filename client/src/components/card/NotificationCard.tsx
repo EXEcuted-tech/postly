@@ -12,8 +12,8 @@ const NotificationCard = () => {
            </div>
         </div>
         <div className='flex ml-[7%] mt-[1%] text-[1.2em]'>
-            <h1 className='font-semibold'>Lizzeuu!</h1>
-            <p>‎ liked your post</p>
+            <h1 className='font-semibold dark:text-white'>Lizzeuu!</h1>
+            <p className='dark:text-white'>‎ liked your post</p>
         </div>
         <div className='mx-[7%]'>
             <p className='text-[1em] text-[#727272] text-justify'>

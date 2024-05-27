@@ -190,11 +190,11 @@ const EditProfile: React.FC<ProfileProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50 animate-fade-in animate-fade-out">
-      <div className="bg-white rounded-[20px] ml-[6%] shadow-lg py-[0.5%] w-[30%] h-[67%] flex-row">
+      <div className="bg-white rounded-[20px] ml-[6%] shadow-lg py-[0.5%] w-[30%] h-[67%] flex-row dark:bg-black dark:outline dark:outline-1 dark:outline-white">
         <div className="flex mb-1 items-center px-[3%]">
           <div className="flex w-[8vh] justify-center items-center">
             <IoCloseOutline
-              className="text-black text-[2.5em] mb hover:cursor-pointer hover:text-[#C2C2C2]"
+              className="text-black text-[2.5em] mb hover:cursor-pointer hover:text-[#C2C2C2] dark:text-white"
               onClick={() => {
                 setCoverFile(null);
                 setDpFile(null);
@@ -208,11 +208,11 @@ const EditProfile: React.FC<ProfileProps> = ({
             />
           </div>
           <div className="flex w-[72vh] pl-[1%]">
-            <h2 className="text-[1.4em] mb">Edit Profile</h2>
+            <h2 className="text-[1.4em] dark:text-white">Edit Profile</h2>
           </div>
           <div className="flex justify-end items-center w-[20vh] mr-1">
             <button
-              className="text-[1.2em] w-full bg-black text-white rounded-2xl hover:bg-gray-900"
+              className="text-[1.2em] w-full bg-black text-white rounded-2xl hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
               onClick={() => {
                 onSubmit();
               }}
@@ -306,7 +306,7 @@ const EditProfile: React.FC<ProfileProps> = ({
             <input
               type="text"
               name="name"
-              className="relative z-[50] ring-transparent w-[95%] text-[1em] focus:outline-none focus:ring-0"
+              className="relative z-[50] ring-transparent w-[95%] text-[1em] focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
               value={accName}
               onChange={(e) => {
                 setAccName(e.target.value);
@@ -319,7 +319,7 @@ const EditProfile: React.FC<ProfileProps> = ({
             </div>
             <textarea
               name="bio"
-              className="flex-1 z-[50] ring-transparent w-full focus:outline-none focus:ring-0 resize-none"
+              className="flex-1 z-[50] ring-transparent w-full focus:outline-none focus:ring-0 resize-none dark:bg-black dark:text-white"
               placeholder="Type Bio"
               value={accBio}
               onChange={(e) => {
@@ -334,7 +334,7 @@ const EditProfile: React.FC<ProfileProps> = ({
             <input
               type="text"
               name="name"
-              className="relative z-[50] ring-transparent w-[95%] focus:outline-none focus:ring-0"
+              className="relative z-[50] ring-transparent w-[95%] focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
               placeholder="Type Location"
               value={accLocation}
               onChange={(e) => {
@@ -354,7 +354,7 @@ const EditProfile: React.FC<ProfileProps> = ({
               onChange={(e) => {
                 setAccBirthDate(e.target.value);
               }}
-              className="relative z-[50] ring-transparent w-[95%] focus:outline-none focus:ring-0"
+              className="relative z-[50] ring-transparent w-[95%] focus:outline-none focus:ring-0 dark:bg-black dark:text-white"
             ></input>
           </div>
         </div>

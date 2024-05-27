@@ -72,7 +72,7 @@ const EditPost: React.FC<EditProps> = ({
           />
         </div>
         <div className="flex-row justify-start w-[50%] pl-[1%]">
-          <h1 className="font-semibold text-[1.3em] hover:cursor-pointer">
+          <h1 className="font-semibold text-[1.3em] hover:cursor-pointer dark:text-white">
             {postName}
           </h1>
           <p className="text-[1em] text-[#9D9D9D]">{postDuration}</p>

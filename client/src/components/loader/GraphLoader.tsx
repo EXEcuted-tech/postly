@@ -2,7 +2,7 @@ import React from 'react'
 
 const GraphLoader = () => {
   return (
-    <div className='rounded-[20px] mb-[2%] bg-white w-full drop-shadow-md min-h-[60vh] p-[2.5%]'>
+    <div className='rounded-[20px] mb-[2%] bg-white w-full drop-shadow-md min-h-[60vh] p-[2.5%] dark:bg-black'>
         <div>
             <div className='animate-pulse w-[250px] h-[30px] rounded-lg bg-gray-200 '></div>
         </div>

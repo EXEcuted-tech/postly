@@ -20,7 +20,7 @@ const SignedInLayout = () => {
   useEffect(()=>{
     //const payloadObj = JSON.parse(decodedPayload);
     // console.log("Access token: ",access);
-    // console.log("Refresh token: ",refresh);
+    //console.log("Refresh token: ",refresh);
     //localStorage.setItem('payload', decodedPayload);
   },[])
   

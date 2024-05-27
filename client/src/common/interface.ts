@@ -42,3 +42,27 @@ export interface PostProps{
     updated_at:string;
     is_owner: boolean
 }
+
+export interface FollowProps{
+    follow_id:number;
+    account_id:number;
+    follower_id:number;
+    created_at:string;
+    updated_at:string;
+    deleted_at:string;
+    type: string;
+    isFollowing: boolean;
+}
+
+export interface AddPostProps {
+    setAddPost: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface EditProps {
+    onClose: () => void;
+    postId: number;
+    postContent: string;
+    postName: string | null;
+    postDuration: string;
+    imageUrl: string | null;
+  }

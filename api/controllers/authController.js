@@ -129,59 +129,43 @@ const refreshExistingToken = (req,res) =>{
     });
 }
 
-const signup = async (req,res) =>{
-    try {
-        const { name, email_address, password } = req.body;
+const signup = (req,res) =>{
 
-        const sql = "INSERT INTO account (name, email_address, password) VALUES (?, ?, ?)";
-        const hashedpassword = await bcrypt.hash(password, saltRounds)
-        const values = [name, email_address, password];
+    const { account_handle, email_address, password } = req.body;
+    const sql = "INSERT INTO account (account_handle, email_address, password) VALUES (?, ?, ?)";
+    db.query('SELECT email_address from account WHERE email_address = ?', [email_address], async (error, results) =>{
+        if(error){
+            console.log(error);
+        }
 
-        db.query(sql, values, (err, result) => {
-            if (err) {
-                res.status(404).json({
-                    success: false,
-                    message: "Account add fail",
+        if(results.length > 0){
+            res.status(404).json({
+                status: 404,
+                success: false,
+                message: "Email Address is an existing one",
                 });
-            } else {
-                res.status(200).json({
+        }
+        let hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        const values = [account_handle, email_address, hashedPassword];
+
+        if(account_handle && email_address && hashedPassword){
+            db.query(sql, values, (error, results) =>{
+                if(error){
+                    console.log(error);
+    
+                } else{
+                    console.log(results);
+                    res.status(201).json({
+                    status: 201,
                     success: true,
-                    message: "Account created successfully",
-                    data: result,
-                });
-            }
-
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Database Error",
-            error: error.message
-        });
-    }
-    
-    
-    // console.log(req.body);
-
-    // const { username, email, password} = req.body;
-
-    // db.query('SELECT email_address FROM account WHERE email_address = ?', [email], async (error, results) => {
-    //     if(error){
-    //         console.log(error);
-    //     }
-    //     if(results.length > 0){
-    //         return res.render('/signup', {
-    //             message: 'That email is already in use'
-    //         })
-    //     } else if(password !== retypePassword){
-    //         return res.render('/signup', {
-    //             message: 'The password do not match'
-    //         })
-    //     };
-
-    //     let hashedPassword = await bcrypt.hash(password, 8);
-    //     console.log(hashedPassword)
-    // })
+                    message: "Account successfully created",
+                    });
+                }
+            })
+        }
+        
+    });
 }
 
 module.exports = {

@@ -26,21 +26,17 @@ const loginValidator = (req, res, next) => {
 
 const signupValidator = (req, res, next) => {
     let error = "";
-    
-    if (!req.body.username) {
+
+    if (!req.body.account_handle) {
         error = 'Username is required'
     }
 
-    if (!req.body.email) {
+    if (!req.body.email_address) {
         error = 'Email is required'
     }
 
     if (!req.body.password) {
         error = 'Password is required'
-    }
-
-    if (!req.body.retypePassword) {
-        error = 'Retyping your password is required'
     }
 
     if (error !== '') {
@@ -53,6 +49,6 @@ const signupValidator = (req, res, next) => {
     next();
 }
 
-module.exports = {loginValidator}
-module.exports = {signupValidator}
+module.exports = {loginValidator, signupValidator}
+
    

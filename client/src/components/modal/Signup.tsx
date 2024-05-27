@@ -1,15 +1,12 @@
-import React, { FormEvent, useState} from 'react'
+import React, { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/applogo.png'
 import { IoCloseOutline } from "react-icons/io5";
 import config from '../../common/config';
 import api from '../../hooks/api';
 
-
-
-
 const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
-
+  const navigate = useNavigate();
   const [username, setUsername]= useState("");
   const [email, setEmail]= useState("");
   const [password, setPassword]= useState("");
@@ -17,29 +14,32 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
   const [error,setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-
   const signUp = (event:FormEvent) =>{
     event.preventDefault();
     setIsLoading(true);
+    setError("");
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(username)) {
-      setError("Please enter a valid Username");
+    if (!emailRegex.test(email)) {
+      console.log("Please enter a valid Email");
+      setError("Please enter a valid Email");
+      setIsLoading(false);
       return;
     }
     
-    if (password!=retypePassword) {
+    if (password!==retypePassword) {
+      console.log('Wrong pass');
       setError("Please check the password typed");
+      setIsLoading(false);
       return;
     }
 
     api.post(`${config.API}/signup`,{
-      username: username,
-      email: email,
+      account_handle: username,
+      email_address: email,
       password: password,
-      retypePassword: retypePassword,
-
     }).then((res)=>{
+        console.log(res);
         if (res.data.success == true){
           setTimeout(()=>{
             setIsLoading(false);
@@ -50,6 +50,7 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
           setTimeout(()=>{setIsLoading(false)},800);
           setError(res.data.error);
         }
+
     }).catch((err) => { 
         setError(err.error);
         setIsLoading(false);
@@ -87,6 +88,8 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
               <button type='submit' onClick={signUp} className=' bg-primary text-[1.5em] w-[30%] py-[1.5%] mt-[1%] font-bold rounded-lg hover:bg-[#f0b500]'>Create</button>
             </div>
           </form>
+          {/* {{#if message}}
+          <h4 className='alert alert-danger mt-4'>{{message}}</h4> */}
         </div>
       </div>
     </div>

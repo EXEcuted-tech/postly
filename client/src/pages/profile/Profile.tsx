@@ -16,7 +16,7 @@ import config from "../../common/config";
 import api from "../../hooks/api";
 import { UserProps } from "../../common/interface";
 
-const Profile = () => {
+const Profile: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const payload = localStorage.getItem("payload");
@@ -75,7 +75,7 @@ const Profile = () => {
     api
       .get(`${config.API}/file/retrieve?col=file_id&val=${accDeets?.dp_id}`)
       .then(async (res) => {
-        if (res.data.success == true && res.data.filedata) {
+        if (res.data.success === true && res.data.filedata) {
           const response = await api.get(
             `${config.API}/file/fetch?pathfile=${encodeURIComponent(
               res.data.filedata.path
@@ -98,7 +98,7 @@ const Profile = () => {
     api
       .get(`${config.API}/file/retrieve?col=file_id&val=${accDeets?.cover_id}`)
       .then(async (res) => {
-        if (res.data.success == true && res.data.filedata) {
+        if (res.data.success === true && res.data.filedata) {
           const response = await api.get(
             `${config.API}/file/fetch?pathfile=${encodeURIComponent(
               res.data.filedata.path

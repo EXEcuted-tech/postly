@@ -38,9 +38,9 @@ const NotificationCard = (props: NotifProps) => {
     api
       .get(`${config.API}/post/retrieve?col=post_id&val=${post_id}`)
       .then((res) => {
-        console.log("Retrieve Post info: ", res.data.post);
+        console.log("Retrieve Post info: ", res.data.post[0]);
         if (res.data.success === true) {
-          setPostDeets(res.data.post);
+          setPostDeets(res.data.post[0]);
         }
       })
       .catch((err) => {});

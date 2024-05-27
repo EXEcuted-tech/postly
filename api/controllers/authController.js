@@ -129,8 +129,48 @@ const refreshExistingToken = (req,res) =>{
     });
 }
 
+const signup = (req,res) =>{
+
+    const { account_handle, email_address, password } = req.body;
+    const sql = "INSERT INTO account (account_handle, email_address, password) VALUES (?, ?, ?)";
+    db.query('SELECT email_address from account WHERE email_address = ?', [email_address], async (error, results) =>{
+        if(error){
+            console.log(error);
+        }
+
+        if(results.length > 0){
+            res.status(404).json({
+                status: 404,
+                success: false,
+                message: "Email Address is an existing one",
+                });
+        }
+        let hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        const values = [account_handle, email_address, hashedPassword];
+
+        if(account_handle && email_address && hashedPassword){
+            db.query(sql, values, (error, results) =>{
+                if(error){
+                    console.log(error);
+    
+                } else{
+                    console.log(results);
+                    res.status(201).json({
+                    status: 201,
+                    success: true,
+                    message: "Account successfully created",
+                    });
+                }
+            })
+        }
+        
+    });
+}
+
 module.exports = {
     login,
     logout,
-    refreshExistingToken
+    refreshExistingToken,
+    signup,
 }

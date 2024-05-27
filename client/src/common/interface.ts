@@ -57,3 +57,12 @@ export interface FollowProps{
 export interface AddPostProps {
     setAddPost: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+export interface EditProps {
+    onClose: () => void;
+    postId: number;
+    postContent: string;
+    postName: string | null;
+    postDuration: string;
+    imageUrl: string | null;
+  }

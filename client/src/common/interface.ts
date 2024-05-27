@@ -43,6 +43,14 @@ export interface PostProps{
     is_owner: boolean
 }
 
+export interface NotifProps{
+    notif_id:number,
+    account_id:number,
+    actor_id:number,
+    type: string,
+    message: string,
+    post_id: number
+}
 export interface FollowProps{
     follow_id:number;
     account_id:number;

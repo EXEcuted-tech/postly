@@ -42,3 +42,12 @@ export interface PostProps{
     updated_at:string;
     is_owner: boolean
 }
+
+export interface NotifProps{
+    notif_id:number,
+    account_id:number,
+    actor_id:number,
+    type: string,
+    message: string,
+    post_id: number
+}

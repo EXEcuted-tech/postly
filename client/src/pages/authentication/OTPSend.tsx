@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { RiLock2Fill } from "react-icons/ri";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../../hooks/api";
 import config from "../../common/config";
+import Spinner from "../../components/loader/Spinner";
 
 const OTPSend = () => {
   const currEmail = localStorage.getItem("email");
@@ -74,15 +75,6 @@ const OTPSend = () => {
     };
   }, [countdown]);
 
-  const triggerNotification = () => {
-    setTimeout(() => {
-      setNotif(true);
-      setTimeout(() => {
-        setNotif(false);
-      }, 5000);
-    }, 500);
-  };
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -140,7 +132,13 @@ const OTPSend = () => {
           ))}
         </div>
       </div>
-      <div className="flex justify-center items-center mt-[2%]">
+      <div className="flex justify-center items-center mt-[1%]">
+        <div className="countdown-timer text-[1em] text-[#ccc]">
+          Time Left: {Math.floor(countdown / 60)}:
+          {(countdown % 60).toString().padStart(2, "0")}
+        </div>
+      </div>
+      <div className="flex justify-center items-center">
         <p className="text-[1.3em] font-poppins text-[#989898] font-semibold dark:text-white">
           Didn't receive OTP code?
         </p>
@@ -163,6 +161,7 @@ const OTPSend = () => {
             disabled={isLoading}
           >
             <p className="font-poppins text-[24px] text-black font-semibold">
+              {isLoading && <Spinner />}
               Verify
             </p>
           </button>

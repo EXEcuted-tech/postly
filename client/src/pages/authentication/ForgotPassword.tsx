@@ -104,6 +104,7 @@ const ForgotPassword = () => {
             disabled={isLoading}
           >
             <p className="font-poppins font-semibold text-[24px] hover:cursor-pointer">
+              {isLoading && <Spinner />}
               Reset Password
             </p>
           </button>

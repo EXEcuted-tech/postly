@@ -20,11 +20,8 @@ const Sidebar = () => {
 
   return (
     <div className="w-[20%] pt-[3%] ">
-<<<<<<< HEAD
       {logout && <LogOut setLogout={setLogout} />}
-=======
       {addPost && <AddPost setAddPost={setAddPost}/>}
->>>>>>> 9b401f5a534acb503420fc09da39788e440ac0e0
       <div className="flex justify-center">
         <ul>
           {SignedInLinks.map((link) => (

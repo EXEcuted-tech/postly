@@ -13,12 +13,9 @@ import OTPSend from "./pages/authentication/OTPSend";
 import ChangePassword from "./pages/authentication/ChangePassword";
 import Search from "./pages/search/Search";
 import ProfileOther from "./pages/profile/ProfileOther";
-<<<<<<< HEAD
 import LogOut from "./components/modal/LogOut";
-=======
 import Follow from "./pages/profile/Follow";
 import FollowOther from "./pages/profile/FollowOther";
->>>>>>> 9b401f5a534acb503420fc09da39788e440ac0e0
 
 function App() {
   return (

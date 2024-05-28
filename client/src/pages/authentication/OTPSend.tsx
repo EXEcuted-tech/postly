@@ -6,8 +6,8 @@ import config from "../../common/config";
 import Spinner from "../../components/loader/Spinner";
 
 const OTPSend = () => {
-  const currEmail = localStorage.getItem("email");
-  const [digits, setDigits] = useState(Array(6).fill(""));
+  const email = localStorage.getItem("email");
+  const [digits, setDigit] = useState(Array(6).fill(""));
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
   const navigate = useNavigate();
 
@@ -15,22 +15,14 @@ const OTPSend = () => {
   const [confirmMessage, setConfirmMessage] = useState(true);
   const [errMess, setErrMess] = useState("");
   const [success, setSuccess] = useState(false);
-  const [notif, setNotif] = useState(false);
-  const [userOTP, setUserOTP] = useState("");
-  const [email, setEmail] = useState("");
   const [countdown, setCountdown] = useState(300);
 
   const handleResetPassword = async () => {
-    setIsLoading(true);
     try {
       await api
         .post(`${config.API}/forgotpass/sendEmail`, { email })
         .then((res) => {
-          localStorage.setItem("email", email);
           if (res.status == 200) {
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 800);
             setConfirmMessage(false);
           }
         });
@@ -43,12 +35,14 @@ const OTPSend = () => {
   const confirmOTP = () => {
     setIsLoading(true);
     setErrMess("");
+    const userOTP = digits.join("");
     try {
       api
-        .post(`${config.API}/forgotpass/verifycode`, { email, digits })
+        .post(`${config.API}/forgotpass/verifycode`, { email, userOTP })
         .then((res) => {
-          if (res.data.success == true) {
-            alert("Success");
+          console.log("Data here is: ", userOTP, email);
+          if (res.data.success === true) {
+            alert("You can now change passwords.");
             setSuccess(true);
             navigate("/changepass");
           } else {
@@ -66,7 +60,6 @@ const OTPSend = () => {
         setCountdown(countdown - 1);
       } else {
         clearInterval(countdownInterval);
-        // Handle countdown expiration
       }
     }, 1000);
 
@@ -83,7 +76,7 @@ const OTPSend = () => {
     if (/^\d?$/.test(value)) {
       const newDigits = [...digits];
       newDigits[index] = value;
-      setDigits(newDigits);
+      setDigit(newDigits);
 
       if (value && index < 5) {
         inputRefs.current[index + 1]?.focus();
@@ -112,7 +105,7 @@ const OTPSend = () => {
       </div>
       <div className="flex justify-center items-center mb-[1%]">
         <p className="text-[1.4em] font-poppins text-[#5E5C5C] dark:text-primary">
-          Enter OTP Code sent to {currEmail}
+          Enter OTP Code sent to {email}
         </p>
       </div>
       <div className="flex justify-center items-center w-full">
@@ -154,19 +147,22 @@ const OTPSend = () => {
       <div className="flex mt-2 h-14 justify-center items-center">
         <div className="relative z-[100] flex w-[30%] h-full bg-[#fecc31] hover:bg-[#f0b500] justify-center items-center m-2 rounded-lg">
           <button
-            className="w-full h-full justify-center items-center border-none cursor-pointer"
-            onClick={() => {
-              confirmOTP();
-            }}
+            className="w-full h-full justify-center items-center border-none cursor-pointer flex"
+            onClick={confirmOTP}
             disabled={isLoading}
           >
-            <p className="font-poppins text-[24px] text-black font-semibold">
-              {isLoading && <Spinner />}
+            {isLoading && <Spinner />}
+            <p className="font-poppins text-[24px] text-black font-semibold ml-2">
               Verify
             </p>
           </button>
         </div>
       </div>
+      {errMess && (
+        <div className="flex justify-center items-center mt-2">
+          <p className="text-red-500">{errMess}</p>
+        </div>
+      )}
     </div>
   );
 };

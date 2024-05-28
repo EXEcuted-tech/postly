@@ -33,6 +33,7 @@ const Header = () => {
 
   const click = () =>{
     if(location.pathname!== '/search'){
+        localStorage.setItem('searchtab','posts');
         navigate('/search');
     }
   }
@@ -93,6 +94,8 @@ const Header = () => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       localStorage.setItem("search_query", searchQuery);
+      localStorage.setItem('searchtab','people');
+      window.location.href = window.location.pathname;
     }
   };
 

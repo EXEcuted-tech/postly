@@ -8,16 +8,18 @@ import FollowCard from '../../components/card/FollowCard';
 
 const Search = () => {
   const navigate = useNavigate();
-  const [isPost,setIsPost]=useState(true);
-  const [list,setList]=useState<UserProps[]>([]);
-  const [query, setQuery] = useState<String | null>("");
 
+  const value = localStorage.getItem('searchtab') === 'people' ? false : true;
+  const [isPost,setIsPost]=useState(value);
+  const [list,setList]=useState<UserProps[]>([]);
   const search = localStorage.getItem("search_query");
+  const [query, setQuery] = useState<String | null>(search);
+
+
   
   useEffect(() => {
-    setQuery(search);
-    console.log(query);
-  }, [search]);
+   
+  }, [isPost]);
   
   
   return (
@@ -50,7 +52,7 @@ const Search = () => {
           </div>
           :
           <div>
-            hehehe
+            {query}
             {list.map((follow)=>(
               <FollowCard follow_id={0} follower_id={0} deleted_at={''} isFollowing={false} {...follow} type="following" />
             ))}

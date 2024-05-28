@@ -7,13 +7,13 @@ import defaultuser from "../../assets/user-icon.jpg";
 
 import { IoLocationOutline, IoCalendarOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
-import EditProfile from "../../components/modal/EditProfile";
 import PostsOther from "./PostsOther";
 import Likes from "./Likes";
 import Dashboard from "./Dashboard";
 import config from "../../common/config";
 import api from "../../hooks/api";
 import { UserProps } from "../../common/interface";
+import { IoMdClose } from "react-icons/io";
 
 const ProfileOther = () => {
   const navigate = useNavigate();
@@ -25,7 +25,8 @@ const ProfileOther = () => {
   const [joinDate,setJoinDate] = useState('');
   const [dpURL,setDpURL] = useState('');
   const [coverURL,setCoverURL] = useState('');
-  //const [previous,setPrevious] = useState(0);
+  const [previewDP,setPreviewDP] = useState(false);
+  const [previewCover,setPreviewCover] = useState(false);
   const [followed,setFollowed] = useState(false);
 
   const [numFollower,setNumFollower]=useState(0);
@@ -183,6 +184,32 @@ const ProfileOther = () => {
 
   return (
     <div className="animate-fade-in w-[80%]">
+      {previewDP &&  
+        <div className="animate-fade-in fixed w-full h-full top-0 left-0 backdrop-brightness-50 z-[1000]">
+          <div className="flex justify-end h-[5vh] py-[1%] pr-[1%]">
+            <IoMdClose className="text-[3.5em] text-white hover:cursor-pointer hover:text-[#C2C2C2]"
+            onClick={()=>setPreviewDP(false)}/>
+          </div>
+          <div className="flex ml-[6%] mt-[8%] justify-center">
+          <img src={accDeets?.dp_id !== null ? dpURL : defaultuser }
+              alt="Cover Photo"
+              className="object-cover w-[500px] h-[500px]"/>
+          </div>
+        </div>
+      }
+    {previewCover &&  
+        <div className="animate-fade-in fixed w-full h-full top-0 left-0 backdrop-brightness-50 z-[1000]">
+          <div className="flex justify-end h-[5vh] py-[1%] pr-[1%]">
+            <IoMdClose className="text-[3.5em] text-white hover:cursor-pointer hover:text-[#C2C2C2]"
+            onClick={()=>setPreviewCover(false)}/>
+          </div>
+          <div className="flex mt-[10%] justify-center">
+            <img src={accDeets?.cover_id !== null ? coverURL : cover }
+                alt="Cover Photo"
+                className="object-cover w-[90%] h-[450px]"/>
+          </div>
+        </div>
+      }
       <div className="mx-[2%] h-full">
         <div className="bg-white dark:bg-black h-[62vh] rounded-b-[30px] drop-shadow-md dark:border-t dark:border-gray-300">
           <div className="flex items-center ml-[1.5%] py-[0.5%]">
@@ -202,13 +229,13 @@ const ProfileOther = () => {
                 src={coverURL}
                 alt="Cover Photo"
                 className="object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
-              />
+                onClick={()=>setPreviewCover(true)}/>
             ) : (
               <img
                 src={cover}
                 alt="Cover Photo"
                 className="object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
-              />
+                onClick={()=>setPreviewCover(true)}/>
             )}
           </div>
 
@@ -221,13 +248,13 @@ const ProfileOther = () => {
                     src={dpURL}
                     alt="Profile Picture"
                     className="rounded-full object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
-                  />
+                    onClick={()=>setPreviewDP(true)}/>
                 ) : (
                   <img
                     src={defaultuser}
                     alt="Profile Picture"
                     className="rounded-full object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
-                  />
+                    onClick={()=>setPreviewDP(true)}/>
                 )}
               </div>
             </div>

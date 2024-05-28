@@ -1,28 +1,54 @@
 const createPostValidator = (req,res,next)=>{
     const { account_id,content } = req.body;
 
-    const errors = {};
+    let error = "";
 
     if (!account_id || typeof account_id !== 'number') {
-        errors.account_id = 'User cannot be identified!';
+        error = 'User cannot be identified!';
     }
 
     if (!content || typeof content !== 'string') {
-        errors.content = 'Content is required and it must be a string!';
+        error = 'Content is required and it must be a string!';
     }else if (content.length > 1000) {
-        errors.content = 'Content must be equal to or less than 1000 characters!';
+        error = 'Content must be equal to or less than 1000 characters!';
     }
 
-    if (Object.keys(errors).length > 0) {
+    if (error) {
         return res.json({
             status: 404,
             success: false,
-            error: errors,
+            error: error,
         });
     }
 
     next();
 }
 
+const editValidator = (req, res, next) => {
+    const { postID, val } = req.query;
 
-module.exports = {createPostValidator};
+    let error = "";
+
+    if (!postID || isNaN(postID)) {
+        error = 'Post ID cannot be identified!';
+    }
+
+    if (!val || val=='' || typeof val !== 'string') {
+        error = 'Content is required and it must be a string!';
+    } else if (val.length > 1000) {
+        error = 'Content must be 1000 characters or less!';
+    }
+
+    if (error) {
+        return res.json({
+            status: 404,
+            success: false,
+            error: error,
+        });
+    }
+
+    next();
+};
+
+
+module.exports = {createPostValidator,editValidator};

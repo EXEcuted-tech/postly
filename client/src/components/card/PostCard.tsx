@@ -123,7 +123,7 @@ const PostCard = (props: PostProps) => {
   };
 
   return (
-    <div className="bg-white rounded-[20px] px-[2%] py-[2%] mb-[2%]">
+    <div className="bg-white rounded-[20px] px-[2%] py-[2%] mb-[2%] dark:bg-black">
       {!isEditOpen ? (
         <>
           <div className="flex items-center">
@@ -136,7 +136,7 @@ const PostCard = (props: PostProps) => {
             </div>
             <div className="w-[89%] ml-[1%]">
               <h1
-                className="font-semibold text-[1.3em] hover:cursor-pointer"
+                className="font-semibold text-[1.3em] hover:cursor-pointer dark:text-white"
                 onClick={viewProfile}
               >
                 {accDeets?.name}
@@ -147,26 +147,26 @@ const PostCard = (props: PostProps) => {
               {is_owner && (
                 <div className="flex mr-[10%] ml-[-22%]">
                   <PiPencilCircleDuotone
-                    className="hover:animate-pop1 text-[2em] text-[#1c1c1c] cursor-pointer mr-[10px]"
+                    className="hover:animate-pop1 text-[2em] text-[#1c1c1c] cursor-pointer mr-[10px] dark:text-white"
                     onClick={() => {
                       setIsEditOpen(true);
                     }}
                   />
                   <PiXCircleDuotone
-                    className="hover:animate-pop1 text-[2em] text-[#1c1c1c] cursor-pointer"
+                    className="hover:animate-pop1 text-[2em] text-[#1c1c1c] cursor-pointer dark:text-white"
                     onClick={() => setIsDeleteOpen(true)}
                   />
                 </div>
               )}
               <div className="mr-[5%]">
-                <FaRegHeart className="text-[2em]" />
+                <FaRegHeart className="text-[2em] dark:text-white" />
               </div>
               <div>
-                <p className="text-[1.1em]">1.2k</p>
+                <p className="text-[1.1em] dark:text-white">1.2k</p>
               </div>
             </div>
           </div>
-          <div className="ml-[0.5%] mr-[1%] mt-[1%] text-justify">
+          <div className="ml-[0.5%] mr-[1%] mt-[1%] text-justify dark:text-white">
             {content}
           </div>
         </>

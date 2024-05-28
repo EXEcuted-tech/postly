@@ -64,7 +64,7 @@ const AddPost:React.FC<AddPostProps>= ({ setAddPost }) => {
   };
 
   return (
-    <div className='animate-fade-in w-full h-full top-0 left-0 absolute backdrop-brightness-50 z-[1000]'>
+    <div className='animate-fade-in w-full h-full top-0 left-0 fixed backdrop-brightness-50 z-[1000]'>
       <div className='bg-white w-[80%] mt-[15%] mx-[15%] h-[28vh] rounded-[20px] shadow-2xl dark:bg-black'>
         <div className='text-white'>
           <div className='flex justify-end pt-[1%] mb-[1%]'>
@@ -89,7 +89,7 @@ const AddPost:React.FC<AddPostProps>= ({ setAddPost }) => {
                   <hr className='ml-[5%]'></hr>
                 </div> */}
                 <div className='flex justify-end mr-[-3%] mt-[1%]'>
-                <button className='flex bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out'
+                <button className='flex bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out dark:hover:bg-gray-800'
                   onClick={submitPost}>
                   <BounceLoader className='' color="#FFFFFF" loading={loading} />
                     Post

@@ -67,13 +67,13 @@ const FollowCard = (props:FollowProps) => {
     }
   return (
     <div>
-        <div className='flex items-center px-[2%] py-[1%] border-b-[1px] border-[#F2F2F2]'>
+        <div className='flex items-center px-[2%] py-[1%] border-b-[1px] border-[#F2F2F2] dark:bg-black'>
             <div className='w-[50px] h-[50px] hover:cursor-pointer'
                 onClick={viewProfile}>
                 <img src={dpURL!==null ? dpURL :user} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
             </div>
             <div className='ml-[1%]'>
-                <h1 className='font-semibold text-[1.3em] hover:cursor-pointer'
+                <h1 className='font-semibold text-[1.3em] hover:cursor-pointer dark:text-white'
                 onClick={viewProfile}>{accDeets?.name}</h1>
                 <p className='text-[1em] text-[#9D9D9D]'>@{accDeets?.account_handle}</p>
             </div>

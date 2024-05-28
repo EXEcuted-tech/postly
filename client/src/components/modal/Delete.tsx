@@ -47,8 +47,8 @@ const Delete: React.FC<DeleteProps> = ({ isOpen, onClose, postId }) => {
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50 animate-fade-in animate-fade-out">
-      <div className="absolute w-[26%] h-[38vh] top-[25%] left-[42%] py-[0.5%] rounded-[30px] shadow-2xl bg-white dark:bg-black">
+    <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-brightness-50 animate-fade-in animate-fade-out">
+      <div className="absolute w-[26%] h-[38vh] top-[25%] left-[42%] py-[0.5%] rounded-[30px] dark:outline dark:outline-1 dark:outline-white  shadow-2xl bg-white dark:bg-black">
         <div className="text-white text-center">
           <div className="flex justify-end">
             <IoCloseOutline

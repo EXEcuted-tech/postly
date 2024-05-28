@@ -11,10 +11,6 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [confirmMessage, setConfirmMessage] = useState(true);
-  const [errMess, setErrMess] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [notif, setNotif] = useState(false);
-  const [userOTP, setUserOTP] = useState("");
   const [email, setEmail] = useState("");
   const [countdown, setCountdown] = useState(300);
 
@@ -24,10 +20,10 @@ const ForgotPassword = () => {
       await api
         .post(`${config.API}/forgotpass/sendEmail`, { email })
         .then((res) => {
-          console.log("Sent");
-          navigate("/verify");
-          localStorage.setItem("email", email);
           if (res.status == 200) {
+            alert("Emails has been sent to your account");
+            navigate("/verify");
+            localStorage.setItem("email", email);
             setTimeout(() => {
               setIsLoading(false);
             }, 800);
@@ -37,25 +33,6 @@ const ForgotPassword = () => {
     } catch (err) {
       console.error(err);
       alert("Error sending reset email");
-    }
-  };
-
-  const confirmOTP = () => {
-    setIsLoading(true);
-    setErrMess("");
-    try {
-      api
-        .post(`${config.API}/forgotpass/verifycode`, { email, userOTP })
-        .then((res) => {
-          if (res.data.success == true) {
-            alert("Success");
-            setSuccess(true);
-          } else {
-            setErrMess("Incorrect OTP code!");
-          }
-        });
-    } catch (err) {
-      setErrMess("Inccorect OTP code!");
     }
   };
 
@@ -73,15 +50,6 @@ const ForgotPassword = () => {
       clearInterval(countdownInterval);
     };
   }, [countdown]);
-
-  const triggerNotification = () => {
-    setTimeout(() => {
-      setNotif(true);
-      setTimeout(() => {
-        setNotif(false);
-      }, 5000);
-    }, 500);
-  };
 
   return (
     <div className="animate-fade-in font-poppins flex-row  h-full w-full pr-[20%]">

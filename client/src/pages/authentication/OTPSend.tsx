@@ -1,13 +1,87 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { RiLock2Fill } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import api from "../../hooks/api";
+import config from "../../common/config";
 
 const OTPSend = () => {
   const currEmail = localStorage.getItem("email");
   const [digits, setDigits] = useState(Array(6).fill(""));
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
-
   const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState(true);
+  const [errMess, setErrMess] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [notif, setNotif] = useState(false);
+  const [userOTP, setUserOTP] = useState("");
+  const [email, setEmail] = useState("");
+  const [countdown, setCountdown] = useState(300);
+
+  const handleResetPassword = async () => {
+    setIsLoading(true);
+    try {
+      await api
+        .post(`${config.API}/forgotpass/sendEmail`, { email })
+        .then((res) => {
+          localStorage.setItem("email", email);
+          if (res.status == 200) {
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 800);
+            setConfirmMessage(false);
+          }
+        });
+    } catch (err) {
+      console.error(err);
+      alert("Error sending reset email");
+    }
+  };
+
+  const confirmOTP = () => {
+    setIsLoading(true);
+    setErrMess("");
+    try {
+      api
+        .post(`${config.API}/forgotpass/verifycode`, { email, digits })
+        .then((res) => {
+          if (res.data.success == true) {
+            alert("Success");
+            setSuccess(true);
+            navigate("/changepass");
+          } else {
+            setErrMess("Incorrect OTP code!");
+          }
+        });
+    } catch (err) {
+      setErrMess("Inccorect OTP code!");
+    }
+  };
+
+  useEffect(() => {
+    const countdownInterval = setInterval(() => {
+      if (countdown > 0) {
+        setCountdown(countdown - 1);
+      } else {
+        clearInterval(countdownInterval);
+        // Handle countdown expiration
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(countdownInterval);
+    };
+  }, [countdown]);
+
+  const triggerNotification = () => {
+    setTimeout(() => {
+      setNotif(true);
+      setTimeout(() => {
+        setNotif(false);
+      }, 5000);
+    }, 500);
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -19,8 +93,7 @@ const OTPSend = () => {
       newDigits[index] = value;
       setDigits(newDigits);
 
-      // Focus the next input if current one has a digit and it's not the last input
-      if (value && index < 4) {
+      if (value && index < 5) {
         inputRefs.current[index + 1]?.focus();
       }
     }
@@ -73,19 +146,23 @@ const OTPSend = () => {
         </p>
       </div>
       <div className="relative z-[100] flex justify-center items-center hover:cursor-pointer">
-        <p className="text-[1.3em] font-poppins text-[#0066FE] font-medium">
+        <p
+          className="text-[1.3em] font-poppins text-[#0066FE] font-medium"
+          onClick={handleResetPassword}
+        >
           Resend code
         </p>
       </div>
       <div className="flex mt-2 h-14 justify-center items-center">
         <div className="relative z-[100] flex w-[30%] h-full bg-[#fecc31] hover:bg-[#f0b500] justify-center items-center m-2 rounded-lg">
-          <button className="w-full h-full justify-center items-center border-none cursor-pointer">
-            <p
-              className="font-poppins text-[24px] text-black font-semibold"
-              onClick={() => {
-                navigate("/changepass");
-              }}
-            >
+          <button
+            className="w-full h-full justify-center items-center border-none cursor-pointer"
+            onClick={() => {
+              confirmOTP();
+            }}
+            disabled={isLoading}
+          >
+            <p className="font-poppins text-[24px] text-black font-semibold">
               Verify
             </p>
           </button>

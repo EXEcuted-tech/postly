@@ -104,7 +104,7 @@ describe('Post Controller - retrieveAll', () => {
       jest.clearAllMocks();
     });
   
-    test('should retrieve all posts successfully', async () => {
+    test('Should retrieve all posts successfully', async () => {
       const mockRequest = {};
       const mockResponse = {
         status: jest.fn(() => mockResponse),
@@ -129,7 +129,7 @@ describe('Post Controller - retrieveAll', () => {
       });
     });
   
-    test('should return 500 if database query fails', async () => {
+    test('Should return 500 if database query fails', async () => {
       const mockRequest = {};
       const mockResponse = {
         status: jest.fn(() => mockResponse),
@@ -156,7 +156,68 @@ describe('Post Controller - retrieveAll', () => {
 //Testing Post Retrieve By Params
 //===============================
 
-
+describe('Post Controller - retrieveByParams', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+  
+    test('Should retrieve posts by params successfully', async () => {
+      const mockRequest = {
+        query: {
+          col: 'account_id',
+          val: 1,
+        },
+      };
+      const mockResponse = {
+        status: jest.fn(() => mockResponse),
+        json: jest.fn(),
+      };
+      const mockPosts = [
+        { post_id: 1, account_id: 1, content: 'Test content 1', created_at: '2023-01-01 00:00:00' },
+        { post_id: 2, account_id: 1, content: 'Test content 2', created_at: '2023-01-02 00:00:00' },
+      ];
+      db.query.mockImplementation((query, values, callback) => {
+        callback(null, mockPosts);
+      });
+  
+      await postController.retrieveByParams(mockRequest, mockResponse);
+  
+      expect(db.query).toHaveBeenCalledTimes(1);
+      expect(mockResponse.status).toHaveBeenCalledWith(200);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        status: 200,
+        success: true,
+        post: mockPosts,
+      });
+    });
+  
+    test('Should return 500 if database query fails', async () => {
+      const mockRequest = {
+        query: {
+          col: 'account_id',
+          val: 1,
+        },
+      };
+      const mockResponse = {
+        status: jest.fn(() => mockResponse),
+        json: jest.fn(),
+      };
+      const mockError = new Error('Database error');
+      db.query.mockImplementation((query, values, callback) => {
+        callback(mockError);
+      });
+  
+      await postController.retrieveByParams(mockRequest, mockResponse);
+  
+      expect(db.query).toHaveBeenCalledTimes(1);
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        status: 500,
+        success: false,
+        error: 'Error retrieving all records',
+      });
+    });
+  });
 
 //=====================
 //Testing Post Update
@@ -167,7 +228,7 @@ describe('Post Controller - retrieveAll', () => {
       jest.clearAllMocks();
     });
   
-    test('should update a post successfully', async () => {
+    test('Should update a post successfully', async () => {
       const mockRequest = {
         query: {
           postID: 1,
@@ -194,7 +255,7 @@ describe('Post Controller - retrieveAll', () => {
       });
     });
   
-    test('should return 500 if database query fails', async () => {
+    test('Should return 500 if database query fails', async () => {
       const mockRequest = {
         query: {
           postID: 1,
@@ -222,7 +283,7 @@ describe('Post Controller - retrieveAll', () => {
       });
     });
   
-    test('should return 500 if an unexpected error occurs', async () => {
+    test('Should return 500 if an unexpected error occurs', async () => {
       const mockRequest = {
         query: {
           postID: 1,
@@ -284,7 +345,7 @@ describe('Post Controller - retrieveAll', () => {
       jest.clearAllMocks();
     });
   
-    test('should delete a post successfully', async () => {
+    test('Should delete a post successfully', async () => {
       const mockRequest = {
         query: {
           col: 'post_id',
@@ -310,7 +371,7 @@ describe('Post Controller - retrieveAll', () => {
       });
     });
   
-    test('should return 500 if database query fails', async () => {
+    test('Should return 500 if database query fails', async () => {
       const mockRequest = {
         query: {
           col: 'post_id',
@@ -337,7 +398,7 @@ describe('Post Controller - retrieveAll', () => {
       });
     });
   
-    test('should return 404 if no post found to delete', async () => {
+    test('Should return 404 if no post found to delete', async () => {
       const mockRequest = {
         query: {
           col: 'post_id',

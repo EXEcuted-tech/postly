@@ -9,12 +9,15 @@ import useColorMode from "../../hooks/useColorMode"
 import api from "../../hooks/api";
 import config from "../../common/config";
 import { UserProps } from "../../common/interface";
+import Search from "../../pages/search/Search";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const payload = localStorage.getItem('payload');
   const payloadObj = payload && JSON.parse(payload);
   const dp_id = payloadObj?.dp;
   const color = localStorage.getItem("color-theme");
+  const [search, setSearch] = useState(false);
 
   const [darkMode, setDarkMode] = useColorMode();
   const [dpURL,setDpURL] = useState<string | null>(null);
@@ -23,7 +26,15 @@ const Header = () => {
   const [tasks, setTasks] = useState<UserProps[]>([]);
   const [errMess,setErrMess] = useState("");
   const [taskExist, setTaskExist] = useState(false);
+  const [chosenID, setChosenID] = useState(localStorage.getItem("account_id")!=="0" ? localStorage.getItem("account_id") : "1");
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const click = () =>{
+    if(location.pathname!== '/search'){
+        navigate('/search');
+    }
+  }
 
   // const [payloadObj, setPayloadObj] = useState(() => {
   //   const initialPayload = localStorage.getItem('payload');
@@ -45,7 +56,7 @@ const Header = () => {
   const getAllTasks = () => {
     api
       .get(
-        `${config.API}/task/retrieve_all?col=category_id&val=chosed&order=order`
+        `${config.API}/user/getall`
       )
       .then((res) => {
         if (res.data.success === true && res.data.tasks.length > 0) {
@@ -83,14 +94,7 @@ const Header = () => {
     setSearchQuery(e.target.value)
     if(e.target.value){
     api.get(
-      `${config.API}/task/retrievelike`,{
-        params:{  
-          col1: 'category_id',
-          // val1: `${chosenID}`,
-          // col2: ['title', 'description'],
-          // val2: searchQuery,
-          // order: `${order}`
-      }
+      `${config.API}/user/search?col2=name&val2=${searchQuery}`,{
     }
     ).then(response =>{
       if(response.status === 200){
@@ -119,6 +123,7 @@ const Header = () => {
 
   return (
     <div className="font-poppins flex items-center bg-primary h-[10vh] w-full dark:bg-black">
+
       <div className="flex items-center w-[25%]">
         <img
           src={darkMode === "dark" ? logoDark : logoLight}
@@ -132,8 +137,9 @@ const Header = () => {
         <FaSearch className="text-[1.2em] absolute ml-[1%] text-[#8F8F8F]" />
         <input
           type="text"
-          // onChange={(e)=>{handleChangeSearch(e)}}
-          // value={searchQuery}
+          onClick={() => click()}
+          onChange={(e)=>{handleChangeSearch(e)}}
+          value={searchQuery}
           placeholder="Search for people, posts, stories"
           className="bg-[#F3F5F7] pl-[5%] py-[1%] pr-[2%] w-[90%] rounded-[30px] mr-[1%] text-[1.2em]"
         ></input>

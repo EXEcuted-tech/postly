@@ -1,13 +1,23 @@
 import React, { useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom';
+import { UserProps } from '../../common/interface';
+import config from '../../common/config';
+import api from '../../hooks/api';
+import FollowCard from '../../components/card/FollowCard';
 
 const Search = () => {
+  const navigate = useNavigate();
   const [isPost,setIsPost]=useState(true);
+  const [list,setList]=useState<UserProps[]>([]);
+
   return (
     <div className='animate-fade-in w-[80%]'>
       <div className='bg-white ml-[2%] h-full'>
         <div className='flex items-center w-full px-[2%] py-[1%]'>
-            <FaArrowLeft className='text-[2.2em] hover:cursor-pointer'/>
+            <FaArrowLeft className='text-[2.2em] hover:cursor-pointer'
+            onClick={()=>(navigate('/home'))}
+            />
             <div className='ml-[1%]'>
                 <h1 className='text-[1.3em] font-medium'>Search Results</h1>
             </div>
@@ -31,7 +41,10 @@ const Search = () => {
           </div>
           :
           <div>
-            Insert People Content
+            hehehe
+            {list.map((follow)=>(
+              <FollowCard follow_id={0} account_id={0} follower_id={0} created_at={''} updated_at={''} deleted_at={''} isFollowing={false} {...list} type="following" />
+            ))}
           </div>
         }
       </div>

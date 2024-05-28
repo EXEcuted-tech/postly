@@ -70,7 +70,47 @@ const retrieveByParams = (req,res)=>{
     });
 }   
 
+const retrieveByParamsLike = (req,res)=>{
+    const {col2,val2} = req.query;
+    const retrieveTasks = `SELECT * FROM account WHERE ?? LIKE ?`
+    const queryParams = [col2,`%${val2}%`];
+    db.query(retrieveTasks,queryParams, (err, rows) => {
+      //console.log('SQL Query:', retrieveTasks, queryParams);
+      if (err) {
+        console.error('Error retrieving all records:', err);
+        return res.status(500).json({ status: 500, success:false,error: 'Error retrieving all records' });
+      }else{
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          tasks: rows,
+        });
+      }
+    });
+  }
+
+const retrieveAll = (req,res)=>{   
+const {col,val,order} = req.query;
+
+const retrieveTasks = `SELECT * FROM account`
+
+db.query(retrieveTasks, (err, rows) => {
+    if (err) {
+    console.error('Error retrieving all records:', err);
+    return res.status(500).json({ status: 500, success:false,error: 'Error retrieving all records' });
+    }else{
+    return res.status(200).json({
+        status: 200,
+        success: true,
+        tasks: rows,
+    });
+    }
+});
+}
+
 module.exports = {
     updateUser,
-    retrieveByParams
+    retrieveByParams,
+    retrieveByParamsLike,
+    retrieveAll,
 }

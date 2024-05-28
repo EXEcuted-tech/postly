@@ -55,8 +55,8 @@ const Notifications = () => {
               </>
             ) : (
               <div className="flex flex-col items-center justify-center h-[50vh]">
-                <h1 className="mt-4 text-[#2e2e2e] text-[1.2em] font-light">
-                  No posts as of now...
+                <h1 className="mt-4 text-[#C2C2C2] text-[1.2em] font-light">
+                  No notifications as of now...
                 </h1>
               </div>
             )}

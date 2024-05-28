@@ -1,26 +1,101 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoCloseOutline } from "react-icons/io5";
-import user1 from '../../assets/user-icon.jpg'
+import user from '../../assets/user-icon.jpg'
+import { AddPostProps } from '../../common/interface';
+import BounceLoader from "react-spinners/ClipLoader";
+import api from '../../hooks/api';
+import config from '../../common/config';
 
-const AddPost = () => {
+const AddPost:React.FC<AddPostProps>= ({ setAddPost }) => {
+  const payload = localStorage.getItem("payload");
+  const payloadObj = payload && JSON.parse(payload);
+  const dp_id = payloadObj?.dp;
+
+  const [loading,setLoading] = useState(false);
+  const [content,setContent] = useState('');
+  const [dpURL, setDpURL] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (payloadObj) {
+      getProfilePicture();
+    }
+  }, [dp_id]);
+
+  const getProfilePicture = () => {
+    api.get(`${config.API}/file/retrieve?col=file_id&val=${payloadObj?.dp}`)
+      .then(async (res) => {
+        if (res.data.success === true && res.data.filedata) {
+          const response = await api.get(
+            `${config.API}/file/fetch?pathfile=${encodeURIComponent(
+              res.data.filedata.path
+            )}`,
+            {
+              responseType: "arraybuffer",
+            }
+          );
+          const url = URL.createObjectURL(new Blob([response.data]));
+          setDpURL(url);
+        }
+      })
+      .catch((err) => {
+        console.log("File Err? ", err);
+      });
+  };
+
+  const submitPost = () => {
+    setLoading(true);
+    try {
+      api
+        .post(`${config.API}/post/create`, {
+          account_id: payloadObj?.userID,
+          content: content,
+        })
+        .then((res) => {
+          //console.log("RESPONSE POST: ", res);
+          if (res.data.success === true) {
+            setContent("");
+            setTimeout(() => {
+              setLoading(false);
+            }, 500);
+            setAddPost(false)
+          }
+        });
+    } catch {}
+  };
+
   return (
-    <div className='w-full h-full bg-gray-900'>
-      <div className='absolute w-[83%] h-[55%] top-[22%] left-[9%] rounded-[50px] shadow-2xl dark:bg-black'>
+    <div className='animate-fade-in w-full h-full top-0 left-0 fixed backdrop-brightness-50 z-[1000]'>
+      <div className='bg-white w-[80%] mt-[15%] mx-[15%] h-[28vh] rounded-[20px] shadow-2xl dark:bg-black'>
         <div className='text-white'>
-          <div className='flex justify-end mt-[3%] mb-[2%]'>
-            <IoCloseOutline className='cursor-pointer text-black text-[3em] mr-[3%] dark:text-white'/>
+          <div className='flex justify-end pt-[1%] mb-[1%]'>
+            <IoCloseOutline className='cursor-pointer text-[#C2C2C2] hover:text-[#545454] text-[3em] mr-[3%] dark:text-white'
+            onClick={()=>setAddPost(false)}/>
           </div>
-          <div className='flex ml-[5%]'>
-            <img src={user1} className='w-[7%] h-[7%] rounded-full'/>
-            <form className='inline text-black w-[89%]'>
-              <div className='ml-[3%] w-full'>
-                <textarea className='w-[97%] h-[5em] mb-[3%] text-4xl pl-[2%] rounded-3xl pt-[2%] bg-[#F3F5F7] text-[#AAAAAA] resize-none' placeholder='What&apos;s on your mind today?'></textarea>
-              </div>
-              <div><hr></hr></div>
-              <div className='text-end mt-[2%]'>
-                <button type='submit' className=' bg-primary text-3xl w-[11%] py-[1%] mt-[1%] font-bold rounded-full'>Post</button>
-              </div>
-            </form>
+          <div className='flex ml-[3%]'>
+            <div className='w-[50px] h-[50px]'>
+              <img src={dpURL!==null? dpURL: user} alt="Profile Picture" className='rounded-full object-cover w-full h-full'/>
+            </div>
+              <form className='inline text-black w-[89%]'>
+                <div className='ml-[3%] w-full'>
+                <textarea
+                  maxLength={1000}
+                  placeholder="What's on your mind today?"
+                  className="font-light outline-none bg-[#F3F5F7] pl-[2%] py-[1%] pr-[2%] w-full rounded-[30px] text-[1.2em] resize-none max-h-[50vh]"
+                  value={content}
+                  onChange={(e)=>{setContent(e.target.value)}}></textarea>
+                </div>
+                <hr className="w-[100%] border-1 my-[1%] ml-[3%]" />
+                {/* <div>
+                  <hr className='ml-[5%]'></hr>
+                </div> */}
+                <div className='flex justify-end mr-[-3%] mt-[1%]'>
+                <button className='flex bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out dark:hover:bg-gray-800'
+                  onClick={submitPost}>
+                  <BounceLoader className='' color="#FFFFFF" loading={loading} />
+                    Post
+                  </button>
+                </div>
+              </form>
           </div>
         </div>
       </div>

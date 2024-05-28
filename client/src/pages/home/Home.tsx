@@ -3,9 +3,12 @@ import PostCard from "../../components/card/PostCard";
 import user from "../../assets/user-icon.jpg";
 import Spinner from "../../components/loader/Spinner";
 import BounceLoader from "react-spinners/ClipLoader";
-import config from "../../common/config";
-import api from "../../hooks/api";
-import { PostProps } from "../../common/interface";
+import config from '../../common/config';
+import api from '../../hooks/api';
+import { PostProps } from '../../common/interface';
+import mail from '../../assets/mail.png'
+import UserNotification from "../../components/alerts/Notification";
+import { AiFillExclamationCircle } from "react-icons/ai";
 
 const Home = () => {
   const payload = localStorage.getItem("payload");
@@ -18,6 +21,7 @@ const Home = () => {
   const [postLoading, setPostLoading] = useState(false);
   const [content, setContent] = useState("");
   const [retrieved, setRetrieved] = useState(false);
+  const [error,setError]=useState("");
 
   useEffect(() => {
     if (payloadObj) {
@@ -62,17 +66,31 @@ const Home = () => {
           content: content,
         })
         .then((res) => {
-          console.log("RESPONSE POST: ", res);
+          //console.log("RESPONSE POST: ", res);
           if (res.data.success === true) {
             setContent("");
             setTimeout(() => {
               setLoading(false);
             }, 500);
             getAllPosts();
+          }else{
+            setTimeout(()=>{setLoading(false)},800);
+            setError(res.data.error);
+            errorTimer();
           }
-        });
+        }).catch((err)=>{
+          setError(err.response.data.error);
+          setLoading(false);   
+          errorTimer(); 
+        })
     } catch {}
   };
+
+  const errorTimer =  ()=>{ 
+    setTimeout(() => {
+      setError("");
+    }, 5000);
+  }
 
   const getAllPosts = () => {
     setPostLoading(true);
@@ -91,7 +109,16 @@ const Home = () => {
 
   return (
     <div className="pt-[3%] animate-fade-in w-[80%]">
-      <div className="ml-[2%] bg-white rounded-[20px] w-[95%] px-[2%] pt-[2%] pb-[1%]">
+    {error !=='' && 
+        <UserNotification
+          icon={<AiFillExclamationCircle/>}
+          logocolor='#ff0000'
+          title="Error!"
+          message={error}
+          animate='animate-shake'
+        />
+      }
+      <div className="ml-[2%] bg-white rounded-[20px] w-[95%] px-[2%] pt-[2%] pb-[1%] dark:bg-black">
         <div className="flex">
           <div className="w-[50px] h-[50px]">
             <img
@@ -113,7 +140,7 @@ const Home = () => {
         <hr className="border-1 my-[1%]" />
         <div className="flex justify-end">
           <button
-            className="flex bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out"
+            className="flex bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out dark:hover:bg-gray-800"
             onClick={submitPost}
           >
             <BounceLoader className="" color="#FFFFFF" loading={loading} />
@@ -122,17 +149,27 @@ const Home = () => {
         </div>
       </div>
       <div className="my-[2%] ml-[2%] w-[95%]">
-        {postLoading ? (
-          <div className="flex justify-center">
-            <Spinner />
+      {postLoading
+        ?
+          <div className='flex justify-center'>
+            <Spinner/>
           </div>
-        ) : (
+        :
           <>
-            {posts.map((post, index) => (
-              <PostCard {...post} key={index} />
+          {posts.length > 0 ?
+            <>
+            {posts.map((post,index)=>(
+                <PostCard {...post} key={index} />
             ))}
+            </>
+            :
+              <div className="flex flex-col items-center justify-center h-[50vh]">
+                  <img src={mail} alt="Email" className="w-[15%]" />
+                  <h1 className="mt-4 text-[#2e2e2e] text-[1.2em] font-light">No posts as of now...</h1>
+              </div>
+          }
           </>
-        )}
+        }
       </div>
     </div>
   );

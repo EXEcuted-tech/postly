@@ -13,7 +13,12 @@ import OTPSend from "./pages/authentication/OTPSend";
 import ChangePassword from "./pages/authentication/ChangePassword";
 import Search from "./pages/search/Search";
 import ProfileOther from "./pages/profile/ProfileOther";
+<<<<<<< HEAD
 import LogOut from "./components/modal/LogOut";
+=======
+import Follow from "./pages/profile/Follow";
+import FollowOther from "./pages/profile/FollowOther";
+>>>>>>> 9b401f5a534acb503420fc09da39788e440ac0e0
 
 function App() {
   return (
@@ -22,6 +27,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/profile/user" element={<ProfileOther />} />
+        <Route path="/follow" element={<Follow />} />
+        <Route path="/follow/user" element={<FollowOther/>} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/likes" element={<Profile />} />
         <Route path="/profile/dashboard" element={<Profile />} />

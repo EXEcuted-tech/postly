@@ -40,8 +40,8 @@ app.use(express.json());
 app.use('/',authRoutes);
 app.use('/user',userRoutes);
 app.use('/file',fileRoutes)
-// app.use('/follow',followRoutes);
-// app.use('/notif',notifRoutes);
+app.use('/follow',followRoutes);
+app.use('/notif',notifRoutes);
 app.use('/post',postRoutes);
 // app.use('/react',reactRoutes);
 

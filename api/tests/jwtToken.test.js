@@ -14,17 +14,16 @@ jest.mock('../controllers/a_db.js', () => {
 });
 
 
-//=====================
-//   JWT TEST CASES 
-//=====================
 
-// Mock route to test authenticateToken middleware
+
 app.get('/protected', authenticateToken, (req, res) => {
     res.json({ message: 'Protected route accessed!', user: req.user });
 });
 
-
-describe('Authenticate, Generate, and Refresh JWT Token', () => {
+//=====================
+//   JWT TEST CASES 
+//=====================
+describe('Authenticate and Generate JWT Token', () => {
     test('Should generate a valid JWT token', () => {
         const user = { id: 1, name: 'John Doe' };
         const token = generateAccessToken(user);

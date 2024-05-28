@@ -1,11 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { RiLock2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import config from "../../common/config";
+import api from "../../hooks/api";
+import Spinner from "../../components/loader/Spinner";
+import { BounceLoader } from "react-spinners";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState(true);
+  const [email, setEmail] = useState("");
+  const [countdown, setCountdown] = useState(300);
+
+  const handleResetPassword = async () => {
+    setIsLoading(true);
+    try {
+      await api
+        .post(`${config.API}/forgotpass/sendEmail`, { email })
+        .then((res) => {
+          if (res.status == 200) {
+            alert("Emails has been sent to your account");
+            navigate("/verify");
+            localStorage.setItem("email", email);
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 800);
+            setConfirmMessage(false);
+          }
+        });
+    } catch (err) {
+      console.error(err);
+      alert("Error sending reset email");
+    }
+  };
+
+  useEffect(() => {
+    const countdownInterval = setInterval(() => {
+      if (countdown > 0) {
+        setCountdown(countdown - 1);
+      } else {
+        clearInterval(countdownInterval);
+        // Handle countdown expiration
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(countdownInterval);
+    };
+  }, [countdown]);
 
   return (
     <div className="animate-fade-in font-poppins flex-row  h-full w-full pr-[20%]">
@@ -56,9 +100,11 @@ const ForgotPassword = () => {
           <button
             type="submit"
             className="relative z-[100] w-full h-full p-1"
-            onClick={() => navigate("/verify")}
+            onClick={handleResetPassword}
+            disabled={isLoading}
           >
             <p className="font-poppins font-semibold text-[24px] hover:cursor-pointer">
+              {isLoading && <Spinner />}
               Reset Password
             </p>
           </button>

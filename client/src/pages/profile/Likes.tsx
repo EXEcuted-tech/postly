@@ -98,7 +98,7 @@ const Likes = () => {
               :
                 <div className="flex flex-col items-center justify-center h-[50vh]">
                   <img src={mail} alt="Email" className="w-[15%]" />
-                  <h1 className="mt-4 text-[#2e2e2e] text-[1.2em] font-light">No posts...</h1>
+                  <h1 className="mt-4 text-[#2e2e2e] text-[1.2em] font-light">No liked posts yet...</h1>
                 </div>
               }
               </>

@@ -71,19 +71,21 @@ const retrieveByParams = (req,res)=>{
 }   
 
 const retrieveByParamsLike = (req,res)=>{
-    const {col2,val2} = req.query;
-    const retrieveTasks = `SELECT * FROM account WHERE ?? LIKE ?`
-    const queryParams = [col2,`%${val2}%`];
-    db.query(retrieveTasks,queryParams, (err, rows) => {
+    const {col1,col2,value} = req.query;
+    const retrieveUsers = `SELECT * FROM account WHERE ?? LIKE ? OR ?? LIKE ?`;
+    const queryParams = [col1, `%${value}%`, col2, `%${value}%`];
+    //console.log(queryParams);
+    db.query(retrieveUsers,queryParams, (err, rows) => {
       //console.log('SQL Query:', retrieveTasks, queryParams);
       if (err) {
         console.error('Error retrieving all records:', err);
         return res.status(500).json({ status: 500, success:false,error: 'Error retrieving all records' });
       }else{
+        //console.log(rows);
         return res.status(200).json({
           status: 200,
           success: true,
-          tasks: rows,
+          user: rows,
         });
       }
     });

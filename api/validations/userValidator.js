@@ -45,31 +45,36 @@ const editUserValidator = (req, res, next) => {
 };
 
 const searchLikeUserValidator = (req, res, next) =>{
+    let error = "";
+
     if (req.query){
-        const {col2,val2} = req.query;
-        const queryParams = {col2,val2};
+        const {col1,col2,value} = req.query;
+        const queryParams = {col1,col2,value};
         if (containsSQLKeywords(queryParams)) {
-            // Handle the case where SQL keywords are detected
-            console.error('SQL keywords detected in the query parameters');
-            return res.status(400).json({status: 400, success: false, message: 'Invalid Input! Malformed'})
+            error='Invalid Input! Malformed.'
           } else {
-            if(val2 === null || val2 === undefined){
-                return res.status(400).json({status: 400, success: false, message: 'Invalid Input! Cannot be NULL'})
+            if(value === null || value === undefined){
+                error='Invalid Input! Search cannot be empty.'
             }
             else{
-                if (val2.length <= 100){ //100 character limit
-                    next();
-                }else{
-                    console.error('Character Limit Reached');
-                    return res.status(400).json({status: 400, success: false, message: 'Invalid Input! Character Limit Reached'})
+                if (value.length >= 100){ //100 character limit
+                  error= 'Invalid Input! 100 character limit reached.'
                 }
-                
             }
           }
     }else{
-        console.error('Invalid Request, Cannot be Empty');
-        return res.status(400).json({status: 400, success: false, message: 'Invalid Input! Cannot be NULL'})
+        error='Invalid Input! Search cannot be empty.'
     }
+
+    if (error) {
+      return res.json({
+          status: 404,
+          success: false,
+          error: error,
+        });
+    }
+
+    next();
 }
 
 

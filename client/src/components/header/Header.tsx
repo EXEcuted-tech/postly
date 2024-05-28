@@ -33,7 +33,7 @@ const Header = () => {
 
   const click = () =>{
     if(location.pathname!== '/search'){
-        localStorage.setItem('searchtab','posts');
+        localStorage.removeItem('search_query');
         navigate('/search');
     }
   }

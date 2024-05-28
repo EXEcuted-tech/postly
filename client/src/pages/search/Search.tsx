@@ -13,14 +13,31 @@ const Search = () => {
   const [isPost,setIsPost]=useState(value);
   const [list,setList]=useState<UserProps[]>([]);
   const search = localStorage.getItem("search_query");
-  const [query, setQuery] = useState<String | null>(search);
-
-
+  const [query, setQuery] = useState<string | null>(search);
   
   useEffect(() => {
-   
+    handleSearch(query)
   }, [isPost]);
   
+  const handleSearch = (query: string | null) => {
+    console.log(query);
+    api.get(`${config.API}/user/search?col2=name&val2=${query}`)
+      .then(response => {
+        if (response.status === 200) {
+          console.log(response.data);
+          if (response.data.tasks.length === 0) {
+            setList([]);
+            
+          } else {
+            console.log(response.data.tasks);
+            setList(response.data.tasks);
+          }
+        }
+      })
+      .catch((error) => {
+        
+      });
+  };
   
   return (
     <div className='animate-fade-in w-[80%]'>
@@ -54,7 +71,7 @@ const Search = () => {
           <div>
             {query}
             {list.map((follow)=>(
-              <FollowCard follow_id={0} follower_id={0} deleted_at={''} isFollowing={false} {...follow} type="following" />
+              <FollowCard follow_id={1} follower_id={1} deleted_at={''} isFollowing={false} {...follow} type="following" />
             ))}
           </div>
         }

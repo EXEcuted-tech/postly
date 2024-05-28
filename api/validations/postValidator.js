@@ -52,3 +52,4 @@ const editValidator = (req, res, next) => {
 
 
 module.exports = {createPostValidator,editValidator};
+

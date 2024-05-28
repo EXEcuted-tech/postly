@@ -1,27 +1,23 @@
 import React from 'react'
-import { IoCloseOutline } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
+
 
 const PassChange = () => {
+  const navigate = useNavigate();
   return (
-    <div className='w-full h-full bg-gray-900'>
-      <div className='absolute w-[45%] h-[55%] top-[22%] left-[28%] rounded-[50px] shadow-2xl dark:bg-black'>
+    <div className='animate-fade-in w-full h-full top-0 left-0 fixed backdrop-brightness-50 z-[1000]'>
+      <div className='bg-white w-[30%] px-[5%] py-[2%] h-[31vh] mt-[18%] ml-[38%] rounded-[12px] shadow-2xl dark:bg-black'>
         <div className='text-white'>
-          <div className='flex justify-end mt-[3%] mb-[2%]'>
-            <IoCloseOutline className='cursor-pointer text-black text-[3em] mr-[3%] dark:text-white'/>
-          </div>
           <div className='text-center'>
-            <h1 className='text-6xl font-medium text-black mb-[5%] dark:text-white'>Password Change</h1>
-            <form className='inline text-black'>
-              <div>
-                <input type='text' className='w-[85%] h-[2em] mb-[3%] text-4xl pl-[2%] rounded-xl border-primary border-2 font-semibold dark:text-white dark:bg-black' placeholder='New Password'></input>
-              </div>
-              <div>
-                <input type='text' className='w-[85%] h-[2em] mb-[3%] text-4xl pl-[2%] rounded-xl border-primary border-2 font-semibold dark:text-white dark:bg-black' placeholder='Confirm Password'></input>
-              </div>
-              <div className='text-center'>
-                <button type='submit' className=' bg-primary text-3xl w-[20%] py-[1.5%] mt-[1%] font-bold rounded-lg'>Save</button>
-              </div>
-            </form>
+            <h1 className='text-[2.5em] font-semibold text-black mb-[2%] dark:text-white'>Password Change</h1>
+            <div className='px-[2%]'>
+              <p className='font-medium text-[1.6em] text-[#8F8F8F]'>You may now log in back to your account.</p>
+            </div>
+            <div className='flex justify-center mt-[2%]'>
+                <button type='submit' className='bg-primary text-black text-[1.5em] w-[50%] py-[2%] mt-[1%] font-bold rounded-md
+                  hover:bg-[#edbe2b]'
+                  onClick={()=>(navigate('/'))}>Go Back</button>
+            </div>
           </div>
         </div>
       </div>

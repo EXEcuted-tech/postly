@@ -45,7 +45,7 @@ const EditPost: React.FC<EditProps> = ({
 
           navigateBack();
         }else{
-          console.log("Hello");
+          //console.log("Hello");
           setTimeout(()=>{setLoading(false)},800);
           setError(res.data.error);
           errorTimer();

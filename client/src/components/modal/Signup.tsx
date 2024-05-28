@@ -4,6 +4,9 @@ import Logo from '../../assets/applogo.png'
 import { IoCloseOutline } from "react-icons/io5";
 import config from '../../common/config';
 import api from '../../hooks/api';
+import UserNotification from '../alerts/Notification';
+import { AiFillExclamationCircle,AiFillCheckCircle } from 'react-icons/ai';
+import BounceLoader from "react-spinners/ClipLoader";
 
 const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
   const navigate = useNavigate();
@@ -12,6 +15,7 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
   const [password, setPassword]= useState("");
   const [retypePassword, setRetypePassword]= useState("");
   const [error,setError] = useState("");
+  const [success,setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const signUp = (event:FormEvent) =>{
@@ -20,17 +24,18 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
     setError("");
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!emailRegex.test(email)) {
-      console.log("Please enter a valid Email");
-      setError("Please enter a valid Email");
+      setError("Please enter a valid email!");
       setIsLoading(false);
+      errorTimer();
       return;
     }
     
     if (password!==retypePassword) {
-      console.log('Wrong pass');
-      setError("Please check the password typed");
+      setError("Please check the typed password again!");
       setIsLoading(false);
+      errorTimer();
       return;
     }
 
@@ -41,26 +46,58 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
     }).then((res)=>{
         console.log(res);
         if (res.data.success == true){
+                                
+          setSuccess("You have successfully created an account! You may now log in.");
+
           setTimeout(()=>{
             setIsLoading(false);
           },1500);
-          alert("Registered Successfully!");
+          
+          setTimeout(() => {
+            setSuccess("");
+            setRegister(false);
+          }, 1500);
 
         }else{
           setTimeout(()=>{setIsLoading(false)},800);
           setError(res.data.error);
+          errorTimer();
         }
 
     }).catch((err) => { 
-        setError(err.error);
+        setError(err.response.data.message);
         setIsLoading(false);
+        errorTimer();
     });
   }
 
-
+  const errorTimer =  ()=>{ 
+    setTimeout(() => {
+      setError("");
+    }, 5000);
+  }
 
   return (
     <div className='animate-fade-in w-full h-full top-0 left-0 absolute backdrop-brightness-50 z-[1000]'>
+    {error !=='' && 
+        <UserNotification
+          icon={<AiFillExclamationCircle/>}
+          logocolor='#ff0000'
+          title="Error!"
+          message={error}
+          animate='animate-shake'
+        />
+    }
+    {success !=='' &&
+      <UserNotification
+        icon={<AiFillCheckCircle/>}
+        logocolor='#17ab0c'
+        title="Registered Successfully!"
+        message={success}
+        animate='animate-fade-in'
+      />
+    }
+    
     <div className='bg-white w-[32%] h-[60%] ml-[35%] mt-[8%] rounded-[50px] shadow-2xl dark:bg-black '>
       <div className='text-white'>
         <div className='flex justify-center pt-[5%]'>
@@ -85,7 +122,12 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
               <input type='password' value={retypePassword} onChange={(e)=>{setRetypePassword(e.target.value)}} className='w-[85%] h-[2em] mb-[3%] text-[1.5em] pl-[2%] rounded-xl border-primary border-2 font-semibold dark:text-white dark:bg-black' placeholder='Re-type Password'></input>
             </div>
             <div className='text-center ml-[-9%]'>
-              <button type='submit' onClick={signUp} className=' bg-primary text-[1.5em] w-[30%] py-[1.5%] mt-[1%] font-bold rounded-lg hover:bg-[#f0b500]'>Create</button>
+                <button type='submit' onClick={signUp} className=' bg-primary text-[1.5em] w-[30%] py-[1.5%] mt-[1%] font-bold rounded-lg hover:bg-[#f0b500]'>
+                <div className='flex items-center justify-center mr-[2%]'>
+                    <BounceLoader className='mx-[2%]' color="#FFFFFF" loading={isLoading} />
+                    Sign Up
+                  </div>
+                </button>
             </div>
           </form>
           {/* {{#if message}}

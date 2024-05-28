@@ -6,6 +6,9 @@ import api from "../../hooks/api";
 import config from "../../common/config";
 import { useNavigate } from "react-router-dom";
 import { EditProps } from "../../common/interface";
+import UserNotification from "../alerts/Notification";
+import { AiFillExclamationCircle } from "react-icons/ai";
+import BounceLoader from "react-spinners/ClipLoader";
 
 const EditPost: React.FC<EditProps> = ({
   onClose,
@@ -19,39 +22,62 @@ const EditPost: React.FC<EditProps> = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
+  const [error,setError]=useState("");
+
   const onSubmit = async () => {
     try {
       await handleSaveChanges();
-
-      navigate("/profile"); //To Refresh token ni haa
-
-      setTimeout(() => {
-        navigate("/home");
-        setTimeout(() => {
-          navigate("/profile");
-        }, 50);
-      }, 50);
     } catch (error) {
-      console.error("Error during submission: ", error);
+      //console.error("Error during submission: ", error);
     }
-
-    onClose();
   };
 
   const handleSaveChanges = () => {
     api
       .post(`${config.API}/post/edit?postID=${postId}&val=${content}`)
       .then((res) => {
-        console.log("Post Details: ", res.data);
-        if (res.data.success) {
-          console.log("Post has successfully been edited");
-          console.log("Updated Data", res.data);
+        if (res.data.success === true) {
+          console.log("Hello");
+          setTimeout(() => {
+            setLoading(false);
+          }, 200);
+
+          navigateBack();
+        }else{
+          console.log("Hello");
+          setTimeout(()=>{setLoading(false)},800);
+          setError(res.data.error);
+          errorTimer();
+          return;
         }
       })
       .catch((err) => {
-        console.error("Error udpating post: ", err);
+        setError(err.response.data.error);
+        setLoading(false);   
+        errorTimer(); 
+        return;
       });
   };
+  
+  const navigateBack = () =>{
+    navigate("/profile");
+
+    setTimeout(() => {
+      navigate("/home");
+      setTimeout(() => {
+        navigate("/profile");
+      }, 50);
+    }, 50);
+
+    onClose();
+  }
+
+  const errorTimer =  ()=>{ 
+    setTimeout(() => {
+      setError("");
+    }, 5000);
+  }
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -63,6 +89,15 @@ const EditPost: React.FC<EditProps> = ({
 
   return (
     <div className="animate-fade-in flex flex-col">
+      {error !=='' && 
+        <UserNotification
+          icon={<AiFillExclamationCircle/>}
+          logocolor='#ff0000'
+          title="Error!"
+          message={error}
+          animate='animate-shake'
+        />
+      }
       <div className="flex w-full h-full justify-between items-center">
       <div className="w-12 h-12">
           <img
@@ -72,7 +107,7 @@ const EditPost: React.FC<EditProps> = ({
           />
         </div>
         <div className="flex-row justify-start w-[50%] pl-[1%]">
-          <h1 className="font-semibold text-[1.3em] hover:cursor-pointer">
+          <h1 className="font-semibold text-[1.3em] hover:cursor-pointer dark:text-white">
             {postName}
           </h1>
           <p className="text-[1em] text-[#9D9D9D]">{postDuration}</p>
@@ -106,6 +141,7 @@ const EditPost: React.FC<EditProps> = ({
             onSubmit();
           }}
         >
+          <BounceLoader className="" color="#FFFFFF" loading={loading} />
           Save
         </button>
       </div>

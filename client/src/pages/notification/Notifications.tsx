@@ -35,12 +35,10 @@ const Notifications = () => {
   };
 
   return (
-    <div className="animate-fade-in w-[80%]">
-      <div className="bg-white ml-[2%] h-full">
+    <div className='animate-fade-in w-[80%]'>
+      <div className='bg-white ml-[2%] h-full dark:bg-black'>
         <div>
-          <h1 className="pl-[2%] py-[1%] text-[2.2em] font-semibold">
-            Notifications
-          </h1>
+          <h1 className='pl-[2%] py-[1%] text-[2.2em] font-semibold dark:text-white'>Notifications</h1>
         </div>
         <hr />
         {notifLoading ? (

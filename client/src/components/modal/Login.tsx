@@ -6,12 +6,15 @@ import config from '../../common/config';
 import api from '../../hooks/api';
 import { useNavigate } from 'react-router-dom';
 import { decodeBase64Url } from '../../helpers/functions';
+import UserNotification from '../alerts/Notification';
+import { AiFillExclamationCircle } from 'react-icons/ai';
 
 const Login = ({setLogin} : { setLogin: (value: boolean) => void }) => {
   const navigate = useNavigate();
   const [loading,setLoading]=useState(false);
   const [credential,setCredential]=useState('');
   const [password,setPassword]=useState('');
+  const [error,setError]=useState("");
 
   const login = (e:FormEvent) =>{
 
@@ -19,7 +22,9 @@ const Login = ({setLogin} : { setLogin: (value: boolean) => void }) => {
     setLoading(true);
 
     if(credential === ''){
+      setError("Username or email is required!");
       setLoading(false);
+      errorTimer();
     }else{
       api.post(`${config.API}/login`,{
         credential: credential,
@@ -43,14 +48,39 @@ const Login = ({setLogin} : { setLogin: (value: boolean) => void }) => {
           setTimeout(()=>{
             setLoading(false)
           },800)
+
+        }else{
+          setTimeout(()=>{setLoading(false)},800);
+          setError(res.data.error);
+          errorTimer();
         }
-      })
+      }).catch((err)=>{
+        //console.log("Error: ",err);
+        setError(err.response.data.error);
+        setLoading(false);   
+        errorTimer();     
+      });
     }
 
   }
 
+  const errorTimer =  ()=>{ 
+    setTimeout(() => {
+      setError("");
+    }, 5000);
+  }
+
 return (
 <div className='animate-fade-in w-full h-full top-0 left-0 absolute backdrop-brightness-50 z-[1000]'>
+{error !=='' && 
+        <UserNotification
+          icon={<AiFillExclamationCircle/>}
+          logocolor='#ff0000'
+          title="Error!"
+          message={error}
+          animate='animate-shake'
+        />
+    }
       <div className='bg-white w-[32%] h-[50%] ml-[35%] mt-[11%] rounded-[50px] shadow-2xl dark:bg-black'>
         <div className='text-white'>
           <div className='flex justify-center pt-[5%] pb-[1%]'>

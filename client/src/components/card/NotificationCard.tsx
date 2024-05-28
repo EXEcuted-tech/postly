@@ -96,10 +96,10 @@ const NotificationCard = (props: NotifProps) => {
         </div>
       </div>
       <div className="flex ml-[7%] mt-[1%] text-[1.2em]">
-        <h1 className="font-semibold" onClick={viewProfile}>
+        <h1 className="font-semibold dark:text-white" onClick={viewProfile}>
           {actorDeets?.name}
         </h1>
-        <p>
+        <p className="dark:text-white">
           {" "}
           {type !== "follow" ? "\u00A0 liked your post" : "\u00A0followed you"}
         </p>

@@ -65,6 +65,76 @@ const retrieveCountByParams = (req,res) =>{
   });
 }
 
+const retrieveCountMonthlyFollowers = (req, res) => {
+  const { col, val } = req.query;
+
+  const retrieveSpecific = `SELECT DATE_FORMAT(created_at, '%Y-%m') AS month, COUNT(*) AS count FROM account_follow 
+    WHERE ?? = ? AND deleted_at IS NULL AND YEAR(created_at) = YEAR(CURRENT_DATE) GROUP BY month ORDER BY month`;
+
+  db.query(retrieveSpecific, [col, val], (err, rows) => {
+    if (err) {
+      console.error('Error retrieving records:', err);
+      return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
+    } else {
+
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        monthlyCounts: rows,
+      });
+    }
+  });
+}
+
+const retrieveCountGainedFollowers = (req, res) => {
+  const { col, val } = req.query; 
+
+  const retrieveSpecific = `
+    SELECT COUNT(*) AS count 
+    FROM account_follow 
+    WHERE ?? = ? 
+      AND deleted_at IS NULL 
+      AND created_at >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY)
+  `;
+
+  db.query(retrieveSpecific, [col, val], (err, row) => {
+    if (err) {
+      console.error('Error retrieving records:', err);
+      return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
+    } else {
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        count: row[0].count,
+      });
+    }
+  });
+};
+
+const retrieveCountLostFollowers = (req, res) => {
+  const { col, val } = req.query;
+
+  const retrieveSpecific = `
+    SELECT COUNT(*) AS count 
+    FROM account_follow 
+    WHERE ?? = ? 
+      AND deleted_at >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY)
+  `;
+
+  db.query(retrieveSpecific, [col, val], (err, row) => {
+    if (err) {
+      console.error('Error retrieving records:', err);
+      return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
+    } else {
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        count: row[0].count,
+      });
+    }
+  });
+};
+
 const retrieveByTwoParams = (req,res) =>{
     const { col1, val1, col2, val2} = req.query; 
   
@@ -136,5 +206,8 @@ module.exports = {
     softDeleteFollow,
     retrieveByParams,
     retrieveCountByParams,
+    retrieveCountMonthlyFollowers,
+    retrieveCountGainedFollowers,
+    retrieveCountLostFollowers,
     retrieveByTwoParams
 }

@@ -17,6 +17,7 @@ const login = (req,res) =>{
 
         const sqlQuery = `SELECT * FROM account where ${col} = ?`
         db.query(sqlQuery,[credential],(err,result)=>{
+            
             if(!err && result.length === 1 ){
               const hash = result[0].password;
               bcrypt.compare(password,hash).then(function(response){
@@ -136,7 +137,7 @@ const signup = (req,res) =>{
         if(error){
             //console.log(error);
         }
-
+        
         if(results.length > 0){
             res.status(404).json({
                 status: 404,
@@ -173,5 +174,5 @@ module.exports = {
     login,
     logout,
     refreshExistingToken,
-    signup,
+    signup
 }

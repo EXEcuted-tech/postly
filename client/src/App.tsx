@@ -29,9 +29,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/likes" element={<Profile />} />
         <Route path="/profile/dashboard" element={<Profile />} />
-        <Route path="/logout" element={<LogOut setLogout={function (value: boolean): void {
-          throw new Error("Function not implemented.");
-        } } />} />
+        <Route path="/logout" element={<LogOut setLogout={value => {}} />} />
       </Route>
       <Route element={<SignedOutLayout/>}>
         <Route path="/" element={<Landing />} />

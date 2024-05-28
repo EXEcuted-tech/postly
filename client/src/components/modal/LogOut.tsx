@@ -46,7 +46,7 @@ const LogOut= ({setLogout} : { setLogout: (value: boolean) => void }) => {
           <div className='flex ml-[5%]'>
             <form className='inline text-black w-[89%]'>
               <div className='ml-[3%] mb-[2%] w-full text-center'>
-                <p className='font-semibold text-5xl dark:text-white'>Logout of {accUserHandle ? accUserHandle : "User"}?</p>
+                <p className='font-semibold text-5xl dark:text-white'>Logout of @{accUserHandle ? accUserHandle : "User"}?</p>
               </div>
               <div className='ml-[3%] w-full text-center'>
                 <p className='font-normal text-4xl dark:text-white'>You will be logged out of your current</p>

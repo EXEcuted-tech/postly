@@ -1,10 +1,10 @@
 import React, { useState, useRef } from "react";
 import { RiLock2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+
 const OTPSend = () => {
-  const [email, setEmail] = useState("");
   const currEmail = localStorage.getItem("email");
-  const [digits, setDigits] = useState(Array(5).fill(""));
+  const [digits, setDigits] = useState(Array(6).fill(""));
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
   const navigate = useNavigate();

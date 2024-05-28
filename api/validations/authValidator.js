@@ -10,7 +10,7 @@ const loginValidator = (req, res, next) => {
     }
 
     if (error !== '') {
-        return res.json({
+        return res.status(404).json({
             status: 404,
             success: false,
             error: error,
@@ -24,7 +24,7 @@ const signupValidator = (req, res, next) => {
 
     if (!req.body.account_handle) {
         error = 'Username is required!'
-    }else if(req.body.account_handle.length <= 4 && req.body.account_handle.length >= 15){
+    }else if(req.body.account_handle.length <= 4 || req.body.account_handle.length >= 15){
         error = "Username must be 4-15 characters long."
     }
 
@@ -39,7 +39,7 @@ const signupValidator = (req, res, next) => {
     }
 
     if (error !== '') {
-        return res.json({
+        return res.status(404).json({
             status: 404,
             success: false,
             error: error,

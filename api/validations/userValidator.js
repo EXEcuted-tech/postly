@@ -9,7 +9,7 @@ const editUserValidator = (req, res, next) => {
     }
 
     if (name !== undefined && (typeof name !== 'string' || name.length < 1)) {
-        error = 'Name must be a non-empty string if provided!';
+        error = 'Name must be inputted!';
     }
 
     if (password !== undefined && (typeof password !== 'string' || password.length < 8)) {

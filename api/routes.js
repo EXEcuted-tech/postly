@@ -43,6 +43,6 @@ app.use('/file',fileRoutes)
 app.use('/follow',followRoutes);
 app.use('/notif',notifRoutes);
 app.use('/post',postRoutes);
-// app.use('/react',reactRoutes);
+app.use('/react',reactRoutes);
 
 module.exports = app;

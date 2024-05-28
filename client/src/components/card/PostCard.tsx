@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import user from "../../assets/user-icon.jpg";
-import { FaRegHeart } from "react-icons/fa";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { PostProps, UserProps } from "../../common/interface";
 import config from "../../common/config";
 import api from "../../hooks/api";
@@ -18,7 +18,7 @@ const PostCard = (props: PostProps) => {
     props;
   const payload = localStorage.getItem("payload");
   const payloadObj = payload && JSON.parse(payload);
-
+// console.log(props);
   const [dpURL, setDpURL] = useState<string | null>(null);
   const [duration, setDuration] = useState("");
   const [accDeets, setAccDeets] = useState<UserProps>();
@@ -27,10 +27,20 @@ const PostCard = (props: PostProps) => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [changed,setChanged]=useState(false);
 
+  const [isItLike, setIsItLike] = useState(0);
+  const [isLike, setIsLike] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+
+  const userID = Number(localStorage.getItem('view_id'));
+
+  const [liked,setLiked] = useState(false);
+
   useEffect(() => {
     retrieveAcc();
     calculateTime();
     editedTime();
+    countLike();
+    hasLiked();
   }, []);
 
   const retrieveAcc = () => {
@@ -122,6 +132,98 @@ const PostCard = (props: PostProps) => {
     }
   };
 
+  const onLike = () => {
+    setIsItLike(isItLike + (isLike ? -1 : 1));
+    setIsLike(!isLike);
+    api
+      .post(`${config.API}/react/create`,{
+        postID: props.post_id,
+        reactID: payloadObj?.userID,
+      }).then((res)=>{
+        console.log(res);
+        if (res.data.success == true){
+          console.log("All good!");
+
+        }else{
+        }
+
+    }).catch((err) => { 
+    });
+  };
+
+  const countLike = () => {
+    api
+      .get(`${config.API}/react/count?col=post_id&val=${props.post_id}`)
+      .then((res)=>{
+        if (res.data.success == true){
+          setIsItLike(res.data.post[0].count);
+          setIsLike(res.data.isLiked);
+
+        }else{
+        }
+
+    }).catch((err) => { 
+    });
+  };
+
+  const likeUser = async () =>{
+    
+    const previous = await hasLiked();
+
+    if(previous===0){
+      api.post(`${config.API}/react/create`,{
+        postID: props.post_id,
+        reactID: payloadObj?.userID,
+      }).then((res)=>{
+        if(res.data.success===true){    
+          setIsItLike(isItLike + (isLike ? -1 : 1));
+          setIsLike(true);
+        }
+      })
+    }else{
+      api.post(`${config.API}/react/relike?reaction_id=${previous}`)
+      .then((res)=>{
+        if(res.data.success===true){
+          setIsItLike(isItLike + (isLike ? -1 : 1));
+          setIsLike(true);
+        }  
+      })
+    }
+  }
+
+  const unlikePost = async () =>{
+    const previous_id = await hasLiked();
+
+    //console.log("Went in here",previous_id);
+    if(previous_id!==0){
+      api.post(`${config.API}/react/delete?reaction_id=${previous_id}`)
+      .then((res)=>{
+        if(res.data.success===true){
+          setIsItLike(isItLike + (isLike ? -1 : 1));
+          setIsLike(false);
+        }
+      })
+    }
+  }
+
+  const hasLiked = async () =>{
+    var retVal = 0;
+    await api.get(`${config.API}/react/retrieveparams?col1=post_id&val1=${props.post_id}&col2=reactor_id&val2=${payloadObj?.userID}`)
+    .then((res)=>{
+      if(res.data.success === true && res.data.records.length > 0){
+        if(res.data.records[0].deleted_at!==null){
+          
+          retVal = res.data.records[0].reaction_id!==null ? res.data.records[0].reaction_id : 0
+        }else{
+          //console.log("retrieve");
+          setIsLike(true);
+          retVal = res.data.records[0].reaction_id!==null ? res.data.records[0].reaction_id : 0
+        }
+      }
+    })
+    return retVal;
+  }
+
   return (
     <div className="bg-white rounded-[20px] px-[2%] py-[2%] mb-[2%] dark:bg-black">
       {!isEditOpen ? (
@@ -159,10 +261,11 @@ const PostCard = (props: PostProps) => {
                 </div>
               )}
               <div className="mr-[5%]">
-                <FaRegHeart className="text-[2em] dark:text-white" />
+                  
+                  {isLike? <FaHeart onClick={unlikePost} className="text-[2em] text-[#D2042D] dark:text-white cursor-pointer" />: <FaRegHeart onClick={likeUser} className="text-[2em] dark:text-white cursor-pointer" />}
               </div>
               <div>
-                <p className="text-[1.1em] dark:text-white">1.2k</p>
+                <p className="text-[1.1em] ml-[30%] dark:text-white">{isItLike}</p>
               </div>
             </div>
           </div>

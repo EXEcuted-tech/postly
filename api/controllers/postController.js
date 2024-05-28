@@ -120,12 +120,12 @@ const deletePost = (req, res) => {
       });
     }
   });
-};
+  };
 
 module.exports = {
     createPost,
     retrieveAll,
     retrieveByParams,
     deletePost,
-    updatePost
+    updatePost,
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdHome } from "react-icons/io";
 import { FaBell, FaUser, FaHeart } from "react-icons/fa";
 import { AiFillDashboard } from "react-icons/ai";
@@ -6,6 +6,7 @@ import { MdLogout } from "react-icons/md";
 import { SignedInLinks } from "../../common/links";
 import { getLinkClass } from "../../helpers/functions";
 import { useLocation, useNavigate } from "react-router-dom";
+import LogOut from "../modal/LogOut";
 import api from '../../hooks/api';
 import config from '../../common/config';
 
@@ -13,27 +14,11 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const logout = () =>{
-    try{
-      const refreshToken = localStorage.getItem('refreshToken');
-
-      api.post(`${config.API}/logout`, { token: refreshToken })
-      .then((res)=>{
-        //console.log("Response? ",res);
-        if(res.data.success=== true){
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-  
-          window.location.href = '/';
-        }
-      })
-    }catch (error) {
-    console.error('Error logging out:', error);
-    }
-  }
+  const [logout, setLogout] = useState(false);
 
   return (
     <div className="w-[20%] pt-[3%] ">
+      {logout && <LogOut setLogout={setLogout} />}
       <div className="flex justify-center">
         <ul>
           {SignedInLinks.map((link) => (
@@ -44,7 +29,7 @@ const Sidebar = () => {
                   : "flex items-center mb-[15%] hover:animate-zoom-out hover:cursor-pointer"
               }
               onClick={() => 
-                link.link!== 'logout' ? navigate(link.link) : logout()
+                link.link!== 'logout' ? navigate(link.link) : setLogout(true)
               }
             >
               <div className="bg-primary rounded-full p-[3%] dark:bg-black dark:text-primary">

@@ -13,6 +13,7 @@ import OTPSend from "./pages/authentication/OTPSend";
 import ChangePassword from "./pages/authentication/ChangePassword";
 import Search from "./pages/search/Search";
 import ProfileOther from "./pages/profile/ProfileOther";
+import LogOut from "./components/modal/LogOut";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/profile/likes" element={<Profile />} />
         <Route path="/profile/dashboard" element={<Profile />} />
+        <Route path="/logout" element={<LogOut setLogout={function (value: boolean): void {
+          throw new Error("Function not implemented.");
+        } } />} />
       </Route>
       <Route element={<SignedOutLayout/>}>
         <Route path="/" element={<Landing />} />

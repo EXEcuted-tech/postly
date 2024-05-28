@@ -8,7 +8,7 @@ import { FaMoon, FaSearch } from "react-icons/fa";
 import useColorMode from "../../hooks/useColorMode"
 import api from "../../hooks/api";
 import config from "../../common/config";
-import { UserProps } from "../../common/interface";
+import { FollowProps, UserProps } from "../../common/interface";
 import Search from "../../pages/search/Search";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -26,10 +26,11 @@ const Header = () => {
   const [tasks, setTasks] = useState<UserProps[]>([]);
   const [errMess,setErrMess] = useState("");
   const [taskExist, setTaskExist] = useState(false);
-  const [chosenID, setChosenID] = useState(localStorage.getItem("account_id")!=="0" ? localStorage.getItem("account_id") : "1");
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
+
   const click = () =>{
     if(location.pathname!== '/search'){
         navigate('/search');
@@ -89,6 +90,12 @@ const Header = () => {
     })
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      localStorage.setItem("search_query", searchQuery);
+    }
+  };
+
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value)
     setSearchQuery(e.target.value)
@@ -99,11 +106,15 @@ const Header = () => {
     ).then(response =>{
       if(response.status === 200){
         if(response.data.tasks.length === 0){
-          setTasks(response.data.tasks)
+          setTasks([]);
           setErrMess("No Results Found");
+        }else{
+          setTasks(response.data.tasks);
+          setErrMess("");
+          setShowSuggestions(true);
         }
         //console.log(response.data.tasks)
-        setTasks(response.data.tasks)
+        
       }
     }).catch(error=>{
       //console.log(error.response.data.message)
@@ -123,7 +134,6 @@ const Header = () => {
 
   return (
     <div className="font-poppins flex items-center bg-primary h-[10vh] w-full dark:bg-black">
-
       <div className="flex items-center w-[25%]">
         <img
           src={darkMode === "dark" ? logoDark : logoLight}
@@ -137,7 +147,10 @@ const Header = () => {
         <FaSearch className="text-[1.2em] absolute ml-[1%] text-[#8F8F8F]" />
         <input
           type="text"
+          // onClick={() => click()}
+          
           onClick={() => click()}
+          onKeyDown={(event)=>{handleKeyDown(event)}}
           onChange={(e)=>{handleChangeSearch(e)}}
           value={searchQuery}
           placeholder="Search for people, posts, stories"

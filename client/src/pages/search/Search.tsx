@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaArrowLeft } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom';
 import { UserProps } from '../../common/interface';
@@ -10,7 +10,16 @@ const Search = () => {
   const navigate = useNavigate();
   const [isPost,setIsPost]=useState(true);
   const [list,setList]=useState<UserProps[]>([]);
+  const [query, setQuery] = useState<String | null>("");
 
+  const search = localStorage.getItem("search_query");
+  
+  useEffect(() => {
+    setQuery(search);
+    console.log(query);
+  }, [search]);
+  
+  
   return (
     <div className='animate-fade-in w-[80%]'>
       <div className='bg-white ml-[2%] h-full'>
@@ -43,7 +52,7 @@ const Search = () => {
           <div>
             hehehe
             {list.map((follow)=>(
-              <FollowCard follow_id={0} account_id={0} follower_id={0} created_at={''} updated_at={''} deleted_at={''} isFollowing={false} {...list} type="following" />
+              <FollowCard follow_id={0} follower_id={0} deleted_at={''} isFollowing={false} {...follow} type="following" />
             ))}
           </div>
         }

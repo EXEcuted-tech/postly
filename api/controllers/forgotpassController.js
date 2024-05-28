@@ -41,7 +41,6 @@ const sendEmail = async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.status(200).json({ message: 'Email sent successfully'});
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: 'Error sending email' });
   }
 }
@@ -57,10 +56,10 @@ const validateOTP = (req, res) => {
     if (userOTP === otp && currentTime - timestamp <= 5 * 60 * 1000) {
       res.status(200).json({ message: 'OTP is valid', success:true});
     } else {
-      res.status(200).json({ message: 'Invalid or expired OTP',success:false});
+      res.status(500).json({ message: 'Invalid or expired OTP',success:false});
     }
   } else {
-    res.status(200).json({ message: 'OTP not found',success:false });
+    res.status(500).json({ message: 'OTP not found',success:false });
   }
 };
 

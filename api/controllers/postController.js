@@ -30,7 +30,6 @@ const retrieveAll = (req,res) => {
 
     db.query(postRecs, (err, rows) => {
       if (err) {
-        console.error('Error retrieving all records:', err);
         return res.status(500).json({ status: 500, success:false,error: 'Error retrieving all records' });
       }else{
         return res.status(200).json({
@@ -49,7 +48,6 @@ const retrieveByParams = (req, res) => {
 
     db.query(getPosts, [col,val], (err, rows)=>{
       if (err){
-        console.error('Error retrieving all records:', err);
         return res.status(500).json({ status: 500, success:false,error: 'Error retrieving all records' });
       }else{
         return res.status(200).json({
@@ -107,7 +105,6 @@ const deletePost = (req, res) => {
 
   db.query(deletePostQuery, [col, val], (err, result) => {
     if (err) {
-      console.error('Error Deleting record:', err);
       return res.status(500).json({ status: 500, success: false, error: 'Error deleting record' });
     }
     if (result.affectedRows > 0) {

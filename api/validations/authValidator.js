@@ -1,8 +1,3 @@
-const authenticationValidator = (req,res,next)=>{
-
-    next();
-}
-
 const loginValidator = (req, res, next) => {
     let error = "";
     

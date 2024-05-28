@@ -56,7 +56,10 @@ const ForgotPassword = () => {
           <button
             type="submit"
             className="relative z-[100] w-full h-full p-1"
-            onClick={() => navigate("/verify")}
+            onClick={() =>{ 
+              navigate("/verify")
+              localStorage.setItem('email',email);
+            }}
           >
             <p className="font-poppins font-semibold text-[24px] hover:cursor-pointer">
               Reset Password

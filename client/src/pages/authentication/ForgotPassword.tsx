@@ -1,11 +1,87 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { RiLock2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import config from "../../common/config";
+import api from "../../hooks/api";
+import Spinner from "../../components/loader/Spinner";
+import { BounceLoader } from "react-spinners";
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState(true);
+  const [errMess, setErrMess] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [notif, setNotif] = useState(false);
+  const [userOTP, setUserOTP] = useState("");
+  const [email, setEmail] = useState("");
+  const [countdown, setCountdown] = useState(300);
+
+  const handleResetPassword = async () => {
+    setIsLoading(true);
+    try {
+      await api
+        .post(`${config.API}/forgotpass/sendEmail`, { email })
+        .then((res) => {
+          console.log("Sent");
+          navigate("/verify");
+          localStorage.setItem("email", email);
+          if (res.status == 200) {
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 800);
+            setConfirmMessage(false);
+          }
+        });
+    } catch (err) {
+      console.error(err);
+      alert("Error sending reset email");
+    }
+  };
+
+  const confirmOTP = () => {
+    setIsLoading(true);
+    setErrMess("");
+    try {
+      api
+        .post(`${config.API}/forgotpass/verifycode`, { email, userOTP })
+        .then((res) => {
+          if (res.data.success == true) {
+            alert("Success");
+            setSuccess(true);
+          } else {
+            setErrMess("Incorrect OTP code!");
+          }
+        });
+    } catch (err) {
+      setErrMess("Inccorect OTP code!");
+    }
+  };
+
+  useEffect(() => {
+    const countdownInterval = setInterval(() => {
+      if (countdown > 0) {
+        setCountdown(countdown - 1);
+      } else {
+        clearInterval(countdownInterval);
+        // Handle countdown expiration
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(countdownInterval);
+    };
+  }, [countdown]);
+
+  const triggerNotification = () => {
+    setTimeout(() => {
+      setNotif(true);
+      setTimeout(() => {
+        setNotif(false);
+      }, 5000);
+    }, 500);
+  };
 
   return (
     <div className="animate-fade-in font-poppins flex-row  h-full w-full pr-[20%]">
@@ -56,7 +132,8 @@ const ForgotPassword = () => {
           <button
             type="submit"
             className="relative z-[100] w-full h-full p-1"
-            onClick={() => navigate("/verify")}
+            onClick={handleResetPassword}
+            disabled={isLoading}
           >
             <p className="font-poppins font-semibold text-[24px] hover:cursor-pointer">
               Reset Password

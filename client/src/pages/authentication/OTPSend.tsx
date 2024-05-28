@@ -6,6 +6,7 @@ const OTPSend = () => {
   const currEmail = localStorage.getItem("email");
   const [digits, setDigits] = useState(Array(5).fill(""));
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
   const navigate = useNavigate();
 
   const handleChange = (

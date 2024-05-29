@@ -75,7 +75,7 @@ export interface EditProps {
     imageUrl: string | null;
   }
 
-export interface MonthlyFollowerCount {
+export interface MonthlyCount {
    month: string;
    count: number;
 }

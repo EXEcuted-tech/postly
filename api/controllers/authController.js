@@ -1,5 +1,4 @@
 require('dotenv').config()
-
 const db = require('./a_db');
 const saltRounds = 10;
 const bcrypt = require('bcrypt');

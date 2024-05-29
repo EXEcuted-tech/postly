@@ -7,10 +7,11 @@ const createFollow = (req,res) =>{
     try{
        db.query(insertQuery,[account_id,follower_id],(err,result)=>{
         if (err) {
-            console.log('Error inserting data:', err);
+            //console.log('Error inserting data:', err);
             return res.status(500).json({ status: 500, success:false,error: 'Error inserting data' });
           }
       
+          //console.log("Was Here")
           if (result.affectedRows > 0) {
             return res.status(200).json({
               status: 200,
@@ -22,7 +23,7 @@ const createFollow = (req,res) =>{
           }
        })
     }catch{
-        console.log('Error:', error);
+        //console.log('Error:', error);
         return res.status(500).json({ status: 500, success: false, error: 'An error occurred' });
     }
 }
@@ -34,7 +35,7 @@ const retrieveByParams = (req,res) =>{
   
     db.query(retrieveSpecific, [col,val],(err, row) => {
       if (err) {
-        console.error('Error retrieving records:', err);
+        //console.error('Error retrieving records:', err);
         return res.status(500).json({ status: 500, success:false,error: 'Error retrieving records' });
       }else{
         return res.status(200).json({
@@ -53,7 +54,7 @@ const retrieveCountByParams = (req,res) =>{
 
   db.query(retrieveSpecific, [col,val],(err, row) => {
     if (err) {
-      console.error('Error retrieving records:', err);
+      //console.error('Error retrieving records:', err);
       return res.status(500).json({ status: 500, success:false,error: 'Error retrieving records' });
     }else{
       return res.status(200).json({
@@ -73,7 +74,7 @@ const retrieveCountMonthlyFollowers = (req, res) => {
 
   db.query(retrieveSpecific, [col, val], (err, rows) => {
     if (err) {
-      console.error('Error retrieving records:', err);
+      //console.error('Error retrieving records:', err);
       return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
     } else {
 
@@ -99,7 +100,7 @@ const retrieveCountGainedFollowers = (req, res) => {
 
   db.query(retrieveSpecific, [col, val], (err, row) => {
     if (err) {
-      console.error('Error retrieving records:', err);
+      //console.error('Error retrieving records:', err);
       return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
     } else {
       return res.status(200).json({
@@ -123,7 +124,7 @@ const retrieveCountLostFollowers = (req, res) => {
 
   db.query(retrieveSpecific, [col, val], (err, row) => {
     if (err) {
-      console.error('Error retrieving records:', err);
+      //console.error('Error retrieving records:', err);
       return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
     } else {
       return res.status(200).json({
@@ -142,7 +143,7 @@ const retrieveByTwoParams = (req,res) =>{
   
     db.query(retrieveSpecific, [col1,val1,col2,val2],(err, row) => {
       if (err) {
-        console.error('Error retrieving records:', err);
+        //console.error('Error retrieving records:', err);
         return res.status(500).json({ status: 500, success:false,error: 'Error retrieving records' });
       }else{
         return res.status(200).json({
@@ -161,7 +162,7 @@ const updateFollow = (req,res) =>{
 
     db.query(update,[null,updateDate,follow_id],(err,result)=>{
         if (err) {
-            console.error('Error updating data:', err);
+            //console.error('Error updating data:', err);
             return res.status(500).json({ status: 500, success:false,error: 'Error deleting follow' });
           }
       
@@ -184,7 +185,7 @@ const softDeleteFollow = (req,res) =>{
 
     db.query(update,[unfollowDate,unfollowDate,follow_id],(err,result)=>{
         if (err) {
-            console.error('Error updating data:', err);
+            //console.error('Error updating data:', err);
             return res.status(500).json({ status: 500, success:false,error: 'Error deleting follow' });
           }
       

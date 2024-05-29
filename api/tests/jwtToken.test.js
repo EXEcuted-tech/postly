@@ -1,10 +1,9 @@
-
 require('dotenv').config({ path: '.env.test' });
 const request = require('supertest');
-const app = require('../routes');
+const app = require('../routes.js');
 const jwt = require('jsonwebtoken');
 
-const { generateAccessToken, authenticateToken } = require('../middleware/jwtAuth');
+const { generateAccessToken, authenticateToken } = require('../middleware/jwtAuth.js');
 const db = require('../controllers/a_db.js');
 
 jest.mock('../controllers/a_db.js', () => {
@@ -12,8 +11,6 @@ jest.mock('../controllers/a_db.js', () => {
       query: jest.fn()
   };
 });
-
-
 
 
 app.get('/protected', authenticateToken, (req, res) => {

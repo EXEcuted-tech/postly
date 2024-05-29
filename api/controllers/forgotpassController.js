@@ -52,7 +52,6 @@ const validateOTP = (req, res) => {
     const { otp, timestamp } = otpData[email];
     const currentTime = Date.now();
 
-    // Check if the OTP is correct and within the time limit (e.g., 5 minutes)
     if (userOTP === otp && currentTime - timestamp <= 5 * 60 * 1000) {
       res.status(200).json({ message: 'OTP is valid', success:true});
     } else {

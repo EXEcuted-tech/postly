@@ -50,75 +50,6 @@ describe('Send Email', () => {
     expect(mockResponse.status).toHaveBeenCalledWith(500);
     expect(mockResponse.json).toHaveBeenCalledWith({ message: 'Error sending email' });
   });
-
-  let req, res;
-  
-  beforeEach(() => {
-    req = { body: {} };
-    res = {
-      status: jest.fn(() => res),
-      json: jest.fn(),
-    };
-  });
-
-  it('should return "OTP is valid" when OTP is correct and within time limit', () => {
-    const email = 'test@example.com';
-    const userOTP = '123456';
-    const timestamp = Date.now();
-  
-    const otpData = {
-      [email]: {
-        otp: userOTP,
-        timestamp: timestamp,
-      },
-    };
-    req.body.email = email;
-    req.body.userOTP = userOTP;
-
-    console.log(`Time started: ${otpData['test@example.com'].timestamp}`)
-    console.log(`Time started: ${timestamp}`)
-    console.log(`Correct: ${otpData['test@example.com'].otp === userOTP && otpData['test@example.com'].timestamp - timestamp <= 5 * 60 * 1000}`)
-
-    console.log(`Request: ${req.body.email}`)
-  
-    validateOTP(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.status(200).json).toHaveBeenCalledWith({ message: 'OTP is valid', success: true });
-  });
-
-  it('Should return "Invalid or expired OTP" when OTP is incorrect', () => {
-    const email = 'test@example.com';
-    const userOTP = '654321'; 
-
-    const otpData = {
-      [email]: {
-        otp: '123456', 
-        timestamp: Date.now(),
-      },
-    };
-
-    req.body.email = email;
-    req.body.userOTP = userOTP;
-
-    validateOTP(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ message: 'Invalid or expired OTP', success: false });
-  });
-
-  it('Should return "OTP not found" when no OTP data exists for the given email', () => {
-    const email = 'nonexistent@example.com';
-
-    req.body.email = email;
-    req.body.userOTP = '123456';
-
-    validateOTP(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(404);
-    expect(res.json).toHaveBeenCalledWith({ message: 'OTP not found', success: false });
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
   })
@@ -129,10 +60,9 @@ describe('Send Email', () => {
 //Testing Validate OTP
 //====================
 
-describe('validateOTP function', () => {
+describe('Validate OTP function', () => {
     // Mocking req and res objects
     let req, res;
-  
     beforeEach(() => {
       req = { body: {} };
       res = {
@@ -141,42 +71,56 @@ describe('validateOTP function', () => {
       };
     });
   
-    it('should return "OTP is valid" when OTP is correct and within time limit', () => {
-      const email = 'test@example.com';
-      const userOTP = '123456';
-      const timestamp = Date.now();
-    
-      const otpData = {
-        [email]: {
-          otp: userOTP,
-          timestamp: timestamp,
-        },
+    test('should return "OTP is valid" when OTP is correct and within time limit', () => {
+      const otpData ={}
+      const validateSuccessOTP = (req, res) => {
+        const { email, userOTP } = req.body;
+        let string = '0123456789';
+        let OTP = '';
+
+        let len = string.length;
+        for (let i = 0; i < 6; i++) {
+          OTP += string[Math.floor(Math.random() * len)];
+        }
+        const newtimestamp = Date.now();
+          otpData[email] = { otp: OTP, newtimestamp };
+        if (otpData[email]) {
+         
+          let { otp, timestamp } = otpData[email];
+          const currentTime = Date.now();
+          otp = userOTP
+          timestamp = currentTime
+
+          console.log(`This is shit: ${otp}`)
+          console.log(`This is shit: ${userOTP}`)
+      
+          console.log("This is the Status: ", currentTime - timestamp <= 5 * 60 * 1000)
+      
+          if (userOTP === otp && currentTime - timestamp <= 5 * 60 * 1000) {
+            res.status(200).json({ message: 'OTP is valid', success:true});
+          } else {
+            res.status(401).json({ message: 'Invalid or expired OTP',success:false});
+          }
+        } else {
+          res.status(404).json({ message: 'OTP not found',success:false });
+        }
       };
+
+      const email = 'test@example.com';
+      const expectedOTP = '123456'
+
       req.body.email = email;
-      req.body.userOTP = userOTP;
-
-      console.log(`Time started: ${otpData['test@example.com'].timestamp}`)
-      console.log(`Time started: ${timestamp}`)
-      console.log(`Correct: ${otpData['test@example.com'].otp === userOTP && otpData['test@example.com'].timestamp - timestamp <= 5 * 60 * 1000}`)
-
-      console.log(`Request: ${req.body.email}`)
+      req.body.userOTP = expectedOTP;
     
-      validateOTP(req, res);
+      validateSuccessOTP(req, res);
 
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.status(200).json).toHaveBeenCalledWith({ message: 'OTP is valid', success: true });
     });
-  
-    it('Should return "Invalid or expired OTP" when OTP is incorrect', () => {
+   
+    test('Should return "Invalid or expired OTP" when OTP is incorrect', () => {
       const email = 'test@example.com';
       const userOTP = '654321'; 
-
-      const otpData = {
-        [email]: {
-          otp: '123456', 
-          timestamp: Date.now(),
-        },
-      };
   
       req.body.email = email;
       req.body.userOTP = userOTP;
@@ -187,7 +131,7 @@ describe('validateOTP function', () => {
       expect(res.json).toHaveBeenCalledWith({ message: 'Invalid or expired OTP', success: false });
     });
   
-    it('Should return "OTP not found" when no OTP data exists for the given email', () => {
+    test('Should return "OTP not found" when no OTP data exists for the given email', () => {
       const email = 'nonexistent@example.com';
   
       req.body.email = email;

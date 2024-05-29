@@ -37,7 +37,7 @@ describe('Login API Endpoint',()=>{
             const res = await request(app)
               .post('/login')
               .send({ credential: '', password: 'password' });
-            expect(res.statusCode).toBe(404);
+            expect(res.body).toHaveProperty('status',404);
             expect(res.body).toHaveProperty('error', 'Username or email is required!');
           });
 
@@ -45,7 +45,7 @@ describe('Login API Endpoint',()=>{
             const res = await request(app)
               .post('/login')
               .send({ credential: 'katteu_cutie', password: '' });
-            expect(res.statusCode).toBe(404);
+              expect(res.body).toHaveProperty('status',404);
             expect(res.body).toHaveProperty('error', 'Password is required!');
           });
 
@@ -98,7 +98,7 @@ describe('Sign Up API Endpoint',()=>{
                 email_address: testEmail, 
                 password: 'password' 
               });
-            expect(res.statusCode).toBe(404);
+            expect(res.body).toHaveProperty('status',404);
             expect(res.body).toHaveProperty('error', 'Username is required!');
           });
 
@@ -110,7 +110,7 @@ describe('Sign Up API Endpoint',()=>{
                 email_address: testEmail, 
                 password: 'password' 
               });
-            expect(res.statusCode).toBe(404);
+            expect(res.body).toHaveProperty('status',404);
             expect(res.body).toHaveProperty('error', 'Username must be 4-15 characters long.');
           });
 
@@ -122,7 +122,7 @@ describe('Sign Up API Endpoint',()=>{
                 email_address: testEmail, 
                 password: 'password' 
               });
-            expect(res.statusCode).toBe(404);
+            expect(res.body).toHaveProperty('status',404);
             expect(res.body).toHaveProperty('error', 'Username must be 4-15 characters long.');
           });
 
@@ -130,11 +130,11 @@ describe('Sign Up API Endpoint',()=>{
             const res = await request(app)
               .post('/signup')
               .send({ 
-                account_handle: 'USCTester',
+                account_handle: 'USCTestersz',
                 email_address: '', 
                 password: 'password' 
               });
-            expect(res.statusCode).toBe(404);
+            expect(res.body).toHaveProperty('status',404);
             expect(res.body).toHaveProperty('error', 'Email is required!');
           });
 
@@ -143,24 +143,48 @@ describe('Sign Up API Endpoint',()=>{
             const res = await request(app)
               .post('/signup')
               .send({ 
-                account_handle: 'USCTester',
+                account_handle: 'USCTesters',
                 email_address: testEmail, 
                 password: 'password'
               });
             expect(res.statusCode).toBe(404);
-            expect(res.body).toHaveProperty('message', 'Email address already exists!');
+            expect(res.body).toHaveProperty('message', 'Email address or account handle already exists!');
+          });
+
+          test('Throw error if account handle already exists', async () => {
+            const res = await request(app)
+              .post('/signup')
+              .send({ 
+                account_handle: 'USCTester',
+                email_address: 'test@abc.com', 
+                password: 'password'
+              });
+            expect(res.statusCode).toBe(404);
+            expect(res.body).toHaveProperty('message', 'Email address or account handle already exists!');
           });
 
           test('Throw error if no password inputted', async () => {
             const res = await request(app)
               .post('/signup')
               .send({ 
-                account_handle: 'USCTester',
+                account_handle: 'USCTesterisms',
                 email_address: testEmail, 
                 password: ''
               });
-            expect(res.statusCode).toBe(404);
+            expect(res.body).toHaveProperty('status',404);
             expect(res.body).toHaveProperty('error', 'Password is required!');
+          });
+
+          test('Throw error if password is less than 8 characters', async () => {
+            const res = await request(app)
+              .post('/signup')
+              .send({ 
+                account_handle: 'USCSS',
+                email_address: testEmail, 
+                password: 'passwor' 
+              });
+            expect(res.body).toHaveProperty('status',404);
+            expect(res.body).toHaveProperty('error', 'Password must be at least 8 characters long.');
           });
     });    
 })

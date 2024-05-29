@@ -11,7 +11,7 @@ import EditPost from "../modal/EditPost";
 
 import { PiPencilCircleDuotone,PiXCircleDuotone } from "react-icons/pi";
 
-const PostCard = (props: PostProps) => {
+const PostLayout = (props: PostProps) => {
   const navigate = useNavigate();
   //Likes kay to be added pa sa PostProps
   const { post_id, account_id, content, created_at, updated_at, is_owner } =
@@ -225,77 +225,39 @@ const PostCard = (props: PostProps) => {
   }
 
   return (
-    <div className="bg-white rounded-[20px] px-[2%] py-[2%] mb-[2%] dark:bg-black">
-      {!isEditOpen ? (
-        <>
-          <div className="flex items-center">
-            <div className="w-[50px] h-[50px]">
-              <img
-                src={dpURL !== null ? dpURL : user}
-                alt="Profile Picture"
-                className="rounded-full object-cover w-full h-full"
-              />
-            </div>
-            <div className="w-[89%] ml-[1%]">
-              <h1
-                className="font-semibold text-[1.3em] hover:cursor-pointer dark:text-white"
-                onClick={viewProfile}
-              >
-                {accDeets?.name}
-              </h1>
-              <p className="text-[1em] text-[#9D9D9D]">{duration} {changed && '• Edited'}</p>
-            </div>
-            <div className="flex items-center">
-              {is_owner && (
-                <div className="flex mr-[10%] ml-[-22%]">
-                  <PiPencilCircleDuotone
-                    className="hover:animate-pop1 text-[2em] text-[#1c1c1c] cursor-pointer mr-[10px] dark:text-white"
-                    onClick={() => {
-                      setIsEditOpen(true);
-                    }}
-                  />
-                  <PiXCircleDuotone
-                    className="hover:animate-pop1 text-[2em] text-[#1c1c1c] cursor-pointer dark:text-white"
-                    onClick={() => setIsDeleteOpen(true)}
-                  />
-                </div>
-              )}
-              <div className="mr-[5%]">
-                  
-                  {isLike? <FaHeart onClick={unlikePost} className="animate-pop1 text-[2em] text-[#D2042D] dark:text-white cursor-pointer" />: <FaRegHeart onClick={likeUser} className="animate-pop2 text-[2em] dark:text-white cursor-pointer" />}
-              </div>
-              <div>
-                <p className="text-[1.1em] ml-[30%] dark:text-white">{isItLike}</p>
-              </div>
-            </div>
-          </div>
-          <div className="ml-[0.5%] mr-[1%] mt-[1%] text-justify dark:text-white">
-            {content}
-          </div>
-        </>
-      ) : (
-        <EditPost
-          postContent={content}
-          onClose={() => {
-            setIsEditOpen(false);
-          }}
-          postId={post_id}
-          postName={accDeets ? accDeets?.name : null}
-          postDuration={duration}
-          imageUrl={dpURL !== null ? dpURL : user}
-        />
-      )}
+    <div className="bg-white px-[2%] py-[2%] border-b-[1.5px] border-b-[#dbdbdb] dark:bg-black">
+      <div className="flex items-center">
+        <div className="w-[50px] h-[50px]">
+          <img
+            src={dpURL !== null ? dpURL : user}
+            alt="Profile Picture"
+            className="rounded-full object-cover w-full h-full"
+          />
+        </div>
+        <div className="w-[89%] ml-[1%]">
+          <h1
+            className="font-semibold text-[1.3em] hover:cursor-pointer dark:text-white"
+            onClick={viewProfile}
+          >
+            {accDeets?.name}
+          </h1>
+          <p className="text-[1em] text-[#9D9D9D]">{duration} {changed && '• Edited'}</p>
+        </div>
+        <div className="flex items-center">
+          <div className="mr-[5%]">
 
-      {/* Delete Popup */}
-      <Delete
-        isOpen={isDeleteOpen}
-        onClose={() => {
-          setIsDeleteOpen(false);
-        }}
-        postId={post_id}
-      />
+              {isLike? <FaHeart onClick={unlikePost} className="text-[2em] text-[#D2042D] dark:text-white cursor-pointer" />: <FaRegHeart onClick={likeUser} className="text-[2em] dark:text-white cursor-pointer" />}
+          </div>
+          <div>
+            <p className="text-[1.1em] ml-[30%] dark:text-white">{isItLike}</p>
+          </div>
+        </div>
+      </div>
+      <div className="ml-[0.5%] mr-[1%] mt-[1%] text-justify dark:text-white">
+        {content}
+      </div>
     </div>
   );
 };
 
-export default PostCard;
+export default PostLayout;

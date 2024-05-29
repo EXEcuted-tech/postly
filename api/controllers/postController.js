@@ -61,6 +61,25 @@ const retrieveByParams = (req, res) => {
     })
 }
 
+const retrieveByParamsPosts = (req,res)=>{
+  const {col,val} = req.query;
+  const retrievePosts = `SELECT * FROM post WHERE ?? LIKE ?`;
+  const queryParams = [col, `%${val}%`];
+
+  db.query(retrievePosts,queryParams, (err, rows) => {
+    if (err) {
+      console.error('Error retrieving all records:', err);
+      return res.status(500).json({ status: 500, success:false,error: 'Error retrieving all records' });
+    }else{
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        post: rows,
+      });
+    }
+  });
+}
+
 const updatePost = async (req, res) => {
   try {
     const { postID, val } = req.query;
@@ -124,12 +143,13 @@ const deletePost = (req, res) => {
       });
     }
   });
-};
+  };
 
 module.exports = {
     createPost,
     retrieveAll,
     retrieveByParams,
+    retrieveByParamsPosts,
     deletePost,
-    updatePost
+    updatePost,
 }

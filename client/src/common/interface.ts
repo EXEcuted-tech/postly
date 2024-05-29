@@ -79,3 +79,14 @@ export interface MonthlyFollowerCount {
    month: string;
    count: number;
 }
+
+export interface reactionProps {
+    reaction_id:number;
+    post_id:number;
+    reactor_id:number;
+    content:number;
+    dp_id: number;
+    created_at:string;
+    updated_at:string;
+ }
+

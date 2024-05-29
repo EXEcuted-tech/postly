@@ -23,7 +23,7 @@ const EditPost: React.FC<EditProps> = ({
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const [error,setError]=useState("");
+  const [error, setError] = useState("");
 
   const onSubmit = async () => {
     try {
@@ -44,9 +44,11 @@ const EditPost: React.FC<EditProps> = ({
           }, 200);
 
           navigateBack();
-        }else{
+        } else {
           //console.log("Hello");
-          setTimeout(()=>{setLoading(false)},800);
+          setTimeout(() => {
+            setLoading(false);
+          }, 800);
           setError(res.data.error);
           errorTimer();
           return;
@@ -54,13 +56,13 @@ const EditPost: React.FC<EditProps> = ({
       })
       .catch((err) => {
         setError(err.response.data.error);
-        setLoading(false);   
-        errorTimer(); 
+        setLoading(false);
+        errorTimer();
         return;
       });
   };
-  
-  const navigateBack = () =>{
+
+  const navigateBack = () => {
     navigate("/profile");
 
     setTimeout(() => {
@@ -71,13 +73,13 @@ const EditPost: React.FC<EditProps> = ({
     }, 50);
 
     onClose();
-  }
+  };
 
-  const errorTimer =  ()=>{ 
+  const errorTimer = () => {
     setTimeout(() => {
       setError("");
     }, 5000);
-  }
+  };
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -89,17 +91,17 @@ const EditPost: React.FC<EditProps> = ({
 
   return (
     <div className="animate-fade-in flex flex-col">
-      {error !=='' && 
+      {error !== "" && (
         <UserNotification
-          icon={<AiFillExclamationCircle/>}
-          logocolor='#ff0000'
+          icon={<AiFillExclamationCircle />}
+          logocolor="#ff0000"
           title="Error!"
           message={error}
-          animate='animate-shake'
+          animate="animate-shake"
         />
-      }
+      )}
       <div className="flex w-full h-full justify-between items-center">
-      <div className="w-12 h-12">
+        <div className="w-12 h-12">
           <img
             src={imageUrl !== null ? imageUrl : user}
             alt="Profile Picture"
@@ -115,6 +117,7 @@ const EditPost: React.FC<EditProps> = ({
         <div className="flex-row justify-end w-[50%] pl-[47%]">
           <IoCloseOutline
             className="cursor-pointer text-black text-[3em] dark:text-white"
+            name=""
             onClick={() => {
               onClose();
             }}
@@ -131,6 +134,7 @@ const EditPost: React.FC<EditProps> = ({
           value={content}
           onChange={(e) => setContent(e.target.value)}
           style={{ minHeight: "50px" }}
+          id="EditArea"
         ></textarea>
       </div>
       <hr className="border-1 my-2 ml-[4%]" />
@@ -140,6 +144,7 @@ const EditPost: React.FC<EditProps> = ({
           onClick={() => {
             onSubmit();
           }}
+          name="SaveEdits"
         >
           <BounceLoader className="" color="#FFFFFF" loading={loading} />
           Save

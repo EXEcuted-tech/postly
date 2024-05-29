@@ -139,7 +139,6 @@ const signup = (req,res) =>{
         if(error){
             //console.log(error);
         }
-        
         if(results.length > 0){
             res.status(404).json({
                 status: 404,

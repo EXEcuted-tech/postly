@@ -7,21 +7,21 @@ import { SignedInLinks } from "../../common/links";
 import { getLinkClass } from "../../helpers/functions";
 import { useLocation, useNavigate } from "react-router-dom";
 import LogOut from "../modal/LogOut";
-import api from '../../hooks/api';
-import config from '../../common/config';
+import api from "../../hooks/api";
+import config from "../../common/config";
 import AddPost from "../modal/AddPost";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [addPost,setAddPost]=useState(false);
+  const [addPost, setAddPost] = useState(false);
 
   const [logout, setLogout] = useState(false);
 
   return (
     <div className="w-[20%] pt-[3%] ">
       {logout && <LogOut setLogout={setLogout} />}
-      {addPost && <AddPost setAddPost={setAddPost}/>}
+      {addPost && <AddPost setAddPost={setAddPost} />}
       <div className="flex justify-center">
         <ul>
           {SignedInLinks.map((link) => (
@@ -31,21 +31,28 @@ const Sidebar = () => {
                   ? "bg-[#E7E7E7] ml-[-6%] mr-[-50%] pl-[5%] py-[5%] rounded-[10px] flex items-center mb-[10%] hover:cursor-pointer"
                   : "flex items-center mb-[15%] hover:animate-zoom-out hover:cursor-pointer"
               }
-              onClick={() => 
-                link.link!== 'logout' ? navigate(link.link) : setLogout(true)
+              id={link.name}
+              onClick={() =>
+                link.link !== "logout" ? navigate(link.link) : setLogout(true)
               }
             >
               <div className="bg-primary rounded-full p-[3%] dark:bg-black dark:text-primary">
                 {link.name === "Home" ? (
                   <IoMdHome className="text-[2.5em] p-[8%]" />
                 ) : link.name === "Notifications" ? (
-                  <FaBell className="text-[2.5em] p-[8%]" />
+                  <FaBell
+                    className="text-[2.5em] p-[8%]"
+                    name="notifications"
+                  />
                 ) : link.name === "Profile" ? (
-                  <FaUser className="text-[2.5em] p-[8%]" />
+                  <FaUser className="text-[2.5em] p-[8%]" name="profile" />
                 ) : link.name === "Likes" ? (
-                  <FaHeart className="text-[2.5em] p-[8%]" />
+                  <FaHeart className="text-[2.5em] p-[8%]" name="like" />
                 ) : link.name === "Dashboard" ? (
-                  <AiFillDashboard className="text-[2.5em] p-[8%]" />
+                  <AiFillDashboard
+                    className="text-[2.5em] p-[8%]"
+                    name="dashboard"
+                  />
                 ) : (
                   <MdLogout className="text-[2.5em] p-[8%]" />
                 )}
@@ -65,8 +72,12 @@ const Sidebar = () => {
       </div>
       <hr className="border-[2px] ml-[30%]" />
       <div className="flex justify-center mt-[8%] ml-[30%]">
-        <button className="bg-primary rounded-[50px] font-semibold text-[1.3em] px-[23%] py-[3%] hover:bg-black hover:text-primary hover:animate-zoom-out dark:bg-black dark:text-primary"
-        onClick={()=>{setAddPost(true)}}>
+        <button
+          className="bg-primary rounded-[50px] font-semibold text-[1.3em] px-[23%] py-[3%] hover:bg-black hover:text-primary hover:animate-zoom-out dark:bg-black dark:text-primary"
+          onClick={() => {
+            setAddPost(true);
+          }}
+        >
           Create A Post
         </button>
       </div>

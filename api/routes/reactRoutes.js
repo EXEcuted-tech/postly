@@ -4,7 +4,7 @@ const router = express.Router();
 const {authenticateToken}= require('../middleware/jwtAuth')
 const { likePost, retrieveLikesByParams, countLikes, retrieveByTwoParams, softDeleteLike, updateLike} = require('../controllers/reactController')
 
-router.post('/create',authenticateToken, likePost)
+router.post('/create', likePost)
 router.post('/relike',authenticateToken, updateLike)
 router.get('/retrieve',authenticateToken, retrieveLikesByParams)
 router.get('/count',authenticateToken, countLikes)

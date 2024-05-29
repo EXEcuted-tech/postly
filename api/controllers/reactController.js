@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const db = require('./a_db'); 
 
 const likePost = (req, res) => {
@@ -7,7 +9,6 @@ const likePost = (req, res) => {
 
       db.query(sql,[postID, reactID],(err,results) =>{
           if(err){
-              console.error('Error Getting data:', err)
               res.status(500).json({
                   status: 500,
                   success: false,

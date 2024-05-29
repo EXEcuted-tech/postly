@@ -11,7 +11,7 @@ const followRoutes = require('./routes/followRoutes')
 const notifRoutes = require('./routes/notifRoutes')
 const postRoutes = require('./routes/postRoutes')
 const reactRoutes = require('./routes/reactRoutes')
-const forgotpassRoutes = require('./routes/fogtopassRoutes')
+const forgotpassRoutes = require('./routes/forgotpassRoutes')
 
 app.use(cors({
     origin: [process.env.CORS_ORIGIN],
@@ -44,7 +44,7 @@ app.use('/file',fileRoutes)
 app.use('/follow',followRoutes);
 app.use('/notif',notifRoutes);
 app.use('/post',postRoutes);
-// app.use('/react',reactRoutes);
+app.use('/react',reactRoutes);
 app.use('/forgotpass', forgotpassRoutes)
 
 module.exports = app;

@@ -126,6 +126,7 @@ const EditPost: React.FC<EditProps> = ({
         <textarea
           ref={textareaRef}
           maxLength={1000}
+          name="edittextarea"
           placeholder="What's on your mind today?"
           className="font-light outline-none bg-[#F3F5F7] pl-4 py-2 w-full rounded-2xl ml-[4%] mt-[1%] text-lg resize-none overflow-hidden"
           value={content}

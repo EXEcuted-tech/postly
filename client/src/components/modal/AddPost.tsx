@@ -93,7 +93,9 @@ const AddPost:React.FC<AddPostProps>= ({ setAddPost }) => {
       <div className='bg-white w-[80%] mt-[15%] mx-[15%] h-[28vh] rounded-[20px] shadow-2xl dark:bg-black'>
         <div className='text-white'>
           <div className='flex justify-end pt-[1%] mb-[1%]'>
-            <IoCloseOutline className='cursor-pointer text-[#C2C2C2] hover:text-[#545454] text-[3em] mr-[3%] dark:text-white'
+            <IoCloseOutline 
+            name='post-close'
+            className='cursor-pointer text-[#C2C2C2] hover:text-[#545454] text-[3em] mr-[3%] dark:text-white'
             onClick={()=>setAddPost(false)}/>
           </div>
           <div className='flex ml-[3%]'>

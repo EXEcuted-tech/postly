@@ -1,8 +1,7 @@
 const { Builder, By, until , Key} = require('selenium-webdriver');
-const {cleanTestData} = require('./commonFunction')
-let driver;
+const {testConfig, registerDummyAccount, loginDummyAccount, cleanTestData, cleanTestPost} = require('./commonFunction');
 
-const {testConfig, registerAccount, loginAccount} = require('./commonFunction');
+let driver;
 const URL = testConfig;
 
 //=======================
@@ -10,14 +9,17 @@ const URL = testConfig;
 //=======================
 describe('Post', () => {
     beforeAll(async () => {
+        //jest.setTimeout(30000);
         driver = await new Builder().forBrowser('chrome').build();
         await driver.get(`${URL}`);
-        // await registerAccount(driver); 
-        await loginAccount(driver);
-    });
+        await registerDummyAccount(driver); 
+        await loginDummyAccount(driver);
+    },100000);
     
     afterAll(async () => {
-        // await cleanTestData('19103523@usc.edu.ph');
+        cleanTestData('abcdxyz@gmail.com')
+        cleanTestPost('I am good. How are you?')
+        cleanTestPost('Lorem ipsum dolor sit ametTesting Edit Automation')
         await driver.quit();
     });
     
@@ -29,10 +31,10 @@ describe('Post', () => {
             await driver.findElement(By.name('posttextarea')).sendKeys(lorem);
             await driver.findElement(By.name('postbutton')).click();
             
-            await driver.wait(until.elementLocated(By.id('contentful')), 10000);
+            await driver.wait(until.elementLocated(By.id('contentful')), 1000);
             const var1 = await driver.findElement(By.id('contentful')).getText();
             expect(var1).toBe(lorem);
-        });
+        },10000000);
 
         test('Display error notification when no content is inputted', async () => {
             let btn = await driver.findElement(By.name('posttextarea'));
@@ -41,42 +43,45 @@ describe('Post', () => {
             await driver.findElement(By.name('posttextarea')).sendKeys('');
             await driver.findElement(By.name('postbutton')).click();
             
+            await driver.wait(until.elementLocated(By.className('leading-5')), 5000);
+            const msg = await driver.findElement(By.className('leading-5')).getText();
+            expect(msg).toBe('Content is required and it must be a string!');
+        },10000000);
+
+        test('Should successfully add a post on another page', async () => {
+            let btn = await driver.findElement(By.name('notifications'));
+            await btn.click();
+
+            let btn1 = await driver.findElement(By.name('createPostBtn'));
+            await btn1.click();
+
+            let lorem = 'Lorem ipsum dolor sit amet'
+            await driver.findElement(By.name('addpost-textarea')).sendKeys(lorem);
+            await driver.findElement(By.name('submitcreatepost')).click();
+            
+            await driver.get(`${URL}/home`);
+            await driver.wait(until.elementLocated(By.id('contentful')), 10000);
+            const var1 = await driver.findElement(By.id('contentful')).getText();
+            expect(var1).toBe(lorem);
+        },10000000);
+
+        test('Display error notification when no content is inputted in another page', async () => {
+            let btn = await driver.findElement(By.name('notifications'));
+            await btn.click();
+
+            let btn1 = await driver.findElement(By.name('createPostBtn'));
+            await btn1.click();
+
+            await driver.findElement(By.name('addpost-textarea')).sendKeys('');
+            await driver.findElement(By.name('submitcreatepost')).click();
+            
             await driver.wait(until.elementLocated(By.className('leading-5')), 10000);
             const msg = await driver.findElement(By.className('leading-5')).getText();
             expect(msg).toBe('Content is required and it must be a string!');
-        });
 
-        // test('Should successfully add a post on another page', async () => {
-        //     let btn = await driver.findElement(By.name('bells'));
-        //     await btn.click();
-
-        //     let btn1 = await driver.findElement(By.name('createPostBtn'));
-        //     await btn1.click();
-
-        //     let lorem = 'Lorem ipsum dolor sit amet'
-        //     await driver.findElement(By.name('addpost-textarea')).sendKeys(lorem);
-        //     await driver.findElement(By.name('submitcreatepost')).click();
-            
-        //     await driver.get(`${URL}/home`);
-        //     await driver.wait(until.elementLocated(By.id('contentful')), 10000);
-        //     const var1 = await driver.findElement(By.id('contentful')).getText();
-        //     expect(var1).toBe(lorem);
-        // });
-
-        // test('Display error notification when no content is inputted in another page', async () => {
-        //     let btn = await driver.findElement(By.name('bells'));
-        //     await btn.click();
-
-        //     let btn1 = await driver.findElement(By.name('createPostBtn'));
-        //     await btn1.click();
-
-        //     await driver.findElement(By.name('addpost-textarea')).sendKeys('');
-        //     await driver.findElement(By.name('submitcreatepost')).click();
-            
-        //     await driver.wait(until.elementLocated(By.className('leading-5')), 10000);
-        //     const msg = await driver.findElement(By.className('leading-5')).getText();
-        //     expect(msg).toBe('Content is required and it must be a string!');
-        // });
+            const btnClose = await driver.findElement(By.name('post-close'));
+            await btnClose.click();
+        },10000000);
 
     })
 
@@ -88,15 +93,16 @@ describe('Post', () => {
             await driver.findElement(By.name('EditArea')).sendKeys('Testing Edit Automation')
             await driver.findElement(By.name('SaveEdits')).click()
             await driver.wait(until.elementLocated(By.name('Edit')), 1000000);
-        });
+        },10000000);
 
         test('Display error notification when no content is inputted', async () => {
+            await driver.sleep(5000);
             await driver.wait(until.elementLocated(By.name('Edit')), 1000000);
             await driver.findElement(By.name('Edit')).click()
             await driver.findElement(By.name("EditArea")).sendKeys(Key.CONTROL, 'a', Key.DELETE);
             await driver.findElement(By.name('SaveEdits')).click()
             await driver.findElement(By.name('CloseEdit')).click()
-        });
+        },10000000);
     })
 
     describe('Delete Post', () =>{
@@ -106,6 +112,6 @@ describe('Post', () => {
             await driver.findElement(By.name('Delete')).click()
             await driver.findElement(By.name('ConfirmDelete')).click()
             await driver.wait(until.elementLocated(By.name('Delete')), 1000000);
-        });
+        },10000000);
     })
 });

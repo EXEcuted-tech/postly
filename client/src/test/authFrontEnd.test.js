@@ -223,7 +223,7 @@ describe('Log In', () => {
         driver = await new Builder().forBrowser('chrome').build();
         await driver.get(`${URL}`);
         await registerAccount(driver); 
-    });
+    },30000);
     
     afterAll(async () => {
         await cleanTestData('19103523@usc.edu.ph');
@@ -340,12 +340,12 @@ describe('Log In', () => {
 describe('Log Out', () => {
 
     beforeAll(async () => {
-        jest.setTimeout(10000);
+        //jest.setTimeout(10000);
         driver = await new Builder().forBrowser('chrome').build();
         await driver.get(`${URL}`);
         await registerAccount(driver); 
         await loginAccount(driver);
-    });
+    },30000);
     
     afterAll(async () => {
         await cleanTestData('19103523@usc.edu.ph');

@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const db = require('./a_db'); 
 
 const likePost = (req, res) => {
@@ -7,7 +9,6 @@ const likePost = (req, res) => {
 
       db.query(sql,[postID, reactID],(err,results) =>{
           if(err){
-              console.error('Error Getting data:', err)
               res.status(500).json({
                   status: 500,
                   success: false,
@@ -40,7 +41,7 @@ const retrieveLikesByParams = (req, res) => {
 
     db.query(getLikes, [col,val], (err, rows)=>{
     if (err){
-        console.error('Error retrieving all records:', err);
+
         return res.status(500).json({ status: 500, success:false,error: 'Error retrieving all records' });
     }else{
         return res.status(200).json({
@@ -58,7 +59,6 @@ const countLikes = (req, res) => {
 
     db.query(getLikes, [col,val], (err, rows)=>{
         if (err){
-        console.error('Error retrieving all records:', err);
         return res.status(500).json({ status: 500, success:false,error: 'Error retrieving records' });
         }else{
         return res.status(200).json({
@@ -77,7 +77,6 @@ const retrieveByTwoParams = (req,res) =>{
     
     db.query(retrieveSpecific, [col1,val1,col2,val2],(err, row) => {
         if (err) {
-        console.error('Error retrieving records:', err);
         return res.status(500).json({ status: 500, success:false,error: 'Error retrieving records' });
         }else{
         return res.status(200).json({
@@ -119,7 +118,6 @@ const updateLike = (req,res) =>{
 
     db.query(update,[null,updateDate,reaction_id],(err,result)=>{
         if (err) {
-            console.error('Error updating data:', err);
             return res.status(500).json({ status: 500, success:false,error: 'Error deleting follow' });
             }
         
@@ -147,7 +145,7 @@ const retrieveCountMonthlyLikes = (req, res) => {
   
     db.query(retrieveSpecific, [col, val], (err, rows) => {
       if (err) {
-        console.error('Error retrieving records:', err);
+        // console.error('Error retrieving records:', err);
         return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
       } else {
         return res.status(200).json({
@@ -169,7 +167,7 @@ const retrieveCountMonthlyLikes = (req, res) => {
   
     db.query(retrieveSpecific, [col, val], (err, rows) => {
       if (err) {
-        console.error('Error retrieving records:', err);
+        // console.error('Error retrieving records:', err);
         return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
       } else {
         return res.status(200).json({

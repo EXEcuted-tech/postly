@@ -25,7 +25,7 @@ const updateUser = async (req,res)=>{
 
         db.query(sql,[...values,userID],(err,results) =>{
             if(err){
-                console.error('Error Getting data:', err)
+                // console.error('Error Getting data:', err)
                 res.status(500).json({
                     status: 500,
                     success: false,
@@ -58,7 +58,7 @@ const retrieveByParams = (req,res)=>{
 
     db.query(retrieveSpecific, [col,val],(err, row) => {
         if (err) {
-        console.error('Error retrieving records:', err);
+        // console.error('Error retrieving records:', err);
         return res.status(500).json({ status: 500, success:false,error: 'Error retrieving records' });
         }else{
         return res.status(200).json({
@@ -98,7 +98,7 @@ const retrieveTasks = `SELECT * FROM account`
 
 db.query(retrieveTasks, (err, rows) => {
     if (err) {
-    console.error('Error retrieving all records:', err);
+    // console.error('Error retrieving all records:', err);
     return res.status(500).json({ status: 500, success:false,error: 'Error retrieving all records' });
     }else{
     return res.status(200).json({

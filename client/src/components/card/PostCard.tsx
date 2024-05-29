@@ -9,7 +9,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import Delete from "../modal/Delete";
 import EditPost from "../modal/EditPost";
 
-import { PiPencilCircleDuotone,PiXCircleDuotone } from "react-icons/pi";
+import { PiPencilCircleDuotone, PiXCircleDuotone } from "react-icons/pi";
 
 const PostCard = (props: PostProps) => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const PostCard = (props: PostProps) => {
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [changed,setChanged]=useState(false);
+  const [changed, setChanged] = useState(false);
 
   const [isItLike, setIsItLike] = useState(0);
   const [isLike, setIsLike] = useState(false);
@@ -55,9 +55,7 @@ const PostCard = (props: PostProps) => {
   };
 
   const editedTime = () => {
-    // const postDate = new Date(updated_at);
-    // console.log("postDate: ",postDate);
-    if(updated_at!=created_at){
+    if (updated_at != created_at) {
       setChanged(true);
     }
   };
@@ -224,7 +222,9 @@ const PostCard = (props: PostProps) => {
               >
                 {accDeets?.name}
               </h1>
-              <p className="text-[1em] text-[#9D9D9D]">{duration} {changed && '• Edited'}</p>
+              <p className="text-[1em] text-[#9D9D9D]">
+                {duration} {changed && "• Edited"}
+              </p>
             </div>
             <div className="flex items-center">
               {is_owner && (

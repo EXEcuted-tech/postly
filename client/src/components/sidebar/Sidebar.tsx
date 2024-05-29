@@ -47,7 +47,7 @@ const Sidebar = () => {
                 ) : link.name === "Dashboard" ? (
                   <AiFillDashboard className="text-[2.5em] p-[8%]" />
                 ) : (
-                  <MdLogout className="text-[2.5em] p-[8%]" />
+                  <MdLogout id="logout" className="text-[2.5em] p-[8%]" />
                 )}
               </div>
               <p

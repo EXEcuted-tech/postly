@@ -12,7 +12,7 @@ describe('Post', () => {
     beforeAll(async () => {
         driver = await new Builder().forBrowser('chrome').build();
         await driver.get(`${URL}`);
-        // await registerAccount(driver); 
+        await registerAccount(driver); 
         await loginAccount(driver);
     });
     

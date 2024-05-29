@@ -16,12 +16,11 @@ const FollowCard = (props:FollowProps) => {
 
     useEffect(()=>{
         retrieveAcc();
-        console.log("DP URL: ", dpURL);
-    },[props,dpURL])
+    },[props])
 
     const retrieveAcc = () =>{
         var val = type==='following' ? account_id : follower_id;
-        console.log("Acc: ", account_id, "Follower: ", follower_id, "VALUE: ",val);
+        //console.log("Acc: ", account_id, "Follower: ", follower_id, "VALUE: ",val);
         api.get(`${config.API}/user/retrieve?col=account_id&val=${val}`)
         .then(async (res)=>{
           if(res.data.success===true){
@@ -32,7 +31,7 @@ const FollowCard = (props:FollowProps) => {
       }
 
       const getProfilePicture = (accID:number) =>{
-        console.log("Acc ID: ",accID);
+        //console.log("Acc ID: ",accID);
         if(accID!==null){
             api.get(`${config.API}/file/retrieve?col=file_id&val=${accID}`)
             .then(async (res)=>{

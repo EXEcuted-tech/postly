@@ -8,15 +8,36 @@ import { FaMoon, FaSearch } from "react-icons/fa";
 import useColorMode from "../../hooks/useColorMode"
 import api from "../../hooks/api";
 import config from "../../common/config";
+import { FollowProps, UserProps } from "../../common/interface";
+import Search from "../../pages/search/Search";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const payload = localStorage.getItem('payload');
   const payloadObj = payload && JSON.parse(payload);
   const dp_id = payloadObj?.dp;
   const color = localStorage.getItem("color-theme");
+  const [search, setSearch] = useState(false);
 
   const [darkMode, setDarkMode] = useColorMode();
   const [dpURL,setDpURL] = useState<string | null>(null);
+
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [tasks, setTasks] = useState<UserProps[]>([]);
+  const [errMess,setErrMess] = useState("");
+  const [taskExist, setTaskExist] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const click = () =>{
+    if(location.pathname!== '/search'){
+        localStorage.removeItem('search_query');
+        navigate('/search');
+    }
+  }
+
   // const [payloadObj, setPayloadObj] = useState(() => {
   //   const initialPayload = localStorage.getItem('payload');
   //   return initialPayload ? JSON.parse(initialPayload) : null;
@@ -34,6 +55,26 @@ const Header = () => {
     setDarkMode(darkMode === "light" ? "dark" : "light");
   };
 
+  const getAllTasks = () => {
+    api
+      .get(
+        `${config.API}/user/getall`
+      )
+      .then((res) => {
+        if (res.data.success === true && res.data.tasks.length > 0) {
+          setTaskExist(true);
+          setTasks(res.data.tasks);
+        } else {
+          setTaskExist(false);
+          setTasks([]);
+        }
+      })
+      .catch((error) => {
+        error.response? setErrMess(error.response?.data.message): setErrMess("Request Failed!");
+        errorTimer();
+      });
+  };
+
   const getProfilePicture = async () =>{
     await api.get(`${config.API}/file/retrieve?col=file_id&val=${payloadObj?.dp}`)
     .then(async (res)=>{
@@ -48,8 +89,51 @@ const Header = () => {
     }).catch((err)=>{
       console.log("File Err? ", err);
     })
-}
+  }
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      localStorage.setItem("search_query", searchQuery);
+      localStorage.setItem('searchtab','people');
+      window.location.href = window.location.pathname;
+    }
+  };
+
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value)
+    setSearchQuery(e.target.value)
+    if(e.target.value){
+    api.get(
+      `${config.API}/user/search?col2=name&val2=${searchQuery}`,{
+    }
+    ).then(response =>{
+      if(response.status === 200){
+        if(response.data.tasks.length === 0){
+          setTasks([]);
+          setErrMess("No Results Found");
+        }else{
+          setTasks(response.data.tasks);
+          setErrMess("");
+          setShowSuggestions(true);
+        }
+        //console.log(response.data.tasks)
+        
+      }
+    }).catch(error=>{
+      //console.log(error.response.data.message)
+      setErrMess(error?.response?.data.message);
+    }).finally(()=>{
+      errorTimer();
+    })
+  }else{
+    getAllTasks()
+  }
+  };
+
+  function errorTimer (){ setTimeout(() => {
+    setErrMess("");
+  }, 5000);
+}
 
   return (
     <div className="font-poppins flex items-center bg-primary h-[10vh] w-full dark:bg-black">
@@ -66,6 +150,12 @@ const Header = () => {
         <FaSearch className="text-[1.2em] absolute ml-[1%] text-[#8F8F8F]" />
         <input
           type="text"
+          // onClick={() => click()}
+          
+          onClick={() => click()}
+          onKeyDown={(event)=>{handleKeyDown(event)}}
+          onChange={(e)=>{handleChangeSearch(e)}}
+          value={searchQuery}
           placeholder="Search for people, posts, stories"
           className="bg-[#F3F5F7] pl-[5%] py-[1%] pr-[2%] w-[90%] rounded-[30px] mr-[1%] text-[1.2em]"
         ></input>

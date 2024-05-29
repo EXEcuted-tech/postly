@@ -17,16 +17,11 @@ const Header = () => {
   const payloadObj = payload && JSON.parse(payload);
   const dp_id = payloadObj?.dp;
   const color = localStorage.getItem("color-theme");
-  const [search, setSearch] = useState(false);
-
+  
   const [darkMode, setDarkMode] = useColorMode();
   const [dpURL,setDpURL] = useState<string | null>(null);
 
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [tasks, setTasks] = useState<UserProps[]>([]);
-  const [errMess,setErrMess] = useState("");
-  const [taskExist, setTaskExist] = useState(false);
-  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,26 +48,6 @@ const Header = () => {
 
   const toggleDarkMode = () => {
     setDarkMode(darkMode === "light" ? "dark" : "light");
-  };
-
-  const getAllTasks = () => {
-    api
-      .get(
-        `${config.API}/user/getall`
-      )
-      .then((res) => {
-        if (res.data.success === true && res.data.tasks.length > 0) {
-          setTaskExist(true);
-          setTasks(res.data.tasks);
-        } else {
-          setTaskExist(false);
-          setTasks([]);
-        }
-      })
-      .catch((error) => {
-        error.response? setErrMess(error.response?.data.message): setErrMess("Request Failed!");
-        errorTimer();
-      });
   };
 
   const getProfilePicture = async () =>{
@@ -102,38 +77,7 @@ const Header = () => {
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value)
     setSearchQuery(e.target.value)
-    if(e.target.value){
-    api.get(
-      `${config.API}/user/search?col2=name&val2=${searchQuery}`,{
-    }
-    ).then(response =>{
-      if(response.status === 200){
-        if(response.data.tasks.length === 0){
-          setTasks([]);
-          setErrMess("No Results Found");
-        }else{
-          setTasks(response.data.tasks);
-          setErrMess("");
-          setShowSuggestions(true);
-        }
-        //console.log(response.data.tasks)
-        
-      }
-    }).catch(error=>{
-      //console.log(error.response.data.message)
-      setErrMess(error?.response?.data.message);
-    }).finally(()=>{
-      errorTimer();
-    })
-  }else{
-    getAllTasks()
-  }
   };
-
-  function errorTimer (){ setTimeout(() => {
-    setErrMess("");
-  }, 5000);
-}
 
   return (
     <div className="font-poppins flex items-center bg-primary h-[10vh] w-full dark:bg-black">

@@ -14,7 +14,7 @@ import PostLayout from '../../components/card/PostLayout';
 const Search = () => {
   const navigate = useNavigate();
 
-  const [isPost,setIsPost]=useState(false);
+  const [isPost,setIsPost]=useState(true);
   const [list,setList]=useState<UserProps[]>([]);
   const [post,setPost]=useState<PostProps[]>([]);
   const search = localStorage.getItem("search_query");
@@ -94,22 +94,22 @@ const Search = () => {
               animate='animate-shake'
             />
         }
-      <div className='bg-white ml-[2%] h-full'>
+      <div className='bg-white ml-[2%] h-full dark:bg-black'>
         <div className='flex items-center w-full px-[2%] py-[1%]'>
-            <FaArrowLeft className='text-[2.2em] hover:cursor-pointer'
+            <FaArrowLeft className='text-[2.2em] dark:text-white hover:cursor-pointer'
             onClick={()=>(navigate('/home'))}
             />
             <div className='ml-[1%]'>
-                <h1 className='text-[1.3em] font-medium'>Search Results</h1>
+                <h1 className='text-[1.3em] font-medium dark:text-white'>Search Results</h1>
             </div>
         </div>
         <div>
             <ul className='flex justify-center w-full mt-[1%] text-[1.1em] font-medium'>
-                <li className={`w-[50%] text-center hover:cursor-pointer ${isPost ? 'text-black border-b-[5px] pb-[0.6%] border-primary' : 'text-[#9D9D9D] border-b-[1.5px] border-[#dbdbdb]'}`}
+                <li className={`w-[50%] text-center hover:cursor-pointer ${isPost ? 'dark:text-white text-black border-b-[5px] pb-[0.6%] border-primary' : 'text-[#9D9D9D] border-b-[1.5px] border-[#dbdbdb]'}`}
                     onClick={()=>setIsPost(true)}>
                     <p className='hover:cursor-pointer'>Posts</p>
                 </li>
-                <li className={`w-[50%] text-center text-[#9D9D9D] hover:cursor-pointer ${isPost ? 'text-[#9D9D9D] border-b-[1.5px] border-[#dbdbdb]' : 'text-black border-b-[5px] pb-[0.6%] border-primary'}`}
+                <li className={`w-[50%] text-center text-[#9D9D9D] hover:cursor-pointer ${isPost ? 'text-[#9D9D9D] border-b-[1.5px] border-[#dbdbdb]' : 'dark:text-white text-black border-b-[5px] pb-[0.6%] border-primary'}`}
                     onClick={()=>setIsPost(false)}>
                     <p className='hover:cursor-pointer'>People</p>
                 </li>
@@ -134,7 +134,7 @@ const Search = () => {
               :
               <div className="flex flex-col items-center justify-center h-[60vh]">
                 <img src={mail} alt="Email" className="w-[15%]" />
-                <h1 className="mt-4 text-[#2e2e2e] text-[1.2em] font-light">Nothing to see here...</h1>
+                <h1 className="mt-4 text-[#2e2e2e] text-[1.2em] font-light dark:text-white ">Nothing to see here...</h1>
               </div>
               }
               </>

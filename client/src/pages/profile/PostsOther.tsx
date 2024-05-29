@@ -4,6 +4,7 @@ import Spinner from "../../components/loader/Spinner";
 import api from "../../hooks/api";
 import { PostProps, UserProps } from "../../common/interface";
 import config from "../../common/config";
+import mail from '../../assets/mail.png'
 
 const PostsOther = () => {
   const userID = Number(localStorage.getItem('view_id'));
@@ -48,6 +49,8 @@ const PostsOther = () => {
               </div>
             ) : (
               <>
+                {posts.length > 0 ?
+                <>
                 {posts.map((post, index) => (
                   <PostCard
                     {...post}
@@ -55,6 +58,13 @@ const PostsOther = () => {
                     is_owner={false}
                   />
                 ))}
+                </>
+                :
+                <div className="flex flex-col items-center justify-center h-[50vh]">
+                <img src={mail} alt="Email" className="w-[15%]" />
+                <h1 className="mt-4 text-[#2e2e2e] text-[1.2em] font-light">No posts as of now...</h1>
+                </div>
+                }
               </>
             )}
           </div>

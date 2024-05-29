@@ -10,7 +10,7 @@ const loginValidator = (req, res, next) => {
     }
 
     if (error !== '') {
-        return res.status(404).json({
+        return res.json({
             status: 404,
             success: false,
             error: error,
@@ -39,7 +39,7 @@ const signupValidator = (req, res, next) => {
     }
 
     if (error !== '') {
-        return res.status(404).json({
+        return res.json({
             status: 404,
             success: false,
             error: error,

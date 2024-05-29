@@ -17,6 +17,7 @@ const Landing = () => {
         <p className="text-8xl font-bold dark:text-white">Post Now.</p>
         <div className="mt-[10%] mb-[2%]">
           <button
+            name='createAccButton'
             className="w-[90%] ml-[3%] bg-primary text-[1.5em] rounded-[50px] py-[1%] font-bold hover:bg-[#f0b500]"
             onClick={() => setRegister(true)}
           >
@@ -34,6 +35,7 @@ const Landing = () => {
           Already have an account?
         </p>
         <button
+          name='loginButton'
           className="w-[90%] ml-[3%] bg-white text-[1.5em] rounded-[50px] py-[1%] font-bold border-primary border-2 text-primary z-2
           hover:bg-black dark:hover:bg-[#202020] dark:bg-black"
           onClick={() => setLogin(true)}

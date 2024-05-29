@@ -101,7 +101,7 @@ return (
                 value={password} onChange={(e)=>{setPassword(e.target.value)}}></input>
               </div>
               <div className='text-center ml-[-9%]'>
-                <button type='submit' className=' bg-primary text-[1.5em] w-[25%] py-[1.5%] mt-[1%] font-bold rounded-lg hover:bg-[#f0b500]'
+                <button type='submit' name='login-btn' className=' bg-primary text-[1.5em] w-[25%] py-[1.5%] mt-[1%] font-bold rounded-lg hover:bg-[#f0b500]'
                 onClick={login}>
                   <div className='flex items-center justify-center mr-[2%]'>
                     <BounceLoader className='mx-[2%]' color="#FFFFFF" loading={loading} />

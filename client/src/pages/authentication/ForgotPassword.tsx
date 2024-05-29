@@ -4,8 +4,7 @@ import { RiLock2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import config from "../../common/config";
 import api from "../../hooks/api";
-import Spinner from "../../components/loader/Spinner";
-import { BounceLoader } from "react-spinners";
+import BounceLoader from "react-spinners/ClipLoader";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -103,10 +102,15 @@ const ForgotPassword = () => {
             onClick={handleResetPassword}
             disabled={isLoading}
           >
-            <p className="font-poppins font-semibold text-[24px] hover:cursor-pointer">
-              {isLoading && <Spinner />}
-              Reset Password
-            </p>
+              {isLoading 
+              ?
+              <div className="flex justify-center items-center">
+                <BounceLoader className=''/>
+                <p className="font-poppins font-semibold text-[1.4em] hover:cursor-pointer">Reset Password</p>
+              </div>
+              :
+              <p className="font-poppins font-semibold text-[24px] hover:cursor-pointer">Reset Password</p>
+              }
           </button>
         </div>
       </div>

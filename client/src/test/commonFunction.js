@@ -64,6 +64,23 @@ async function loginAccount(driver) {
     expect(classes).toContain('bg-[#F3F5F7]'); 
 }
 
+// async function registerAccount2(driver) {
+//     let btn = await driver.findElement(By.name('createAccButton'));
+//     await btn.click();
+
+//     await driver.findElement(By.name("username")).sendKeys("katteu_cutie");
+//     await driver.findElement(By.name("email")).sendKeys("19103523@usc.edu.ph");
+//     await driver.findElement(By.name("password")).sendKeys("password");
+//     await driver.findElement(By.name("confirmpassword")).sendKeys("password");
+
+//     let btnSign = await driver.findElement(By.name('signup-btn'));
+//     await btnSign.click();
+
+//     await driver.wait(until.elementLocated(By.className('text-base')), 10000);
+//     const title = await driver.findElement(By.className('text-base')).getText();
+//     expect(title).toBe('Registered Successfully!');
+// }
+
 module.exports = {
     testConfig,
     cleanTestData,

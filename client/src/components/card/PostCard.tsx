@@ -230,6 +230,7 @@ const PostCard = (props: PostProps) => {
               {is_owner && (
                 <div className="flex mr-[10%] ml-[-22%]">
                   <PiPencilCircleDuotone
+                    name="pencil"
                     className="hover:animate-pop1 text-[2em] text-[#1c1c1c] cursor-pointer mr-[10px] dark:text-white"
                     onClick={() => {
                       setIsEditOpen(true);

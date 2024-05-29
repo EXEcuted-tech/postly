@@ -41,7 +41,7 @@ const Sidebar = () => {
                 ) : link.name === "Notifications" ? (
                   <FaBell name="bells" className="text-[2.5em] p-[8%]" />
                 ) : link.name === "Profile" ? (
-                  <FaUser className="text-[2.5em] p-[8%]" />
+                  <FaUser name="profile" className="text-[2.5em] p-[8%]" />
                 ) : link.name === "Likes" ? (
                   <FaHeart className="text-[2.5em] p-[8%]" />
                 ) : link.name === "Dashboard" ? (

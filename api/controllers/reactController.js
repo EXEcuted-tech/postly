@@ -135,6 +135,51 @@ const updateLike = (req,res) =>{
     });
 }
 
+const retrieveCountMonthlyLikes = (req, res) => {
+    const { col, val } = req.query;
+  
+    const retrieveSpecific = `SELECT DATE_FORMAT(r.created_at, '%Y-%m') AS month, COUNT(*) AS count 
+    FROM reaction r
+    JOIN post p ON r.post_id = p.post_id
+    WHERE ?? = ? AND r.deleted_at IS NULL AND YEAR(r.created_at) = YEAR(CURRENT_DATE)
+    GROUP BY month 
+    ORDER BY month`;
+  
+    db.query(retrieveSpecific, [col, val], (err, rows) => {
+      if (err) {
+        console.error('Error retrieving records:', err);
+        return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
+      } else {
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          monthlyCounts: rows,
+        });
+      }
+    });
+  }
+
+  const retrieveTotalCount = (req, res) => {
+    const { col, val } = req.query;
+  
+    const retrieveSpecific = `  SELECT COUNT(*) AS count
+    FROM reaction r
+    JOIN post p ON r.post_id = p.post_id
+    WHERE ?? = ? AND r.deleted_at IS NULL`;
+  
+    db.query(retrieveSpecific, [col, val], (err, rows) => {
+      if (err) {
+        console.error('Error retrieving records:', err);
+        return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
+      } else {
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          count: rows,
+        });
+      }
+    });
+  }
 
   module.exports = {
     likePost,
@@ -143,4 +188,6 @@ const updateLike = (req,res) =>{
     retrieveByTwoParams,
     softDeleteLike,
     updateLike,
+    retrieveCountMonthlyLikes,
+    retrieveTotalCount
 }

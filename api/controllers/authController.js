@@ -1,5 +1,4 @@
 require('dotenv').config()
-
 const db = require('./a_db');
 const saltRounds = 10;
 const bcrypt = require('bcrypt');
@@ -155,7 +154,7 @@ const signup = (req,res) =>{
         if(account_handle && email_address && hashedPassword){
             db.query(sql, values, (error, results) =>{
                 if(error){
-                    console.log(error);
+                    // console.log(error);
                 } else{
                     //console.log(results);
                     res.status(201).json({

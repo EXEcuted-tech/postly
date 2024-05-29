@@ -130,25 +130,6 @@ const PostCard = (props: PostProps) => {
     }
   };
 
-  const onLike = () => {
-    setIsItLike(isItLike + (isLike ? -1 : 1));
-    setIsLike(!isLike);
-    api
-      .post(`${config.API}/react/create`,{
-        postID: props.post_id,
-        reactID: payloadObj?.userID,
-      }).then((res)=>{
-        console.log(res);
-        if (res.data.success == true){
-          console.log("All good!");
-
-        }else{
-        }
-
-    }).catch((err) => { 
-    });
-  };
-
   const countLike = () => {
     api
       .get(`${config.API}/react/count?col=post_id&val=${props.post_id}`)

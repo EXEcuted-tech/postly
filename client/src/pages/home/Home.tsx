@@ -129,6 +129,7 @@ const Home = () => {
           </div>
           <textarea
             maxLength={1000}
+            name="posttextarea"
             placeholder="What's on your mind today?"
             className="font-light outline-none bg-[#F3F5F7] pl-[2%] py-[1%] pr-[2%] w-full rounded-[30px] ml-[1%] text-[1.2em] resize-none max-h-[50vh]"
             value={content}

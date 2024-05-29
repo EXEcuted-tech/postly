@@ -65,7 +65,7 @@ const Sidebar = () => {
       </div>
       <hr className="border-[2px] ml-[30%]" />
       <div className="flex justify-center mt-[8%] ml-[30%]">
-        <button className="bg-primary rounded-[50px] font-semibold text-[1.3em] px-[23%] py-[3%] hover:bg-black hover:text-primary hover:animate-zoom-out dark:bg-black dark:text-primary"
+        <button name="createPostBtn" className="bg-primary rounded-[50px] font-semibold text-[1.3em] px-[23%] py-[3%] hover:bg-black hover:text-primary hover:animate-zoom-out dark:bg-black dark:text-primary"
         onClick={()=>{setAddPost(true)}}>
           Create A Post
         </button>

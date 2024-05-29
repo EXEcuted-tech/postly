@@ -88,6 +88,7 @@ const Login = ({ setLogin }: { setLogin: (value: boolean) => void }) => {
           <div className="flex justify-center pt-[5%] pb-[1%]">
             <img src={Logo} className="w-[15%] ml-[40%]" />
             <IoCloseOutline
+              name='login-close'
               className="cursor-pointer text-[#C2C2C2] text-[3em] content-end ml-[30%] hover:text-[#a1a1a1] dark:text-white"
               onClick={() => setLogin(false)}
             />

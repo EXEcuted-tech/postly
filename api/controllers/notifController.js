@@ -7,7 +7,7 @@ const getAllNotifications = async (req, res) => {
 
     db.query(getNotifs, [userID], (err, rows) => {
         if (err) {
-            console.error('Error retrieving all records:', err);
+            // console.error('Error retrieving all records:', err);
             return res.status(500).json({ status: 500, success:false,error: 'Error retrieving all records' });
           }else{
             return res.status(200).json({

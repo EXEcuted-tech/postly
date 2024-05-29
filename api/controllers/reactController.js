@@ -145,7 +145,7 @@ const retrieveCountMonthlyLikes = (req, res) => {
   
     db.query(retrieveSpecific, [col, val], (err, rows) => {
       if (err) {
-        console.error('Error retrieving records:', err);
+        // console.error('Error retrieving records:', err);
         return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
       } else {
         return res.status(200).json({
@@ -167,7 +167,7 @@ const retrieveCountMonthlyLikes = (req, res) => {
   
     db.query(retrieveSpecific, [col, val], (err, rows) => {
       if (err) {
-        console.error('Error retrieving records:', err);
+        // console.error('Error retrieving records:', err);
         return res.status(500).json({ status: 500, success: false, error: 'Error retrieving records' });
       } else {
         return res.status(200).json({

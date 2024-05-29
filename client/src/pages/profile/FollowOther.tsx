@@ -56,11 +56,11 @@ const Follow = () => {
           </div>
         <div>
             <ul className='flex justify-center w-full mt-[1%] text-[1.1em] font-medium'>
-                <li className={`w-[50%] text-center hover:cursor-pointer ${isFollowing ? 'text-black border-b-[5px] pb-[0.6%] border-primary dark:text-white' : 'text-[#9D9D9D]'}`}
+                <li className={`w-[50%] text-center hover:cursor-pointer ${isFollowing ? 'text-black border-b-[5px] pb-[0.6%] border-primary dark:text-white' : 'text-[#9D9D9D] border-b-[1.5px] border-[#dbdbdb]'}`}
                     onClick={()=>setIsFollowing(true)}>
                     <p className='hover:cursor-pointer'>Following</p>
                 </li>
-                <li className={`w-[50%] text-center text-[#9D9D9D] hover:cursor-pointer ${isFollowing ? 'text-[#9D9D9D]' : 'text-black border-b-[5px] pb-[0.6%] border-primary dark:text-white'}`}
+                <li className={`w-[50%] text-center text-[#9D9D9D] hover:cursor-pointer ${isFollowing ? 'text-[#9D9D9D] border-b-[1.5px] border-[#dbdbdb]' : 'text-black border-b-[5px] pb-[0.6%] border-primary dark:text-white'}`}
                     onClick={()=>setIsFollowing(false)}>
                     <p className='hover:cursor-pointer'>Followers</p>
                 </li>

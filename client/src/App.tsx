@@ -22,6 +22,7 @@ function App() {
     <Routes>
       <Route element={<SignedInLayout />}>
         <Route path="/home" element={<Home />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/profile/user" element={<ProfileOther />} />
         <Route path="/follow" element={<Follow />} />

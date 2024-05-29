@@ -115,7 +115,7 @@ const AddPost:React.FC<AddPostProps>= ({ setAddPost }) => {
                   <hr className='ml-[5%]'></hr>
                 </div> */}
                 <div className='flex justify-end mr-[-3%] mt-[1%]'>
-                <button className='flex bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out dark:hover:bg-gray-800'
+                <button name='submitcreatepost' className='flex bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out dark:hover:bg-gray-800'
                   onClick={(e)=>submitPost(e)}>
                   <BounceLoader className='' color="#FFFFFF" loading={loading} />
                     Post

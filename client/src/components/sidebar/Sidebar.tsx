@@ -39,7 +39,7 @@ const Sidebar = () => {
                 {link.name === "Home" ? (
                   <IoMdHome className="text-[2.5em] p-[8%]" />
                 ) : link.name === "Notifications" ? (
-                  <FaBell className="text-[2.5em] p-[8%]" />
+                  <FaBell name="bells" className="text-[2.5em] p-[8%]" />
                 ) : link.name === "Profile" ? (
                   <FaUser className="text-[2.5em] p-[8%]" />
                 ) : link.name === "Likes" ? (

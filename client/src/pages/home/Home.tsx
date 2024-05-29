@@ -141,6 +141,7 @@ const Home = () => {
         <hr className="border-1 my-[1%]" />
         <div className="flex justify-end">
           <button
+            name="postbutton"
             className="flex bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out dark:hover:bg-gray-800"
             onClick={submitPost}
           >

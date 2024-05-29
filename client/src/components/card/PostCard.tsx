@@ -250,7 +250,7 @@ const PostCard = (props: PostProps) => {
               </div>
             </div>
           </div>
-          <div className="ml-[0.5%] mr-[1%] mt-[1%] text-justify dark:text-white">
+          <div id="contentful" className="ml-[0.5%] mr-[1%] mt-[1%] text-justify dark:text-white">
             {content}
           </div>
         </>

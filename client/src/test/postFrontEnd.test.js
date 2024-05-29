@@ -14,7 +14,7 @@ describe('Post', () => {
         await driver.get(`${URL}`);
         await registerDummyAccount(driver); 
         await loginDummyAccount(driver);
-    },100000000000);
+    },10000000);
     
     afterAll(async () => {
         cleanTestData('abcdxyz@gmail.com')

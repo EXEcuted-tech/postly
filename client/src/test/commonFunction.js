@@ -37,7 +37,7 @@ async function registerAccount(driver) {
     expect(title).toBe('Registered Successfully!');
 }
 
-async function loginAccount(driver) {
+async function loginAccount(driver) { 
     await driver.wait(until.elementLocated(By.name('loginButton')), 10000);
     await driver.wait(until.elementIsVisible(driver.findElement(By.name('loginButton'))), 10000);
     await driver.wait(until.elementIsEnabled(driver.findElement(By.name('loginButton'))), 10000);

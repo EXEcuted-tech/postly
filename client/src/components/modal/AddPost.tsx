@@ -104,6 +104,7 @@ const AddPost:React.FC<AddPostProps>= ({ setAddPost }) => {
                 <div className='ml-[3%] w-full'>
                 <textarea
                   maxLength={1000}
+                  name='addpost-textarea'
                   placeholder="What's on your mind today?"
                   className="font-light outline-none bg-[#F3F5F7] pl-[2%] py-[1%] pr-[2%] w-full rounded-[30px] text-[1.2em] resize-none max-h-[50vh]"
                   value={content}
@@ -114,7 +115,7 @@ const AddPost:React.FC<AddPostProps>= ({ setAddPost }) => {
                   <hr className='ml-[5%]'></hr>
                 </div> */}
                 <div className='flex justify-end mr-[-3%] mt-[1%]'>
-                <button className='flex bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out dark:hover:bg-gray-800'
+                <button name='submitcreatepost' className='flex bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out dark:hover:bg-gray-800'
                   onClick={(e)=>submitPost(e)}>
                   <BounceLoader className='' color="#FFFFFF" loading={loading} />
                     Post

@@ -129,6 +129,7 @@ const Home = () => {
           </div>
           <textarea
             maxLength={1000}
+            name="posttextarea"
             placeholder="What's on your mind today?"
             className="font-light outline-none bg-[#F3F5F7] pl-[2%] py-[1%] pr-[2%] w-full rounded-[30px] ml-[1%] text-[1.2em] resize-none max-h-[50vh]"
             value={content}
@@ -140,6 +141,7 @@ const Home = () => {
         <hr className="border-1 my-[1%]" />
         <div className="flex justify-end">
           <button
+            name="postbutton"
             className="flex bg-primary px-[2%] py-[0.3%] rounded-[39px] text-secondary font-bold text-[1.3em] hover:bg-black hover:text-primary hover:animate-zoom-out dark:hover:bg-gray-800"
             onClick={submitPost}
           >

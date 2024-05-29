@@ -59,7 +59,7 @@ const Delete: React.FC<DeleteProps> = ({ isOpen, onClose, postId }) => {
             />
           </div>
           <div className="ml-[42%]">
-              <FaTriangleExclamation className="cursor-pointer text-[#CB0000] text-[6em] mr-[35%]" />
+            <FaTriangleExclamation className="cursor-pointer text-[#CB0000] text-[6em] mr-[35%]" />
           </div>
           <div className="flex ml-[6%]">
             <form className="inline text-black w-[89%]">
@@ -89,6 +89,7 @@ const Delete: React.FC<DeleteProps> = ({ isOpen, onClose, postId }) => {
                 </button>
                 <button
                   className=" bg-[#D40000] text-white text-[1.2em] w-[20%] py-[1%] mt-[1%] font-semibold rounded-md hover:bg-[#a80000]"
+                  name="ConfirmDelete"
                   onClick={() => {
                     onDelete();
                   }}

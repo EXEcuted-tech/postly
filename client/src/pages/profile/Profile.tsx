@@ -24,15 +24,15 @@ const Profile = () => {
   const payloadObj = payload && JSON.parse(payload);
 
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [accDeets,setAccDeets] = useState<UserProps>();
-  const [joinDate,setJoinDate] = useState('');
-  const [dpURL,setDpURL] = useState('');
-  const [coverURL,setCoverURL] = useState('');
-  const [previewDP,setPreviewDP] = useState(false);
-  const [previewCover,setPreviewCover] = useState(false);
+  const [accDeets, setAccDeets] = useState<UserProps>();
+  const [joinDate, setJoinDate] = useState("");
+  const [dpURL, setDpURL] = useState("");
+  const [coverURL, setCoverURL] = useState("");
+  const [previewDP, setPreviewDP] = useState(false);
+  const [previewCover, setPreviewCover] = useState(false);
 
-  const [numFollower,setNumFollower]=useState(0);
-  const [numFollowing,setNumFollowing]=useState(0)
+  const [numFollower, setNumFollower] = useState(0);
+  const [numFollowing, setNumFollowing] = useState(0);
 
   useEffect(() => {
     //Still utilized the API.get for the expiration of the accessToken
@@ -86,89 +86,114 @@ const Profile = () => {
       });
   };
 
-  const getCoverPicture = () =>{
-    api.get(`${config.API}/file/retrieve?col=file_id&val=${accDeets?.cover_id}`)
-    .then(async (res)=>{
-      if(res.data.success == true && res.data.filedata){
-        const response = await api.get(`${config.API}/file/fetch?pathfile=${encodeURIComponent(res.data.filedata.path)}`, {
-          responseType: 'arraybuffer',
-        });
-  
-        const url = URL.createObjectURL(new Blob([response.data]));
-        //console.log("URL: ", url);
-        setCoverURL(url);
-      }
-    }).catch((err)=>{
-      console.log("File Err? ", err);
-    })
-  }
+  const getCoverPicture = () => {
+    api
+      .get(`${config.API}/file/retrieve?col=file_id&val=${accDeets?.cover_id}`)
+      .then(async (res) => {
+        if (res.data.success == true && res.data.filedata) {
+          const response = await api.get(
+            `${config.API}/file/fetch?pathfile=${encodeURIComponent(
+              res.data.filedata.path
+            )}`,
+            {
+              responseType: "arraybuffer",
+            }
+          );
 
-  const getFollowers = () =>{
-    api.get(`${config.API}/follow/retrieve/count?col=account_id&val=${payloadObj?.userID}`)
-    .then((res)=>{
-      if(res.data.success === true){
-        setNumFollower(res.data.count);
-      }
-    })
-  }
+          const url = URL.createObjectURL(new Blob([response.data]));
+          //console.log("URL: ", url);
+          setCoverURL(url);
+        }
+      })
+      .catch((err) => {
+        console.log("File Err? ", err);
+      });
+  };
 
-  const getFollowing = () =>{
-    api.get(`${config.API}/follow/retrieve/count?col=follower_id&val=${payloadObj?.userID}`)
-    .then((res)=>{
-      if(res.data.success === true){
-        setNumFollowing(res.data.count);
-      }
-    })
-  }
+  const getFollowers = () => {
+    api
+      .get(
+        `${config.API}/follow/retrieve/count?col=account_id&val=${payloadObj?.userID}`
+      )
+      .then((res) => {
+        if (res.data.success === true) {
+          setNumFollower(res.data.count);
+        }
+      });
+  };
 
-  const navigateFollowing = () =>{
-    localStorage.setItem('following','true')
-    navigate('/follow')
-  }
+  const getFollowing = () => {
+    api
+      .get(
+        `${config.API}/follow/retrieve/count?col=follower_id&val=${payloadObj?.userID}`
+      )
+      .then((res) => {
+        if (res.data.success === true) {
+          setNumFollowing(res.data.count);
+        }
+      });
+  };
 
-  const navigateFollowers = () =>{
-    localStorage.setItem('following','false')
-    navigate('/follow')
-  }
+  const navigateFollowing = () => {
+    localStorage.setItem("following", "true");
+    navigate("/follow");
+  };
+
+  const navigateFollowers = () => {
+    localStorage.setItem("following", "false");
+    navigate("/follow");
+  };
 
   return (
     <div className="animate-fade-in w-[80%]">
-      {previewDP &&  
+      {previewDP && (
         <div className="animate-fade-in fixed w-full h-full top-0 left-0 backdrop-brightness-50 z-[1000]">
           <div className="flex justify-end h-[5vh] py-[1%] pr-[1%]">
-            <IoMdClose className="text-[3.5em] text-white hover:cursor-pointer hover:text-[#C2C2C2]"
-            onClick={()=>setPreviewDP(false)}/>
+            <IoMdClose
+              className="text-[3.5em] text-white hover:cursor-pointer hover:text-[#C2C2C2]"
+              onClick={() => setPreviewDP(false)}
+            />
           </div>
           <div className="flex ml-[6%] mt-[8%] justify-center">
-          <img src={accDeets?.dp_id !== null ? dpURL : defaultuser }
+            <img
+              src={accDeets?.dp_id !== null ? dpURL : defaultuser}
               alt="Cover Photo"
-              className="object-cover w-[500px] h-[500px]"/>
+              className="object-cover w-[500px] h-[500px]"
+            />
           </div>
         </div>
-      }
-    {previewCover &&  
+      )}
+      {previewCover && (
         <div className="animate-fade-in fixed w-full h-full top-0 left-0 backdrop-brightness-50 z-[1000]">
           <div className="flex justify-end h-[5vh] py-[1%] pr-[1%]">
-            <IoMdClose className="text-[3.5em] text-white hover:cursor-pointer hover:text-[#C2C2C2]"
-            onClick={()=>setPreviewCover(false)}/>
+            <IoMdClose
+              className="text-[3.5em] text-white hover:cursor-pointer hover:text-[#C2C2C2]"
+              onClick={() => setPreviewCover(false)}
+            />
           </div>
           <div className="flex mt-[10%] justify-center">
-            <img src={accDeets?.cover_id !== null ? coverURL : cover }
-                alt="Cover Photo"
-                className="object-cover w-[90%] h-[450px]"/>
+            <img
+              src={accDeets?.cover_id !== null ? coverURL : cover}
+              alt="Cover Photo"
+              className="object-cover w-[90%] h-[450px]"
+            />
           </div>
         </div>
-      }
+      )}
       <div className="mx-[2%] h-full">
         <div className="bg-white dark:bg-black h-[62vh] rounded-b-[30px] drop-shadow-md dark:border-t dark:border-gray-300">
           <div className="flex items-center ml-[1.5%] py-[0.5%]">
-            <FaArrowLeft className="text-[3em] hover:cursor-pointer dark:text-white"
-             onClick={()=>navigate(-1)} />
+            <FaArrowLeft
+              className="text-[3em] hover:cursor-pointer dark:text-white"
+              onClick={() => navigate(-1)}
+            />
             <div className="ml-[1%]">
               <h1 className="font-medium text-[1.3em] dark:text-white">
                 {accDeets?.name}
               </h1>
-              <p className="text-[1em] text-[#A5A5A5]">@{accDeets?.account_handle}</p>
+              <p className="text-[1em] text-[#A5A5A5]">
+                @{accDeets?.account_handle}
+              </p>
             </div>
           </div>
           <div className="bg-primary h-[25vh] w-full">
@@ -178,13 +203,15 @@ const Profile = () => {
                 src={coverURL}
                 alt="Cover Photo"
                 className="object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
-              onClick={()=>setPreviewCover(true)}/>
+                onClick={() => setPreviewCover(true)}
+              />
             ) : (
               <img
                 src={cover}
                 alt="Cover Photo"
                 className="object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
-                onClick={()=>setPreviewCover(true)}/>
+                onClick={() => setPreviewCover(true)}
+              />
             )}
           </div>
 
@@ -197,13 +224,15 @@ const Profile = () => {
                     src={dpURL}
                     alt="Profile Picture"
                     className="rounded-full object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
-                    onClick={()=>setPreviewDP(true)}/>
+                    onClick={() => setPreviewDP(true)}
+                  />
                 ) : (
                   <img
                     src={defaultuser}
                     alt="Profile Picture"
                     className="rounded-full object-cover w-full h-full hover:brightness-75 hover:cursor-pointer"
-                    onClick={()=>setPreviewDP(true)}/>
+                    onClick={() => setPreviewDP(true)}
+                  />
                 )}
               </div>
             </div>
@@ -226,7 +255,9 @@ const Profile = () => {
             <h1 className="font-medium text-[1.3em] dark:text-white">
               {accDeets?.name}
             </h1>
-            <p className="text-[1em] text-[#A5A5A5] dark:text-white">@{accDeets?.account_handle}</p>
+            <p className="text-[1em] text-[#A5A5A5] dark:text-white">
+              @{accDeets?.account_handle}
+            </p>
             <p className="text-[1em] text-[#414040] mt-[0.5%] dark:text-white">
               {accDeets?.bio}
             </p>
@@ -243,22 +274,26 @@ const Profile = () => {
               </div>
             </div>
             <div className="flex text-[#5E5C5C] dark:text-white">
-              <div className="flex items-center mr-[1.5%] hover:cursor-pointer"
-                onClick={navigateFollowing}>
+              <div
+                className="flex items-center mr-[1.5%] hover:cursor-pointer"
+                onClick={navigateFollowing}
+              >
                 <p className="hover:underline hover:underline-offset-8 ">
                   <span className="font-semibold text-black dark:text-white">
-                  {numFollowing}
+                    {numFollowing}
                   </span>
                   ‎ Following
                 </p>
               </div>
-              <div className="flex items-center hover:cursor-pointer"
-              onClick={navigateFollowers}>
+              <div
+                className="flex items-center hover:cursor-pointer"
+                onClick={navigateFollowers}
+              >
                 <p className="hover:underline hover:underline-offset-8 ">
                   <span className="font-semibold text-black dark:text-white">
-                  {numFollower}
+                    {numFollower}
                   </span>
-                  ‎ {numFollower === 1 ? 'Follower' : 'Followers'}
+                  ‎ {numFollower === 1 ? "Follower" : "Followers"}
                 </p>
               </div>
             </div>
@@ -275,6 +310,7 @@ const Profile = () => {
                       : "w-[33%] text-center text-[#9D9D9D] hover:cursor-pointer dark:text-white"
                   }
                   onClick={() => navigate(`/${link.link}`)}
+                  id={link.name}
                 >
                   <p className="hover:cursor-pointer">{link.name}</p>
                 </li>

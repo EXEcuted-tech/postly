@@ -18,7 +18,7 @@ const PostCard = (props: PostProps) => {
     props;
   const payload = localStorage.getItem("payload");
   const payloadObj = payload && JSON.parse(payload);
-// console.log(props);
+  // console.log(props);
   const [dpURL, setDpURL] = useState<string | null>(null);
   const [duration, setDuration] = useState("");
   const [accDeets, setAccDeets] = useState<UserProps>();
@@ -31,9 +31,9 @@ const PostCard = (props: PostProps) => {
   const [isLike, setIsLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
-  const userID = Number(localStorage.getItem('view_id'));
+  const userID = Number(localStorage.getItem("view_id"));
 
-  const [liked,setLiked] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     retrieveAcc();
@@ -133,75 +133,84 @@ const PostCard = (props: PostProps) => {
   const countLike = () => {
     api
       .get(`${config.API}/react/count?col=post_id&val=${props.post_id}`)
-      .then((res)=>{
-        if (res.data.success == true){
+      .then((res) => {
+        if (res.data.success == true) {
           setIsItLike(res.data.post[0].count);
           setIsLike(res.data.isLiked);
-
-        }else{
+        } else {
         }
-
-    }).catch((err) => { 
-    });
+      })
+      .catch((err) => {});
   };
 
-  const likeUser = async () =>{
-    
+  const likeUser = async () => {
     const previous = await hasLiked();
 
-    if(previous===0){
-      api.post(`${config.API}/react/create`,{
-        postID: props.post_id,
-        reactID: payloadObj?.userID,
-      }).then((res)=>{
-        if(res.data.success===true){    
-          setIsItLike(isItLike + (isLike ? -1 : 1));
-          setIsLike(true);
-        }
-      })
-    }else{
-      api.post(`${config.API}/react/relike?reaction_id=${previous}`)
-      .then((res)=>{
-        if(res.data.success===true){
-          setIsItLike(isItLike + (isLike ? -1 : 1));
-          setIsLike(true);
-        }  
-      })
+    if (previous === 0) {
+      api
+        .post(`${config.API}/react/create`, {
+          postID: props.post_id,
+          reactID: payloadObj?.userID,
+        })
+        .then((res) => {
+          if (res.data.success === true) {
+            setIsItLike(isItLike + (isLike ? -1 : 1));
+            setIsLike(true);
+          }
+        });
+    } else {
+      api
+        .post(`${config.API}/react/relike?reaction_id=${previous}`)
+        .then((res) => {
+          if (res.data.success === true) {
+            setIsItLike(isItLike + (isLike ? -1 : 1));
+            setIsLike(true);
+          }
+        });
     }
-  }
+  };
 
-  const unlikePost = async () =>{
+  const unlikePost = async () => {
     const previous_id = await hasLiked();
 
     //console.log("Went in here",previous_id);
-    if(previous_id!==0){
-      api.post(`${config.API}/react/delete?reaction_id=${previous_id}`)
-      .then((res)=>{
-        if(res.data.success===true){
-          setIsItLike(isItLike + (isLike ? -1 : 1));
-          setIsLike(false);
-        }
-      })
+    if (previous_id !== 0) {
+      api
+        .post(`${config.API}/react/delete?reaction_id=${previous_id}`)
+        .then((res) => {
+          if (res.data.success === true) {
+            setIsItLike(isItLike + (isLike ? -1 : 1));
+            setIsLike(false);
+          }
+        });
     }
-  }
+  };
 
-  const hasLiked = async () =>{
+  const hasLiked = async () => {
     var retVal = 0;
-    await api.get(`${config.API}/react/retrieveparams?col1=post_id&val1=${props.post_id}&col2=reactor_id&val2=${payloadObj?.userID}`)
-    .then((res)=>{
-      if(res.data.success === true && res.data.records.length > 0){
-        if(res.data.records[0].deleted_at!==null){
-          
-          retVal = res.data.records[0].reaction_id!==null ? res.data.records[0].reaction_id : 0
-        }else{
-          //console.log("retrieve");
-          setIsLike(true);
-          retVal = res.data.records[0].reaction_id!==null ? res.data.records[0].reaction_id : 0
+    await api
+      .get(
+        `${config.API}/react/retrieveparams?col1=post_id&val1=${props.post_id}&col2=reactor_id&val2=${payloadObj?.userID}`
+      )
+      .then((res) => {
+        if (res.data.success === true && res.data.records.length > 0) {
+          if (res.data.records[0].deleted_at !== null) {
+            retVal =
+              res.data.records[0].reaction_id !== null
+                ? res.data.records[0].reaction_id
+                : 0;
+          } else {
+            //console.log("retrieve");
+            setIsLike(true);
+            retVal =
+              res.data.records[0].reaction_id !== null
+                ? res.data.records[0].reaction_id
+                : 0;
+          }
         }
-      }
-    })
+      });
     return retVal;
-  }
+  };
 
   return (
     <div className="bg-white rounded-[20px] px-[2%] py-[2%] mb-[2%] dark:bg-black">
@@ -230,6 +239,7 @@ const PostCard = (props: PostProps) => {
               {is_owner && (
                 <div className="flex mr-[10%] ml-[-22%]">
                   <PiPencilCircleDuotone
+                    name="Edit"
                     className="hover:animate-pop1 text-[2em] text-[#1c1c1c] cursor-pointer mr-[10px] dark:text-white"
                     onClick={() => {
                       setIsEditOpen(true);
@@ -238,19 +248,34 @@ const PostCard = (props: PostProps) => {
                   <PiXCircleDuotone
                     className="hover:animate-pop1 text-[2em] text-[#1c1c1c] cursor-pointer dark:text-white"
                     onClick={() => setIsDeleteOpen(true)}
+                    name="Delete"
                   />
                 </div>
               )}
               <div className="mr-[5%]">
-                  
-                  {isLike? <FaHeart onClick={unlikePost} className="animate-pop1 text-[2em] text-[#D2042D] dark:text-white cursor-pointer" />: <FaRegHeart onClick={likeUser} className="animate-pop2 text-[2em] dark:text-white cursor-pointer" />}
+                {isLike ? (
+                  <FaHeart
+                    onClick={unlikePost}
+                    className="animate-pop1 text-[2em] text-[#D2042D] dark:text-white cursor-pointer"
+                  />
+                ) : (
+                  <FaRegHeart
+                    onClick={likeUser}
+                    className="animate-pop2 text-[2em] dark:text-white cursor-pointer"
+                  />
+                )}
               </div>
               <div>
-                <p className="text-[1.1em] ml-[30%] dark:text-white">{isItLike}</p>
+                <p className="text-[1.1em] ml-[30%] dark:text-white">
+                  {isItLike}
+                </p>
               </div>
             </div>
           </div>
-          <div className="ml-[0.5%] mr-[1%] mt-[1%] text-justify dark:text-white">
+          <div
+            id="contentful"
+            className="ml-[0.5%] mr-[1%] mt-[1%] text-justify dark:text-white"
+          >
             {content}
           </div>
         </>

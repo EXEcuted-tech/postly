@@ -25,7 +25,7 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailRegex.test(email)) {
+    if (emailRegex.test(email)===false) {
       setError("Please enter a valid email!");
       setIsLoading(false);
       errorTimer();

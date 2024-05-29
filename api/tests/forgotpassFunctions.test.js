@@ -91,10 +91,10 @@ describe('Validate OTP function', () => {
           otp = userOTP
           timestamp = currentTime
 
-          console.log(`This is shit: ${otp}`)
-          console.log(`This is shit: ${userOTP}`)
+          // console.log(`This is shit: ${otp}`)
+          // console.log(`This is shit: ${userOTP}`)
       
-          console.log("This is the Status: ", currentTime - timestamp <= 5 * 60 * 1000)
+          // console.log("This is the Status: ", currentTime - timestamp <= 5 * 60 * 1000)
       
           if (userOTP === otp && currentTime - timestamp <= 5 * 60 * 1000) {
             res.status(200).json({ message: 'OTP is valid', success:true});

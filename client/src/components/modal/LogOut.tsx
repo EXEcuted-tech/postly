@@ -59,7 +59,7 @@ const LogOut= ({setLogout} : { setLogout: (value: boolean) => void }) => {
               <div className='flex justify-center mt-[2%]'>
                 <button type='submit' className=' bg-black text-white text-[1.2em] w-[20%] py-[2%] mt-[1%] mr-[10%] font-bold rounded-md dark:text-black dark:bg-white
                     hover:bg-gray-600' onClick={()=>(setLogout(false))}>Cancel</button>
-                <button type='submit' className=' bg-primary text-black text-[1.2em] w-[20%] py-[2%] mt-[1%] font-bold rounded-md
+                <button type='submit' name='logout-btn' className=' bg-primary text-black text-[1.2em] w-[20%] py-[2%] mt-[1%] font-bold rounded-md
                     hover:bg-[#dbad1d]' onClick={(e)=>logout(e)}>Log Out</button>
               </div>
             </form>

@@ -101,7 +101,7 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
       <div className='text-white'>
         <div className='flex justify-center pt-[5%]'>
           <img src={Logo} className='w-[13%] ml-[40%]' />
-          <IoCloseOutline className='cursor-pointer text-[#C2C2C2] text-[3em] content-end ml-[32%] hover:text-[#a1a1a1] dark:text-white'
+          <IoCloseOutline name='signup-close' className='cursor-pointer text-[#C2C2C2] text-[3em] content-end ml-[32%] hover:text-[#a1a1a1] dark:text-white'
           onClick={()=>(setRegister(false))}/>
         </div>
         <div className='ml-[12%]'>

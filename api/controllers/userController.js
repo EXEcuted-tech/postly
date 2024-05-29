@@ -78,7 +78,7 @@ const retrieveByParamsLike = (req,res)=>{
     db.query(retrieveUsers,queryParams, (err, rows) => {
       //console.log('SQL Query:', retrieveTasks, queryParams);
       if (err) {
-        console.error('Error retrieving all records:', err);
+        //console.error('Error retrieving all records:', err);
         return res.status(500).json({ status: 500, success:false,error: 'Error retrieving all records' });
       }else{
         //console.log(rows);

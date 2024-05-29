@@ -71,7 +71,7 @@ describe('Validate OTP function', () => {
       };
     });
   
-    it('should return "OTP is valid" when OTP is correct and within time limit', () => {
+    test('should return "OTP is valid" when OTP is correct and within time limit', () => {
       const otpData ={}
       const validateSuccessOTP = (req, res) => {
         const { email, userOTP } = req.body;
@@ -118,7 +118,7 @@ describe('Validate OTP function', () => {
       expect(res.status(200).json).toHaveBeenCalledWith({ message: 'OTP is valid', success: true });
     });
    
-    it('Should return "Invalid or expired OTP" when OTP is incorrect', () => {
+    test('Should return "Invalid or expired OTP" when OTP is incorrect', () => {
       const email = 'test@example.com';
       const userOTP = '654321'; 
   
@@ -131,7 +131,7 @@ describe('Validate OTP function', () => {
       expect(res.json).toHaveBeenCalledWith({ message: 'Invalid or expired OTP', success: false });
     });
   
-    it('Should return "OTP not found" when no OTP data exists for the given email', () => {
+    test('Should return "OTP not found" when no OTP data exists for the given email', () => {
       const email = 'nonexistent@example.com';
   
       req.body.email = email;

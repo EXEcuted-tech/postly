@@ -132,7 +132,10 @@ const refreshExistingToken = (req,res) =>{
 const signup = (req,res) =>{
     const { account_handle, email_address, password } = req.body;
 
-    db.query('SELECT email_address from account WHERE email_address = ?', [email_address], async (error, results) =>{
+    db.query(
+    'SELECT email_address FROM account WHERE email_address = ? OR account_handle = ?',
+    [email_address, account_handle],
+        async (error, results) =>{
         if(error){
             //console.log(error);
         }
@@ -141,7 +144,7 @@ const signup = (req,res) =>{
             res.status(404).json({
                 status: 404,
                 success: false,
-                message: "Email address already exists!",
+                message: "Email address or account handle already exists!",
             });
             return;
         }

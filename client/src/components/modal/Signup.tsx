@@ -44,7 +44,6 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
       email_address: email,
       password: password,
     }).then((res)=>{
-        console.log(res);
         if (res.data.success == true){
                                 
           setSuccess("You have successfully created an account! You may now log in.");
@@ -56,7 +55,7 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
           setTimeout(() => {
             setSuccess("");
             setRegister(false);
-          }, 1500);
+          }, 1000);
 
         }else{
           setTimeout(()=>{setIsLoading(false)},800);
@@ -98,7 +97,7 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
       />
     }
     
-    <div className='bg-white w-[32%] h-[60%] ml-[35%] mt-[8%] rounded-[50px] shadow-2xl dark:bg-black '>
+    <div className='bg-white w-[32%] h-[63.5%] ml-[35%] mt-[8%] rounded-[50px] shadow-2xl dark:bg-black '>
       <div className='text-white'>
         <div className='flex justify-center pt-[5%]'>
           <img src={Logo} className='w-[13%] ml-[40%]' />
@@ -110,19 +109,19 @@ const Signup = ({setRegister} : { setRegister: (value: boolean) => void }) => {
           <p className='text-[1.25em] text-[#8F8F8F] mb-[3%] dark:text-primary'>You must create an account to use Postly.</p>
           <form className='inline text-black' method='POST'>
             <div>
-              <input type='text' value={username} onChange={(e)=>{setUsername(e.target.value)}} className='w-[85%] h-[2em] mb-[3%] text-[1.5em] pl-[2%] rounded-xl border-primary border-2 font-semibold dark:text-white dark:bg-black' placeholder='Username'></input>
+              <input type='text' name='username' value={username} onChange={(e)=>{setUsername(e.target.value)}} className='w-[85%] h-[2em] mb-[3%] text-[1.5em] pl-[2%] rounded-xl border-primary border-2 font-semibold dark:text-white dark:bg-black' placeholder='Username'></input>
             </div>
             <div>
-              <input type='email' value={email} onChange={(e)=>{setEmail(e.target.value)}} className='w-[85%] h-[2em] mb-[3%] text-[1.5em] pl-[2%] rounded-xl border-primary border-2 font-semibold dark:text-white dark:bg-black' placeholder='Email'></input>
+              <input type='email' name='email' value={email} onChange={(e)=>{setEmail(e.target.value)}} className='w-[85%] h-[2em] mb-[3%] text-[1.5em] pl-[2%] rounded-xl border-primary border-2 font-semibold dark:text-white dark:bg-black' placeholder='Email'></input>
             </div>
             <div>
-              <input type='password' value={password} onChange={(e)=>{setPassword(e.target.value)}} className='w-[85%] h-[2em] mb-[3%] text-[1.5em] pl-[2%] rounded-xl border-primary border-2 font-semibold dark:text-white dark:bg-black' placeholder='Password'></input>
+              <input type='password' name='password' value={password} onChange={(e)=>{setPassword(e.target.value)}} className='w-[85%] h-[2em] mb-[3%] text-[1.5em] pl-[2%] rounded-xl border-primary border-2 font-semibold dark:text-white dark:bg-black' placeholder='Password'></input>
             </div>
             <div>
-              <input type='password' value={retypePassword} onChange={(e)=>{setRetypePassword(e.target.value)}} className='w-[85%] h-[2em] mb-[3%] text-[1.5em] pl-[2%] rounded-xl border-primary border-2 font-semibold dark:text-white dark:bg-black' placeholder='Re-type Password'></input>
+              <input type='password' name='confirmpassword' value={retypePassword} onChange={(e)=>{setRetypePassword(e.target.value)}} className='w-[85%] h-[2em] mb-[3%] text-[1.5em] pl-[2%] rounded-xl border-primary border-2 font-semibold dark:text-white dark:bg-black' placeholder='Re-type Password'></input>
             </div>
             <div className='text-center ml-[-9%]'>
-                <button type='submit' onClick={signUp} className=' bg-primary text-[1.5em] w-[30%] py-[1.5%] mt-[1%] font-bold rounded-lg hover:bg-[#f0b500]'>
+                <button type='submit' name='signup-btn' onClick={signUp} className=' bg-primary text-[1.5em] w-[30%] py-[1.5%] mt-[1%] font-bold rounded-lg hover:bg-[#f0b500]'>
                 <div className='flex items-center justify-center mr-[2%]'>
                     <BounceLoader className='mx-[2%]' color="#FFFFFF" loading={isLoading} />
                     Sign Up

@@ -56,10 +56,10 @@ const validateOTP = (req, res) => {
     if (userOTP === otp && currentTime - timestamp <= 5 * 60 * 1000) {
       res.status(200).json({ message: 'OTP is valid', success:true});
     } else {
-      res.status(500).json({ message: 'Invalid or expired OTP',success:false});
+      res.status(401).json({ message: 'Invalid or expired OTP',success:false});
     }
   } else {
-    res.status(500).json({ message: 'OTP not found',success:false });
+    res.status(404).json({ message: 'OTP not found',success:false });
   }
 };
 
